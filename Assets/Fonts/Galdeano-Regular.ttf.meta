@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 95367140e165c974aba7b8ec4c53ee93
+timeCreated: 1502319749
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Galdeano
+  fontNames:
+  - Galdeano
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
