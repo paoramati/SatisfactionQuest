@@ -11,7 +11,6 @@ public class CommandMap : MonoBehaviour {
 	public CommandMap () {
 		commands = new Dictionary<string,Command>();
 		commands.Add("go north",new GoCommand("north"));
-
 		commands.Add("go south",new GoCommand("south"));
 		commands.Add("go east",new GoCommand("east"));
 		commands.Add("go west",new GoCommand("west"));
