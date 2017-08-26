@@ -22,6 +22,6 @@ public class GameModel {
     public GameModel()
     {
         makeStory();
-    }
+    }   
 
 }

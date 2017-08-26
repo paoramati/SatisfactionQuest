@@ -33,8 +33,8 @@ public class GoCommand : Command
         Debug.Log("Got a Go" + adverb);
 
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string uSceneName = GameManager.instance.currentUScene();
-        if (uSceneName == "TextIO")
+        string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
+        if (uSceneName == "GameScene")
         {
             switch (adverb)
             {
