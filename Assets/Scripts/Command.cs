@@ -6,6 +6,8 @@ public class Command
 {// : MonoBehaviour {
 
     private Command next;
+    public string Result;
+
     // Use this for initialization
     void Awake()
     {
@@ -31,6 +33,11 @@ public class GoCommand : Command
 {
     private string adverb;
     private string[] adverbs;
+
+    public GoCommand()
+    {
+
+    }
 
     public GoCommand(string pAdverb)
     {
@@ -111,11 +118,11 @@ public class GoCommand : Command
                         GameManager.instance.gameModel.currentLocation = lcLocation.West;
                     break;
             }
-
-            pCommand.Result = GameManager.instance.gameModel.currentLocation.Story;
+            
+            Result = GameManager.instance.gameModel.currentLocation.Story;
         }
         else
-            pCommand.Result = "Not able to go places when in " + uSceneName;
+            Result = "Not able to go places when in " + uSceneName;
     }
 
 }
@@ -123,6 +130,8 @@ public class GoCommand : Command
 public class PickCommand : Command
 {
     private string adverb;
+
+    public PickCommand() { }
 
     public PickCommand(string pAdverb)
     {
@@ -142,6 +151,8 @@ public class PickCommand : Command
 public class AnswerCommand : Command
 {
     private int Answer;
+
+    public AnswerCommand() { }
 
     public AnswerCommand(int pAnswer)
     {
@@ -168,6 +179,8 @@ public class AnswerCommand : Command
 public class ShowCommand : Command
 {
     private string adverb;
+
+    public ShowCommand() { }
 
     public ShowCommand(string pAdverb)
     {
@@ -197,6 +210,11 @@ public class ShowCommand : Command
         //}
         //pCmd.Result = lcResult;
     }
+}
+
+public class ReadCommand : Command
+{
+    public ReadCommand() { }
 }
 
 
