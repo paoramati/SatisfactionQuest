@@ -13,7 +13,7 @@ public class CommandProcessor
 	{
 	}
 
-	/* private List<String> Tokenise(String pCmdStr)
+    /* private List<String> Tokenise(String pCmdStr)
 		{
 			Regex regex = new Regex (@"\w\b");
 			List<String> matchList = (from Match m in regex.Matches (pCmdStr)select m.Value).ToList ();
@@ -22,25 +22,30 @@ public class CommandProcessor
 		}
 		*/
 
-	public String Parse(String pCmdStr){
-		String strResult = "Do not understand";
+    //parse user input into tokenised strings
+    public String[] ParseInput(String pCommandString) {
+        pCommandString = pCommandString.ToLower();
+        return pCommandString.Split(' '); // tokenise the command
+    }
 
-		pCmdStr = pCmdStr.ToLower();
-		String[] parts = pCmdStr.Split(' '); // tokenise the command
-		// List<String> matches = Tokenise(pCmdStr);
-		if (parts.Length >= 2) {
-			String strCmd = parts [0] + " " + parts [1];
-			CommandMap aMap = 	new CommandMap ();
-			if (aMap.runCmd (strCmd)) {
-				strResult = aMap.Result;
+
+    public String ProcessInput(String[] pCommandStrings) {
+        String lcResult = "Do not understand command";
+        if (pCommandStrings.Length >= 2) {        //2nd condition for answer command
+            
+			//String lcCommand = pCommandStrings [0] + " " + pCommandStrings [1];     //only works for commands with 2 words
+			CommandMap lcCommandMap = new CommandMap ();
+			if (lcCommandMap.runCmd (pCommandStrings)) {
+                //Command lcCommand = new Command()
+				lcResult = lcCommandMap.Result;
 			} else  
-				strResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + strResult; 
+				lcResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + lcResult; 
 		} else // parts.Length < 2
-			strResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + strResult;  
+			lcResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + lcResult;  
 
-		return strResult;
+		return lcResult;
 
-	}// Parse
+	}
 }
 
 

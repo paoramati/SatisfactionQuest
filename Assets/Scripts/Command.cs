@@ -12,23 +12,36 @@ public class Command
 
     }
 
-    public virtual void Do(CommandMap aCmd)
+    public virtual void Initialise(string[] pAdverbs)
+    {
+
+    }
+
+    public virtual void Do(CommandMap pCommand)
     {
     }
 
+    public virtual void Do(string[] pAdverbs)
+    {
+    }
 
 }
 
 public class GoCommand : Command
 {
     private string adverb;
+    private string[] adverbs;
 
     public GoCommand(string pAdverb)
     {
         adverb = pAdverb;
     }
 
-    public override void Do(CommandMap pCmd)
+    public GoCommand(string[] pAdverbs)
+    {
+    }
+
+    public override void Do(CommandMap pCommand)
     {
         Debug.Log("Got a Go" + adverb);
 
@@ -60,12 +73,51 @@ public class GoCommand : Command
                     break;
             }
 
-            pCmd.Result = GameManager.instance.gameModel.currentLocation.Story;
+            pCommand.Result = GameManager.instance.gameModel.currentLocation.Story;
         }
         else
-            pCmd.Result = "Not able to go places when in " + uSceneName;
+            pCommand.Result = "Not able to go places when in " + uSceneName;
 
     }
+
+    public override void Do(string[] pAdverbs)
+    {
+        Debug.Log("Got a Go" + pAdverbs[1]);
+
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
+        if (uSceneName == "GameScene")
+        {
+            switch (pAdverbs[1])
+            {
+                case "north":
+                    lcLocation = GameManager.instance.gameModel.currentLocation;
+                    if (lcLocation.North != null)
+                        GameManager.instance.gameModel.currentLocation = lcLocation.North;
+                    break;
+                case "south":
+                    lcLocation = GameManager.instance.gameModel.currentLocation;
+                    if (lcLocation.South != null)
+                        GameManager.instance.gameModel.currentLocation = lcLocation.South;
+                    break;
+                case "east":
+                    lcLocation = GameManager.instance.gameModel.currentLocation;
+                    if (lcLocation.East != null)
+                        GameManager.instance.gameModel.currentLocation = lcLocation.East;
+                    break;
+                case "west":
+                    lcLocation = GameManager.instance.gameModel.currentLocation;
+                    if (lcLocation.West != null)
+                        GameManager.instance.gameModel.currentLocation = lcLocation.West;
+                    break;
+            }
+
+            pCommand.Result = GameManager.instance.gameModel.currentLocation.Story;
+        }
+        else
+            pCommand.Result = "Not able to go places when in " + uSceneName;
+    }
+
 }
 
 public class PickCommand : Command
@@ -77,14 +129,42 @@ public class PickCommand : Command
         adverb = pAdverb;
     }
 
-    public override void Do(CommandMap pCmd)
+    public override void Do(CommandMap pCommand)
     {
         Debug.Log("Got a Pick" + adverb);
+
+        //check if item adverb supplied matches items available at current location
+
 
     }
 }
 
+public class AnswerCommand : Command
+{
+    private int Answer;
 
+    public AnswerCommand(int pAnswer)
+    {
+        Answer = pAnswer;
+    }
+
+    public override void Do(CommandMap aCmd)
+    {
+        string lcResult = "Do not understand you answer!";
+        Debug.Log("Got an Answer" + Answer);
+
+        if (Answer == GameManager.instance.gameModel.currentLocation.Answer)
+        {
+
+        }
+
+        base.Do(aCmd);
+    }
+}
+
+/*
+ * ShowCommand changes Unity scenes depending on context
+ */
 public class ShowCommand : Command
 {
     private string adverb;
@@ -118,4 +198,6 @@ public class ShowCommand : Command
         //pCmd.Result = lcResult;
     }
 }
+
+
 

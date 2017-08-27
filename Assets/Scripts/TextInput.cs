@@ -38,8 +38,10 @@ public class TextInput : MonoBehaviour {
 
 		CommandProcessor aCmd = new CommandProcessor();
 
+        //string[] lcInput = aCmd.ParseInput(arg0);
 
-		output.text = aCmd.Parse(arg0);
+        output.text = aCmd.ProcessInput(aCmd.ParseInput(arg0));     //looks somewhat clumsy, but this utilises modularised parse method within the process input method
+            
 
 		input.text = "";
 		input.ActivateInputField();

@@ -12,8 +12,10 @@ public class GameModel {
         firstLocation = new Location("Ho, Adventurer! You awake at a Smelly Tomb. To the north is a pretty beach.");
 		//firstLocation.BackgroundImage.spri
 
-        firstLocation.North = new Location("You at a pretty beach. To the south is a smelly tomb.");
+        firstLocation.North = new Location("You at a pretty beach. To the south is a smelly tomb. What is 5 + 5?");
         firstLocation.North.South = firstLocation;
+        firstLocation.North.Answer = 10;
+        //firstLocation.North.Question = 
 
 
         currentLocation = firstLocation;

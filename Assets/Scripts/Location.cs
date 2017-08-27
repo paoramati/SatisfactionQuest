@@ -15,6 +15,10 @@ public class Location {
     public Location West;
     public Location Previous;
 
+    public string Question;
+    //public string Answer;
+    public int Answer;
+
     public Location(string prStory)
 	{
 		Story = prStory;
