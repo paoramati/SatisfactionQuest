@@ -27,6 +27,8 @@ public class CommandMap
         commands.Add("pick", new PickCommand());
         commands.Add("show", new ShowCommand());
         commands.Add("read", new ReadCommand());
+
+        commands.Add("north", new GoCommand("north"));
     }
 
     public bool runCmd(string[] pCommandStrings)
@@ -39,8 +41,9 @@ public class CommandMap
             aCmd.Do(pCommandStrings);
             //aCmd.Do(this); // changes Result by side-effect
             lcResult = true;
-            // Get the current scene description
-            Result = GameManager.instance.gameModel.currentLocation.Story;
+            // Get the current scene description + other details. Can also add output such as "do not understand"
+            Result = GameManager.instance.gameModel.currentLocation.Story + "\n";
+            Result += GameManager.instance.gameModel.currentLocation.Question;
         }
         else
         {

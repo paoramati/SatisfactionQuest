@@ -8,6 +8,11 @@ public class Location {
 	public Image BackgroundImage;
 
     public string Story;
+    public string Question;
+    //public string Answer;
+    public int Answer;
+    public Item locationItem;
+
 
     public Location North;
     public Location South;
@@ -15,9 +20,6 @@ public class Location {
     public Location West;
     public Location Previous;
 
-    public string Question;
-    //public string Answer;
-    public int Answer;
 
     public Location(string prStory)
 	{
@@ -25,4 +27,20 @@ public class Location {
 	}
 
 
+}
+
+public class Item
+{
+    public string Description;
+    public string SecretLetter;
+    public string SecretQuestion;
+    public bool Found;
+
+    public Item(string pDescription, string pSecretLetter, bool pFound)
+    {
+        Description = pDescription;
+        SecretLetter = pSecretLetter;
+        Found = pFound;
+    }
+    
 }
