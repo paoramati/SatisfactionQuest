@@ -35,7 +35,7 @@ public class CommandProcessor
             
 			//String lcCommand = pCommandStrings [0] + " " + pCommandStrings [1];     //only works for commands with 2 words
 			CommandMap lcCommandMap = new CommandMap ();
-			if (lcCommandMap.runCmd (pCommandStrings)) {
+			if (lcCommandMap.runCmd (pCommandStrings)) {    //if input matches a mapped command
                 //Command lcCommand = new Command()
 				lcResult = lcCommandMap.Result;
 			} else  

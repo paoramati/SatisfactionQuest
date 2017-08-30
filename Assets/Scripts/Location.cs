@@ -31,6 +31,7 @@ public class Location {
 
 public class Item
 {
+    public string ItemName;
     public string Description;
     public string SecretLetter;
     public string SecretQuestion;
