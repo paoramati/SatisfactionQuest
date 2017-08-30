@@ -20,7 +20,7 @@ public class Command
 
 public class GoCommand : Command
 {
-    private Dictionary<string, Command> goCommands;
+    private Dictionary<string, string> goCommands;
 
     private string adverb;
     private string[] adverbs;
@@ -31,11 +31,12 @@ public class GoCommand : Command
     }
 
     public GoCommand()
-    {
-        goCommands.Add("north", new GoCommand("north"));
-        goCommands.Add("south", new GoCommand("south"));
-        goCommands.Add("east", new GoCommand("east"));
-        goCommands.Add("west", new GoCommand("west"))
+    {   
+        goCommands = new Dictionary<string, string>();
+        goCommands.Add("north", "north");
+        goCommands.Add("south", "south");
+        goCommands.Add("east", "east");
+        goCommands.Add("west", "west");
     }
 
     public GoCommand(string pAdverb)
@@ -53,6 +54,7 @@ public class GoCommand : Command
 
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
+        //if (uSceneName == "GameScene" && goCommands.ContainsKey(pAdverbs[1]))   //hopefully also filters out not-allowed adverbs
         if (uSceneName == "GameScene")
         {
 
