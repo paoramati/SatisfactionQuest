@@ -13,7 +13,7 @@ public class Command
 
     public virtual void Initialise(string[] pAdverbs) { }
 
-    public virtual void Do(CommandMap pCommand) { }
+    //public virtual void Do(CommandMap pCommand) { }
 
     public virtual void Do(string[] pAdverbs) { }
 }
@@ -124,14 +124,14 @@ public class PickCommand : Command
     {
     }
 
-    public override void Do(CommandMap pCommand)
-    {
-        Debug.Log("Got a Pick" + adverb);
+    //public override void Do(CommandMap pCommand)
+    //{
+    //    Debug.Log("Got a Pick" + adverb);
 
-        //check if item adverb supplied matches items available at current scene
+    //    //check if item adverb supplied matches items available at current scene
 
 
-    }
+    //}
 }
 
 public class AnswerCommand : Command
@@ -149,18 +149,18 @@ public class AnswerCommand : Command
     {
     }
 
-    public override void Do(CommandMap aCmd)
-    {
-        string lcResult = "Do not understand you answer!";
-        Debug.Log("Got an Answer" + Answer);
+    //public override void Do(CommandMap aCmd)
+    //{
+    //    string lcResult = "Do not understand you answer!";
+    //    Debug.Log("Got an Answer" + Answer);
 
-        if (Answer == GameManager.instance.gameModel.currentScene.Answer)
-        {
+    //    if (Answer == GameManager.instance.gameModel.currentScene.Answer)
+    //    {
 
-        }
+    //    }
 
-        base.Do(aCmd);
-    }
+    //    base.Do(aCmd);
+    //}
 }
 
 /*

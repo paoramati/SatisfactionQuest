@@ -9,52 +9,49 @@ using System.IO;
 
 public class CommandProcessor
 {
-	public CommandProcessor ()
-	{
-	}
+    public Dictionary<string, Command> CommandMap;
+    public string Result = "";
 
-    /* private List<String> Tokenise(String pCmdStr)
-		{
-			Regex regex = new Regex (@"\w\b");
-			List<String> matchList = (from Match m in regex.Matches (pCmdStr)select m.Value).ToList ();
-
-			return matchList;
-		}
-		*/
+    public CommandProcessor()
+    {
+    }
 
     //parse user input into tokenised strings
-    public String[] ParseInput(String pCommandString) {
+    public String[] ParseInput(String pCommandString)
+    {
         pCommandString = pCommandString.ToLower();
         return pCommandString.Split(' '); // tokenise the command
     }
 
+    public String ProcessInput(String[] pCommandStrings)
+    {
+        CommandMap = new Dictionary<string, Command>();
 
-    public String ProcessInput(String[] pCommandStrings) {
         String lcResult = "Do not understand command";
-        if (pCommandStrings.Length >= 2) {                      //if no# command strings greater than 1
-			CommandMap lcCommandMap = new CommandMap ();
-			if (lcCommandMap.RunCmd (pCommandStrings)) {        //if RunCmd method recognises a mapped command
-                //Command lcCommand = new Command()
-				lcResult = lcCommandMap.Result;                 //output string 'Result' of the mapped command
-
-            }
-            else                                                //if no mapped command is recognised
-            {
-                lcResult = DetermineSceneOutput() + "\n" + lcResult;     //else output string of current story? How about if we are in map or inventory?
-            }
-				
-		} else // parts.Length < 2
+        if (pCommandStrings.Length >= 2)                                //if no# command strings > 1
         {
-            lcResult = DetermineSceneOutput() + "\n" + lcResult;     //else output string of current story? How about if we are in map or inventory?
+            UpdateCommandMap(pCommandStrings);
+            if (CommandMap.ContainsKey(pCommandStrings[0]))             //if command is a mapped command
+            {
+                lcResult = RunCmd(pCommandStrings);                     //output string 'Result' of the mapped command
+            }
+            else                                                        //else if no mapped command is recognised
+            {
+                lcResult = DetermineSceneOutput() + "\n" + lcResult;    //output string of current story? How about if we are in map or inventory?
+            }
+        }
+        else                                                            //else if no# command strings < 2
+        {
+            lcResult = "Not enough words";
+            lcResult = DetermineSceneOutput() + "\n" + lcResult;        //else output string of current story? How about if we are in map or inventory?
         }
         return lcResult;
-	}
+    }
 
     public string DetermineSceneOutput()
     {
         string lcOutputText = "Dont understand!";
-        ////determine output based on unity scene
-        switch (GameManager.instance.currentUScene())
+        switch (GameManager.instance.currentUScene())       //determine output based on unity scene
         {
             case "GameScene":
                 lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
@@ -68,6 +65,52 @@ public class CommandProcessor
         }
         return lcOutputText;
     }
+
+    private string RunCmd(string[] pCommandStrings)
+    {
+        string lcResult = "Do not understand!";
+        string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
+
+        Command aCmd;
+        aCmd = CommandMap[pCommandStrings[0]];
+        aCmd.Do(pCommandStrings);                   //do the mapped command
+
+        switch (GameManager.instance.currentUScene())
+        {
+            case "GameScene":
+                lcResult = GameManager.instance.gameModel.currentScene.ToString();
+                //GameManager.instance.gameModel.currentScene.changeSceneBackground();
+
+                break;
+            case "ItemScene":
+                lcResult = GameManager.instance.gameModel.currentScene.searchForItems();
+
+                break;
+            case "MapScene":
+                break;
+            case "MenuScene":
+                break;
+
+        }
+        return lcResult;
+    }
+
+    private void UpdateCommandMap(string[] pCommandStrings)
+    {
+        CommandMap.Add("answer", new AnswerCommand(pCommandStrings));
+        CommandMap.Add("go", new GoCommand(pCommandStrings));
+        CommandMap.Add("pick", new PickCommand(pCommandStrings));
+        CommandMap.Add("show", new ShowCommand(pCommandStrings));
+        CommandMap.Add("read", new ReadCommand(pCommandStrings));
+    }
 }
 
 
+/* private List<String> Tokenise(String pCmdStr)
+    {
+        Regex regex = new Regex (@"\w\b");
+        List<String> matchList = (from Match m in regex.Matches (pCmdStr)select m.Value).ToList ();
+
+        return matchList;
+    }
+    */
