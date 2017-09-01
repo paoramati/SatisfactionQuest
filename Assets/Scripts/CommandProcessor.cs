@@ -33,7 +33,7 @@ public class CommandProcessor
             UpdateCommandMap(pCommandStrings);
             if (CommandMap.ContainsKey(pCommandStrings[0]))             //if command is a mapped command
             {
-                lcResult = RunCmd(pCommandStrings);                     //output string 'Result' of the mapped command
+                lcResult = RunCommand(pCommandStrings);                     //output string 'Result' of the mapped command
             }
             else                                                        //else if no mapped command is recognised
             {
@@ -51,13 +51,17 @@ public class CommandProcessor
     public string DetermineSceneOutput()
     {
         string lcOutputText = "Dont understand!";
-        switch (GameManager.instance.currentUScene())       //determine output based on unity scene
+        switch (GameManager.instance.CurrentUScene())       //determine output based on unity scene
         {
             case "GameScene":
                 lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
                 break;
             case "ItemScene":
-                lcOutputText = GameManager.instance.gameModel.currentScene.searchForItems();
+                lcOutputText = GameManager.instance.gameModel.currentScene.SearchForItems();
+                break;
+            case "MapScene":
+                lcOutputText = "Map of Beltora. Determine Scene Output";
+                Debug.Log("Map of Beltora. Determine Scene Output");
                 break;
                 //default:
                 //    output.text = GameManager.instance.gameModel.currentScene.ToString();
@@ -66,32 +70,38 @@ public class CommandProcessor
         return lcOutputText;
     }
 
-    private string RunCmd(string[] pCommandStrings)
+    private string RunCommand(string[] pCommandStrings)
     {
         string lcResult = "Do not understand!";
-        string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
+        string uSceneName = GameManager.instance.CurrentUScene();               //gets current Unity scene
 
         Command aCmd;
         aCmd = CommandMap[pCommandStrings[0]];
         aCmd.Do(pCommandStrings);                   //do the mapped command
+        lcResult = aCmd.Result;
 
-        switch (GameManager.instance.currentUScene())
-        {
-            case "GameScene":
-                lcResult = GameManager.instance.gameModel.currentScene.ToString();
-                //GameManager.instance.gameModel.currentScene.changeSceneBackground();
+        lcResult = DetermineSceneOutput() + "\n" + lcResult;
 
-                break;
-            case "ItemScene":
-                lcResult = GameManager.instance.gameModel.currentScene.searchForItems();
+        //switch (GameManager.instance.currentUScene())
+        //{
+        //    case "GameScene":
+        //        lcResult = GameManager.instance.gameModel.currentScene.ToString();
+        //        //GameManager.instance.gameModel.currentScene.changeSceneBackground();
 
-                break;
-            case "MapScene":
-                break;
-            case "MenuScene":
-                break;
+        //        break;
+        //    case "ItemScene":
+        //        lcResult = GameManager.instance.gameModel.currentScene.searchForItems();
 
-        }
+        //        break;
+        //    case "MapScene":
+        //        Debug.Log("Map of Beltora. RunCmd");
+
+        //        lcResult = "Map of Beltora. RunCmd";
+        //        break;
+        //    case "MenuScene":
+        //        break;
+
+        //}
         return lcResult;
     }
 

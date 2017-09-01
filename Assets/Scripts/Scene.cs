@@ -47,7 +47,7 @@ public class Scene {
 
     }
 
-    public string searchForItems()
+    public string SearchForItems()
     {
         string lcResult = "You can see: ";
         Item currentItem = item;

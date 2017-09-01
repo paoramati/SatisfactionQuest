@@ -5,12 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadOnClick : MonoBehaviour {
 
-//	public bool isValid(string prUsername){
-//		return true;
-//	}
-
-
-	public void LoadScene(int prLevel){
-		SceneManager.LoadScene (prLevel);
+	public void LoadUScene(int pLevel){
+		SceneManager.LoadScene (pLevel);
 	}
 }

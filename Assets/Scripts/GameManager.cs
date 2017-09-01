@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour {
 	public GameModel gameModel;
 
 
-	public string currentUScene()
+	public string CurrentUScene()
 	{
 		return SceneManager.GetActiveScene ().name;
 	}
 
-	public void changeUScene(string pSceneName){
+	public void ChangeUScene(string pSceneName){
 		SceneManager.LoadScene (pSceneName);
 	}	
 
