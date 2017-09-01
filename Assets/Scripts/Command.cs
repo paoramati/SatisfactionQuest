@@ -96,71 +96,15 @@ public class GoCommand : Command
                 //    lcscene = GameManager.instance.gameModel.currentscene;
 
             }
-            //Result = GameManager.instance.gameModel.currentScene.Story + "\n";
-            //Result += GameManager.instance.gameModel.currentScene.Question;
             if (sceneExists == false)
                 GameManager.instance.gameModel.currentScene.sceneStatus = "Nowhere to go in that direction";
             //    Result += "\nNo scene exists in that direction.";
-            Debug.Log(sceneExists);
+            Debug.Log("Scene number = " + lcScene.story);
         }
         else
             Result = "Not able to go places when in " + uSceneName;
     }
 
-}
-
-public class PickCommand : Command
-{
-    private string adverb;
-
-    public PickCommand() { }
-
-    public PickCommand(string pAdverb)
-    {
-        adverb = pAdverb;
-    }
-
-    public PickCommand(string[] pAdverbs)
-    {
-    }
-
-    //public override void Do(CommandMap pCommand)
-    //{
-    //    Debug.Log("Got a Pick" + adverb);
-
-    //    //check if item adverb supplied matches items available at current scene
-
-
-    //}
-}
-
-public class AnswerCommand : Command
-{
-    private int Answer;
-
-    public AnswerCommand() { }
-
-    public AnswerCommand(int pAnswer)
-    {
-        Answer = pAnswer;
-    }
-
-    public AnswerCommand(string[] pAdverbs)
-    {
-    }
-
-    //public override void Do(CommandMap aCmd)
-    //{
-    //    string lcResult = "Do not understand you answer!";
-    //    Debug.Log("Got an Answer" + Answer);
-
-    //    if (Answer == GameManager.instance.gameModel.currentScene.Answer)
-    //    {
-
-    //    }
-
-    //    base.Do(aCmd);
-    //}
 }
 
 /*
@@ -188,51 +132,66 @@ public class ShowCommand : Command
         Scene lcScene = GameManager.instance.gameModel.currentScene;
         string lcUnityScene = GameManager.instance.currentUScene();
 
-        
+
 
         switch (pAdverbs[1])
         {
             case "items":
+                GameManager.instance.gameModel.currentScene = lcScene;
+
                 GameManager.instance.changeUScene("ItemScene");
-                Result = GameManager.instance.gameModel.currentScene.searchForItems();
+                Result = lcScene.searchForItems();
                 break;
             case "scene":
-                GameManager.instance.changeUScene("GameScene");
                 GameManager.instance.gameModel.currentScene = lcScene;
+                GameManager.instance.changeUScene("GameScene");
                 Result = GameManager.instance.gameModel.currentScene.ToString();
                 break;
 
         }
 
-        
+
 
         Result = lcResult;
     }
-
-    //public override void Do(CommandMap pCmd)
-    //{
-    //    string lcResult = "Do not understand. Did you mean \"show items\", or \"show scene\"?";
-
-    //    Debug.Log("Got a Show" + adverb);
-    //    //switch (adverb)
-    //    //{
-    //    //    case "items":
-
-    //    //        // Collect the items into one list
-    //    //        lcResult = GameManager.instance.gameModel.lcscene.allItems();
-    //    //        //GameManager.instance.changeUScene ("ItemsScene");
-    //    //        GameManager.instance.setActiveCanvas("ItemsCanvas");
-    //    //        break;
-    //    //    case "scene":
-
-    //    //        lcResult = GameManager.instance.gameModel.currentScene.Story;
-    //    //        //GameManager.instance.changeUScene ("TextIO");
-    //    //        GameManager.instance.setActiveCanvas("GameCanvas");
-    //    //        break;
-    //    //}
-    //    //pCmd.Result = lcResult;
-    //}
 }
+
+public class PickCommand : Command
+{
+    private string adverb;
+
+    public PickCommand() { }
+
+    public PickCommand(string pAdverb)
+    {
+        adverb = pAdverb;
+    }
+
+    public PickCommand(string[] pAdverbs)
+    {
+    }
+
+}
+
+public class AnswerCommand : Command
+{
+    private int Answer;
+
+    public AnswerCommand() { }
+
+    public AnswerCommand(int pAnswer)
+    {
+        Answer = pAnswer;
+    }
+
+    public AnswerCommand(string[] pAdverbs)
+    {
+    }
+
+
+}
+
+
 
 public class ReadCommand : Command
 {

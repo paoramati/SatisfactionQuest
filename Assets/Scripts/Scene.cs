@@ -11,6 +11,8 @@ public class Scene {
     public int Answer;
     public Item item;
     public string backgroundImageName;
+    public int sceneNumber;
+    public int sceneCounter = 0;
 
 
     public Scene North;
@@ -23,6 +25,7 @@ public class Scene {
     public Scene(string pStory)
 	{
 		story = pStory;
+        sceneNumber = ++sceneCounter;
 	}
 
     public Scene(string pStory, string pImageName)

@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
 		SceneManager.LoadScene (pSceneName);
 	}	
 
+
+
 	// What is Awake?
 	// What other handlers are there?
 	void Awake() {
@@ -30,10 +32,11 @@ public class GameManager : MonoBehaviour {
 			instance = this;
 			gameRunning = true;
 			Debug.Log("I am the one");
-			gameModel = new GameModel ();
-
+            gameModel = new GameModel ();
 		} else {
-			Destroy (gameObject);
+            Debug.Log("Destroying a GameManager");
+
+            Destroy(gameObject);
 		}
 	
 	}

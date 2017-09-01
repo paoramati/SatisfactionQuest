@@ -37,7 +37,7 @@ public class CommandProcessor
             }
             else                                                        //else if no mapped command is recognised
             {
-                lcResult = DetermineSceneOutput() + "\n" + lcResult;    //output string of current story? How about if we are in map or inventory?
+                lcResult = DetermineSceneOutput() + "\n" + lcResult;    
             }
         }
         else                                                            //else if no# command strings < 2
