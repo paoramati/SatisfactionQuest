@@ -25,18 +25,9 @@ public class GoCommand : Command
     private string adverb;
     private string[] adverbs;
 
-    private enum Directions
-    {
-        north, south, east, west
-    }
-
     public GoCommand()
-    {   
-        goCommands = new Dictionary<string, string>();
-        goCommands.Add("north", "north");
-        goCommands.Add("south", "south");
-        goCommands.Add("east", "east");
-        goCommands.Add("west", "west");
+    {
+
     }
 
     public GoCommand(string pAdverb)
@@ -46,43 +37,71 @@ public class GoCommand : Command
 
     public GoCommand(string[] pAdverbs)
     {
+        goCommands = new Dictionary<string, string>
+        {
+            { "north", "north" },
+            { "south", "south" },
+            { "east", "east" },
+            { "west", "west" }
+        };
     }
 
     public override void Do(string[] pAdverbs)
     {
         Debug.Log("Got a Go " + pAdverbs[1]);
 
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        Scene lcScene = GameManager.instance.gameModel.currentScene;
+        GameManager.instance.gameModel.currentScene.sceneStatus = "";           //reset location scene status
+        bool sceneExists = false;                                               //checks whether a location scene exists at the given direction
         string uSceneName = GameManager.instance.currentUScene();               //gets current Unity scene
-        //if (uSceneName == "GameScene" && goCommands.ContainsKey(pAdverbs[1]))   //hopefully also filters out not-allowed adverbs
-        if (uSceneName == "GameScene")
+        if (uSceneName == "GameScene" && goCommands.ContainsKey(pAdverbs[1]))   //filters out not-allowed adverbs
+        //if (uSceneName == "GameScene")
         {
-
             switch (pAdverbs[1])
             {
                 case "north":
-                    lcLocation = GameManager.instance.gameModel.currentLocation;
-                    if (lcLocation.North != null)
-                        GameManager.instance.gameModel.currentLocation = lcLocation.North;
+                    lcScene = GameManager.instance.gameModel.currentScene;
+                    if (lcScene.North != null)
+                    {
+                        GameManager.instance.gameModel.currentScene = lcScene.North;
+                        sceneExists = true;
+                    }
+
                     break;
                 case "south":
-                    lcLocation = GameManager.instance.gameModel.currentLocation;
-                    if (lcLocation.South != null)
-                        GameManager.instance.gameModel.currentLocation = lcLocation.South;
+                    lcScene = GameManager.instance.gameModel.currentScene;
+                    if (lcScene.South != null)
+                    {
+                        GameManager.instance.gameModel.currentScene = lcScene.South;
+                        sceneExists = true;
+                    }
                     break;
                 case "east":
-                    lcLocation = GameManager.instance.gameModel.currentLocation;
-                    if (lcLocation.East != null)
-                        GameManager.instance.gameModel.currentLocation = lcLocation.East;
+                    lcScene = GameManager.instance.gameModel.currentScene;
+                    if (lcScene.East != null)
+                    {
+                        GameManager.instance.gameModel.currentScene = lcScene.East;
+                        sceneExists = true;
+                    }
                     break;
                 case "west":
-                    lcLocation = GameManager.instance.gameModel.currentLocation;
-                    if (lcLocation.West != null)
-                        GameManager.instance.gameModel.currentLocation = lcLocation.West;
+                    lcScene = GameManager.instance.gameModel.currentScene;
+                    if (lcScene.West != null)
+                    {
+                        GameManager.instance.gameModel.currentScene = lcScene.West;
+                        sceneExists = true;
+                    }
                     break;
+                //default:
+                //    lcscene = GameManager.instance.gameModel.currentscene;
+
             }
-            
-            Result = GameManager.instance.gameModel.currentLocation.Story;
+            //Result = GameManager.instance.gameModel.currentScene.Story + "\n";
+            //Result += GameManager.instance.gameModel.currentScene.Question;
+            if (sceneExists == false)
+                GameManager.instance.gameModel.currentScene.sceneStatus = "Nowhere to go in that direction";
+            //    Result += "\nNo scene exists in that direction.";
+            Debug.Log(sceneExists);
         }
         else
             Result = "Not able to go places when in " + uSceneName;
@@ -101,11 +120,15 @@ public class PickCommand : Command
         adverb = pAdverb;
     }
 
+    public PickCommand(string[] pAdverbs)
+    {
+    }
+
     public override void Do(CommandMap pCommand)
     {
         Debug.Log("Got a Pick" + adverb);
 
-        //check if item adverb supplied matches items available at current location
+        //check if item adverb supplied matches items available at current scene
 
 
     }
@@ -122,12 +145,16 @@ public class AnswerCommand : Command
         Answer = pAnswer;
     }
 
+    public AnswerCommand(string[] pAdverbs)
+    {
+    }
+
     public override void Do(CommandMap aCmd)
     {
         string lcResult = "Do not understand you answer!";
         Debug.Log("Got an Answer" + Answer);
 
-        if (Answer == GameManager.instance.gameModel.currentLocation.Answer)
+        if (Answer == GameManager.instance.gameModel.currentScene.Answer)
         {
 
         }
@@ -150,34 +177,70 @@ public class ShowCommand : Command
         adverb = pAdverb;
     }
 
-    public override void Do(CommandMap pCmd)
+    public ShowCommand(string[] pAdverbs)
     {
-        string lcResult = "Do not understand. Did you mean \"show items\", or \"show scene\"?";
-
-        Debug.Log("Got a Show" + adverb);
-        //switch (adverb)
-        //{
-        //    case "items":
-
-        //        // Collect the items into one list
-        //        lcResult = GameManager.instance.gameModel.lcLocation.allItems();
-        //        //GameManager.instance.changeUScene ("ItemsScene");
-        //        GameManager.instance.setActiveCanvas("ItemsCanvas");
-        //        break;
-        //    case "scene":
-
-        //        lcResult = GameManager.instance.gameModel.currentScene.Story;
-        //        //GameManager.instance.changeUScene ("TextIO");
-        //        GameManager.instance.setActiveCanvas("GameCanvas");
-        //        break;
-        //}
-        //pCmd.Result = lcResult;
     }
+
+    public override void Do(string[] pAdverbs)
+    {
+        Debug.Log("Got a Show" + adverb);
+        string lcResult = "Do not understand. Did you mean \"show items\", or \"show scene\"?";
+        Scene lcScene = GameManager.instance.gameModel.currentScene;
+        string lcUnityScene = GameManager.instance.currentUScene();
+
+        
+
+        switch (pAdverbs[1])
+        {
+            case "items":
+                GameManager.instance.changeUScene("ItemScene");
+                Result = GameManager.instance.gameModel.currentScene.searchForItems();
+                break;
+            case "scene":
+                GameManager.instance.changeUScene("GameScene");
+                GameManager.instance.gameModel.currentScene = lcScene;
+                Result = GameManager.instance.gameModel.currentScene.ToString();
+                break;
+
+        }
+
+        
+
+        Result = lcResult;
+    }
+
+    //public override void Do(CommandMap pCmd)
+    //{
+    //    string lcResult = "Do not understand. Did you mean \"show items\", or \"show scene\"?";
+
+    //    Debug.Log("Got a Show" + adverb);
+    //    //switch (adverb)
+    //    //{
+    //    //    case "items":
+
+    //    //        // Collect the items into one list
+    //    //        lcResult = GameManager.instance.gameModel.lcscene.allItems();
+    //    //        //GameManager.instance.changeUScene ("ItemsScene");
+    //    //        GameManager.instance.setActiveCanvas("ItemsCanvas");
+    //    //        break;
+    //    //    case "scene":
+
+    //    //        lcResult = GameManager.instance.gameModel.currentScene.Story;
+    //    //        //GameManager.instance.changeUScene ("TextIO");
+    //    //        GameManager.instance.setActiveCanvas("GameCanvas");
+    //    //        break;
+    //    //}
+    //    //pCmd.Result = lcResult;
+    //}
 }
 
 public class ReadCommand : Command
 {
     public ReadCommand() { }
+
+    public ReadCommand(string[] pAdverbs)
+    {
+    }
 }
 
 

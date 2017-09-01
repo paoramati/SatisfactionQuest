@@ -31,21 +31,43 @@ public class CommandProcessor
 
     public String ProcessInput(String[] pCommandStrings) {
         String lcResult = "Do not understand command";
-        if (pCommandStrings.Length >= 2) {        //2nd condition for answer command
-            
-			//String lcCommand = pCommandStrings [0] + " " + pCommandStrings [1];     //only works for commands with 2 words
+        if (pCommandStrings.Length >= 2) {                      //if no# command strings greater than 1
 			CommandMap lcCommandMap = new CommandMap ();
-			if (lcCommandMap.runCmd (pCommandStrings)) {    //if input matches a mapped command
+			if (lcCommandMap.RunCmd (pCommandStrings)) {        //if RunCmd method recognises a mapped command
                 //Command lcCommand = new Command()
-				lcResult = lcCommandMap.Result;
-			} else  
-				lcResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + lcResult; 
+				lcResult = lcCommandMap.Result;                 //output string 'Result' of the mapped command
+
+            }
+            else                                                //if no mapped command is recognised
+            {
+                lcResult = DetermineSceneOutput() + "\n" + lcResult;     //else output string of current story? How about if we are in map or inventory?
+            }
+				
 		} else // parts.Length < 2
-			lcResult = GameManager.instance.gameModel.currentLocation.Story + "\n" + lcResult;  
-
-		return lcResult;
-
+        {
+            lcResult = DetermineSceneOutput() + "\n" + lcResult;     //else output string of current story? How about if we are in map or inventory?
+        }
+        return lcResult;
 	}
+
+    public string DetermineSceneOutput()
+    {
+        string lcOutputText = "Dont understand!";
+        ////determine output based on unity scene
+        switch (GameManager.instance.currentUScene())
+        {
+            case "GameScene":
+                lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
+                break;
+            case "ItemScene":
+                lcOutputText = GameManager.instance.gameModel.currentScene.searchForItems();
+                break;
+                //default:
+                //    output.text = GameManager.instance.gameModel.currentScene.ToString();
+                //    break;
+        }
+        return lcOutputText;
+    }
 }
 
 

@@ -9,9 +9,13 @@ public class TextInput : MonoBehaviour {
 	InputField.SubmitEvent se;
 	InputField.OnChangeEvent ce;
 	public Text output;
+    CommandProcessor cmdProcessor;
 
-	// Use this for initialization
-	void Start () {
+
+    //Sprite backgroundImage;
+
+    // Use this for initialization
+    void Start () {
 		input = this.GetComponent<InputField>();
 		if (input != null) { // if we get a null this script is running when it should not
 			se = new InputField.SubmitEvent ();
@@ -23,12 +27,22 @@ public class TextInput : MonoBehaviour {
 			input.onEndEdit = se;
             //input.onValueChanged = ce;
 
-            //if (GameManager.instance.activeCanvas.name == "GameCanvas")//GameManager.instance.currentUScene () == "TextIO")
-            //    output.text = GameManager.instance.gameModel.currentScene.Story;
-            //else if (GameManager.instance.activeCanvas.name == "ItemsCanvas") //(GameManager.instance.currentUScene () == "ItemsScene")
-            //    output.text = GameManager.instance.gameModel.currentScene.allItems();
+            cmdProcessor = new CommandProcessor();
 
-            output.text = GameManager.instance.gameModel.currentLocation.Story;
+            output.text = cmdProcessor.DetermineSceneOutput();
+            ////determine output based on unity scene
+            //switch (GameManager.instance.currentUScene())
+            //{
+            //    case "GameScene":
+            //        output.text = GameManager.instance.gameModel.currentScene.ToString();
+            //        break;
+            //    case "ItemScene":
+            //        output.text = GameManager.instance.gameModel.currentScene.searchForItems();
+            //        break;
+            //        //default:
+            //        //    output.text = GameManager.instance.gameModel.currentScene.ToString();
+            //        //    break;
+            //}
         }
 	}
 
@@ -36,18 +50,12 @@ public class TextInput : MonoBehaviour {
 	{
 		string currentText = output.text;
 
-		CommandProcessor cmdProcessor = new CommandProcessor();
-
-        //string[] lcInput = aCmd.ParseInput(arg0);
+		//CommandProcessor cmdProcessor = new CommandProcessor();
 
         output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //looks somewhat clumsy, but this utilises modularised parse method within the process input method
-            
 
 		input.text = "";
 		input.ActivateInputField();
-
-
-
 	}
 
 	private void ChangeInput( string arg0)

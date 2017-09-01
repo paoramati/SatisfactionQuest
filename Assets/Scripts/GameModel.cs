@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class GameModel {
 
-    public Location currentLocation;
-    public Location firstLocation;
+    public Scene currentScene;
+    public Scene firstScene;
+    public Sprite backgroundImage;
+    public ChangeImage backgroundChanger;
 
     private void makeStory()
     {
-        firstLocation = new Location("Ho, Adventurer! You awake at a Smelly Tomb. To the north is a pretty beach.");
-        firstLocation.Question = "What is the magic word?";
-		//firstLocation.BackgroundImage.spri
+        firstScene = new Scene("Ho, Adventurer! You awake at a Smelly Tomb. To the north is a pretty beach.");
+        //firstScene = new Scene("Ho, Adventurer! You awake at a Smelly Tomb. To the north is a pretty beach.", "beach1");
+        firstScene.backgroundImageName = "beach1";
+        firstScene.item = new Item("Shell", "a");
+        firstScene.item.nextItem = new Item("Seagull");
 
-        firstLocation.North = new Location("You at a pretty beach. To the south is a smelly tomb. What is 5 + 5?");
-        firstLocation.North.South = firstLocation;
-        firstLocation.North.Answer = 10;
-        //firstLocation.North.Question = 
+        firstScene.question = "What is the magic word?";
+        //firstScene.BackgroundImage = Resources.Load<Sprite>("beach1");
+        //firstscene.BackgroundImage.spri
+
+        firstScene.North = new Scene("You at a pretty beach. To the south is a smelly tomb.");
+        //firstScene.North = new Scene("You at a pretty beach. To the south is a smelly tomb.", "forest1");
+        firstScene.North.backgroundImageName = "forest1";
+        firstScene.North.South = firstScene;
+        firstScene.North.item = new Item("Jar");
+        firstScene.North.Answer = 10;
+        //firstscene.North.Question = 
 
 
-        currentLocation = firstLocation;
+        currentScene = firstScene;
     }
 
     public GameModel()
