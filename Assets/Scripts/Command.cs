@@ -3,40 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Command
-{// : MonoBehaviour {
-
+{
     private Command next;
     public string Result;
 
     // Use this for initialization
     void Awake() { }
 
-    public virtual void Initialise(string[] pAdverbs) { }
+    public virtual void Initialise(string[] pInputStrings) { }
 
-    //public virtual void Do(CommandMap pCommand) { }
-
-    public virtual void Do(string[] pAdverbs) { }
+    public virtual void Do(string[] pInputStrings) { }
 }
 
 public class GoCommand : Command
 {
+    bool sceneExists;                                               //checks whether a location scene exists at the given direction
     private Dictionary<string, string> goCommands;
 
-    private string adverb;
-    private string[] adverbs;
+//    public GoCommand() { }
 
     public GoCommand()
     {
-
-    }
-
-    public GoCommand(string pAdverb)
-    {
-        adverb = pAdverb;
-    }
-
-    public GoCommand(string[] pAdverbs)
-    {
+        sceneExists = false;
         goCommands = new Dictionary<string, string>
         {
             { "north", "north" },
@@ -46,22 +34,21 @@ public class GoCommand : Command
         };
     }
 
-    public override void Do(string[] pAdverbs)
+    public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Got a Go " + pAdverbs[1]);
-
+        Debug.Log("Got a Go " + pInputStrings[1]);
         Scene lcScene = GameManager.instance.gameModel.currentScene;
+        string lcUSceneName = GameManager.instance.CurrentUScene();              //gets current Unity scene
+
         GameManager.instance.gameModel.currentScene.sceneStatus = "";           //reset location scene status
-        bool sceneExists = false;                                               //checks whether a location scene exists at the given direction
-        string uSceneName = GameManager.instance.CurrentUScene();               //gets current Unity scene
-        if (uSceneName == "GameScene")                                          //if in gameScene
+
+        if (lcUSceneName == "GameScene")                                        //if in gameScene
         {
-            if (goCommands.ContainsKey(pAdverbs[1]))                            //if a correct direction is given
+            if (goCommands.ContainsKey(pInputStrings[1]))                            //if a correct direction is given
             {
-                switch (pAdverbs[1])
+                switch (pInputStrings[1])
                 {
                     case "north":
-                        lcScene = GameManager.instance.gameModel.currentScene;
                         if (lcScene.North != null)
                         {
                             GameManager.instance.gameModel.currentScene = lcScene.North;
@@ -69,7 +56,6 @@ public class GoCommand : Command
                         }
                         break;
                     case "south":
-                        lcScene = GameManager.instance.gameModel.currentScene;
                         if (lcScene.South != null)
                         {
                             GameManager.instance.gameModel.currentScene = lcScene.South;
@@ -77,7 +63,6 @@ public class GoCommand : Command
                         }
                         break;
                     case "east":
-                        lcScene = GameManager.instance.gameModel.currentScene;
                         if (lcScene.East != null)
                         {
                             GameManager.instance.gameModel.currentScene = lcScene.East;
@@ -85,7 +70,6 @@ public class GoCommand : Command
                         }
                         break;
                     case "west":
-                        lcScene = GameManager.instance.gameModel.currentScene;
                         if (lcScene.West != null)
                         {
                             GameManager.instance.gameModel.currentScene = lcScene.West;
@@ -98,9 +82,8 @@ public class GoCommand : Command
                 GameManager.instance.gameModel.currentScene.sceneStatus = "Nowhere to go in that direction";
         }
         else
-            Result = "Not able to go places when in " + uSceneName;
+            Result = "Not able to go places when in " + lcUSceneName;
     }
-
 }
 
 /*
@@ -112,42 +95,30 @@ public class ShowCommand : Command
 
     public ShowCommand() { }
 
-    //public ShowCommand(string pAdverb)
-    //{
-    //    adverb = pAdverb;
-    //}
-
-    public ShowCommand(string[] pAdverbs)
+    public ShowCommand(string[] pInputStrings)
     {
     }
 
-    public override void Do(string[] pAdverbs)
+    public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Got a Show" + adverb);
-        string lcResult = "Do not understand. Valid 'show' commands: 'scene', 'items', 'map'";
+        Debug.Log("Got a Show" + pInputStrings[1]);
+        string lcResult = "";
         Scene lcScene = GameManager.instance.gameModel.currentScene;
-        string lcUnityScene = GameManager.instance.CurrentUScene();
+        string lcUSceneName = GameManager.instance.CurrentUScene();
 
-
-
-        switch (pAdverbs[1])
+        switch (pInputStrings[1])
         {
             case "items":
-                //GameManager.instance.gameModel.currentScene = lcScene;
-
                 GameManager.instance.ChangeUScene("ItemScene");
-                //lcResult = lcScene.searchForItems();
                 break;
             case "scene":
-                //GameManager.instance.gameModel.currentScene = lcScene;
                 GameManager.instance.ChangeUScene("GameScene");
-                //lcResult = lcScene.ToString();
                 break;
             case "map":
                 GameManager.instance.ChangeUScene("MapScene");
-                //lcResult = "Map of Beltora. Do";
-                //Debug.Log("Map of Beltora. Do");
-
+                break;
+            default:
+                lcResult = "Do not understand. Valid 'show' commands: 'scene', 'items', 'map'";
                 break;
         }
         Result = lcResult;

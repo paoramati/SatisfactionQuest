@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Scene {
-    
+
+    public string locationName;
     public string story;
     public string question;
     public string sceneStatus;          //holds the status of the scene
@@ -21,23 +22,51 @@ public class Scene {
     public Scene West;
     public Scene Previous;
 
+    //public Scene(string pStory)
+    //{
+    //    story = pStory;
+    //}
 
-    public Scene(string pStory)
+    public Scene(string pLocationName)
+    {
+        locationName = pLocationName;
+    }
+
+    public Scene(string pLocationName, string pStory)
 	{
+        locationName = pLocationName;
 		story = pStory;
-        sceneNumber = ++sceneCounter;
 	}
 
-    public Scene(string pStory, string pImageName)
+    public Scene(string pLocationName, string pStory, string pImageName)
     {
+        locationName = pLocationName;
         story = pStory;
         backgroundImageName = pImageName;
-
     }
 
     public override string ToString()
     {
         return story + "\n" + sceneStatus;
+    }
+
+    public string DisplaySceneDetails()
+    {
+        string lcResult = "";
+        lcResult = locationName + ":\n";
+
+        if (this.North != null)
+            lcResult += "To the North is a " + this.North.locationName + "\n";
+        if (this.South != null)
+            lcResult += "To the South is a " + this.South.locationName + "\n";
+        if (this.East != null)
+            lcResult += "To the East is a " + this.East.locationName + "\n";
+        if (this.West != null)
+            lcResult += "To the West is a " + this.West.locationName + "\n";
+
+
+        lcResult += sceneStatus;
+        return lcResult;
     }
 
     public void changeSceneBackground()

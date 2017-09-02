@@ -16,6 +16,29 @@ public class CommandProcessor
     {
     }
 
+    public string DetermineSceneOutput()
+    {
+        string lcOutputText = "Dont understand!";
+        switch (GameManager.instance.CurrentUScene())       //determine output based on unity scene
+        {
+            case "GameScene":
+                //lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
+                lcOutputText = GameManager.instance.gameModel.currentScene.DisplaySceneDetails();
+                break;
+            case "ItemScene":
+                lcOutputText = GameManager.instance.gameModel.currentScene.SearchForItems();
+                break;
+            case "MapScene":
+                lcOutputText = "Map of Beltora. Determine Scene Output";
+                //Debug.Log("Map of Beltora. Determine Scene Output");
+                break;
+                //default:
+                //    output.text = GameManager.instance.gameModel.currentScene.ToString();
+                //    break;
+        }
+        return lcOutputText;
+    }
+
     //parse user input into tokenised strings
     public String[] ParseInput(String pCommandString)
     {
@@ -30,7 +53,8 @@ public class CommandProcessor
         String lcResult = "Do not understand command";
         if (pCommandStrings.Length >= 2)                                //if no# command strings > 1
         {
-            UpdateCommandMap(pCommandStrings);
+            //UpdateCommandMap(pCommandStrings);
+            UpdateCommandMap();
             if (CommandMap.ContainsKey(pCommandStrings[0]))             //if command is a mapped command
             {
                 lcResult = RunCommand(pCommandStrings);                     //output string 'Result' of the mapped command
@@ -48,28 +72,6 @@ public class CommandProcessor
         return lcResult;
     }
 
-    public string DetermineSceneOutput()
-    {
-        string lcOutputText = "Dont understand!";
-        switch (GameManager.instance.CurrentUScene())       //determine output based on unity scene
-        {
-            case "GameScene":
-                lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
-                break;
-            case "ItemScene":
-                lcOutputText = GameManager.instance.gameModel.currentScene.SearchForItems();
-                break;
-            case "MapScene":
-                lcOutputText = "Map of Beltora. Determine Scene Output";
-                Debug.Log("Map of Beltora. Determine Scene Output");
-                break;
-                //default:
-                //    output.text = GameManager.instance.gameModel.currentScene.ToString();
-                //    break;
-        }
-        return lcOutputText;
-    }
-
     private string RunCommand(string[] pCommandStrings)
     {
         string lcResult = "Do not understand!";
@@ -82,37 +84,26 @@ public class CommandProcessor
 
         lcResult = DetermineSceneOutput() + "\n" + lcResult;
 
-        //switch (GameManager.instance.currentUScene())
-        //{
-        //    case "GameScene":
-        //        lcResult = GameManager.instance.gameModel.currentScene.ToString();
-        //        //GameManager.instance.gameModel.currentScene.changeSceneBackground();
-
-        //        break;
-        //    case "ItemScene":
-        //        lcResult = GameManager.instance.gameModel.currentScene.searchForItems();
-
-        //        break;
-        //    case "MapScene":
-        //        Debug.Log("Map of Beltora. RunCmd");
-
-        //        lcResult = "Map of Beltora. RunCmd";
-        //        break;
-        //    case "MenuScene":
-        //        break;
-
-        //}
         return lcResult;
     }
 
-    private void UpdateCommandMap(string[] pCommandStrings)
+    private void UpdateCommandMap()
     {
-        CommandMap.Add("answer", new AnswerCommand(pCommandStrings));
-        CommandMap.Add("go", new GoCommand(pCommandStrings));
-        CommandMap.Add("pick", new PickCommand(pCommandStrings));
-        CommandMap.Add("show", new ShowCommand(pCommandStrings));
-        CommandMap.Add("read", new ReadCommand(pCommandStrings));
+        CommandMap.Add("answer", new AnswerCommand());
+        CommandMap.Add("go", new GoCommand());
+        CommandMap.Add("pick", new PickCommand());
+        CommandMap.Add("show", new ShowCommand());
+        CommandMap.Add("read", new ReadCommand());
     }
+
+    //private void UpdateCommandMap(string[] pCommandStrings)
+    //{
+    //    CommandMap.Add("answer", new AnswerCommand(pCommandStrings));
+    //    CommandMap.Add("go", new GoCommand(pCommandStrings));
+    //    CommandMap.Add("pick", new PickCommand(pCommandStrings));
+    //    CommandMap.Add("show", new ShowCommand(pCommandStrings));
+    //    CommandMap.Add("read", new ReadCommand(pCommandStrings));
+    //}
 }
 
 
