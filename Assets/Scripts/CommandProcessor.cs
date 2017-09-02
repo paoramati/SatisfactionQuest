@@ -18,23 +18,19 @@ public class CommandProcessor
 
     public string DetermineSceneOutput()
     {
-        string lcOutputText = "Dont understand!";
+        string lcOutputText = "";
+        Scene lcScene = GameManager.instance.gameModel.currentScene;
         switch (GameManager.instance.CurrentUScene())       //determine output based on unity scene
         {
             case "GameScene":
-                //lcOutputText = GameManager.instance.gameModel.currentScene.ToString();
-                lcOutputText = GameManager.instance.gameModel.currentScene.DisplaySceneDetails();
+                lcOutputText = lcScene.DisplaySceneDetails();
                 break;
             case "ItemScene":
-                lcOutputText = GameManager.instance.gameModel.currentScene.SearchForItems();
+                lcOutputText = lcScene.SearchForItems();
                 break;
             case "MapScene":
-                lcOutputText = "Map of Beltora. Determine Scene Output";
-                //Debug.Log("Map of Beltora. Determine Scene Output");
+                lcOutputText = "Map of Beltora. Current location: " + lcScene.locationName;
                 break;
-                //default:
-                //    output.text = GameManager.instance.gameModel.currentScene.ToString();
-                //    break;
         }
         return lcOutputText;
     }
@@ -53,16 +49,11 @@ public class CommandProcessor
         String lcResult = "Do not understand command";
         if (pCommandStrings.Length >= 2)                                //if no# command strings > 1
         {
-            //UpdateCommandMap(pCommandStrings);
             UpdateCommandMap();
             if (CommandMap.ContainsKey(pCommandStrings[0]))             //if command is a mapped command
-            {
                 lcResult = RunCommand(pCommandStrings);                     //output string 'Result' of the mapped command
-            }
             else                                                        //else if no mapped command is recognised
-            {
                 lcResult = DetermineSceneOutput() + "\n" + lcResult;    
-            }
         }
         else                                                            //else if no# command strings < 2
         {

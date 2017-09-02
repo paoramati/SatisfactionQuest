@@ -8,15 +8,14 @@ public class TextInput : MonoBehaviour {
 	InputField input;
 	InputField.SubmitEvent se;
 	InputField.OnChangeEvent ce;
-	public Text output;
     CommandProcessor cmdProcessor;
-
-
-    //Sprite backgroundImage;
+    public Text output;
+    public Image backgroundImage;
 
     // Use this for initialization
     void Start () {
 		input = this.GetComponent<InputField>();
+        
 		if (input != null) { // if we get a null this script is running when it should not
 			se = new InputField.SubmitEvent ();
 			se.AddListener (SubmitInput);
@@ -30,31 +29,20 @@ public class TextInput : MonoBehaviour {
             cmdProcessor = new CommandProcessor();
 
             output.text = cmdProcessor.DetermineSceneOutput();
-            ////determine output based on unity scene
-            //switch (GameManager.instance.currentUScene())
-            //{
-            //    case "GameScene":
-            //        output.text = GameManager.instance.gameModel.currentScene.ToString();
-            //        break;
-            //    case "ItemScene":
-            //        output.text = GameManager.instance.gameModel.currentScene.searchForItems();
-            //        break;
-            //        //default:
-            //        //    output.text = GameManager.instance.gameModel.currentScene.ToString();
-            //        //    break;
-            //}
+
+            if (GameManager.instance.CurrentUScene() == "GameScene")
+                backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
         }
 	}
 
 	private void SubmitInput(string arg0)
 	{
-		string currentText = output.text;
+        output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //process inputs to produce output text
 
-		//CommandProcessor cmdProcessor = new CommandProcessor();
+        if (GameManager.instance.CurrentUScene() == "GameScene")
+            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
 
-        output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //looks somewhat clumsy, but this utilises modularised parse method within the process input method
-
-		input.text = "";
+        input.text = "";
 		input.ActivateInputField();
 	}
 

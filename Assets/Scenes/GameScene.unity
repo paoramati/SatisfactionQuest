@@ -120,7 +120,6 @@ GameObject:
   - component: {fileID: 10904611}
   - component: {fileID: 10904610}
   - component: {fileID: 10904609}
-  - component: {fileID: 10904614}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -198,17 +197,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &10904614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 10904608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60f916210014e904c8fa496bb928c607, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &444242672
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +339,7 @@ GameObject:
   - component: {fileID: 820776803}
   - component: {fileID: 820776802}
   m_Layer: 5
-  m_Name: Text
+  m_Name: OutputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,8 +360,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.5, y: -101.9}
-  m_SizeDelta: {x: 703.3, y: 110.8}
+  m_AnchoredPosition: {x: -0.5, y: -61.94999}
+  m_SizeDelta: {x: 703.3, y: 190.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &820776802
 MonoBehaviour:
@@ -595,7 +583,7 @@ GameObject:
   - component: {fileID: 1687032232}
   - component: {fileID: 1687032234}
   m_Layer: 5
-  m_Name: imgBackground
+  m_Name: BackgroundImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,8 +604,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.3000002, y: 60.26}
-  m_SizeDelta: {x: 738.5, y: 213.52}
+  m_AnchoredPosition: {x: -2.3000002, y: 100.2}
+  m_SizeDelta: {x: 738.5, y: 133.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1687032232
 MonoBehaviour:
@@ -638,7 +626,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 95df2812f806b774c85c6f17d8aa31eb, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -658,7 +646,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1687032230}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60f916210014e904c8fa496bb928c607, type: 3}
   m_Name: 
@@ -811,6 +799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   output: {fileID: 820776802}
+  backgroundImage: {fileID: 1687032232}
 --- !u!114 &1721106856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,7 +944,7 @@ GameObject:
   - component: {fileID: 2097342678}
   - component: {fileID: 2097342677}
   m_Layer: 5
-  m_Name: Text
+  m_Name: InputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

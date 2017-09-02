@@ -6,15 +6,11 @@ using UnityEngine.UI;
 public class Scene {
 
     public string locationName;
-    public string story;
-    public string question;
     public string sceneStatus;          //holds the status of the scene
-    public int Answer;
     public Item item;
+    public string question;
+    public int answer;
     public string backgroundImageName;
-    public int sceneNumber;
-    public int sceneCounter = 0;
-
 
     public Scene North;
     public Scene South;
@@ -22,33 +18,22 @@ public class Scene {
     public Scene West;
     public Scene Previous;
 
-    //public Scene(string pStory)
-    //{
-    //    story = pStory;
-    //}
-
     public Scene(string pLocationName)
     {
         locationName = pLocationName;
     }
 
-    public Scene(string pLocationName, string pStory)
+    public Scene(string pLocationName, string pImageName)
 	{
         locationName = pLocationName;
-		story = pStory;
+        backgroundImageName = pImageName;
 	}
 
-    public Scene(string pLocationName, string pStory, string pImageName)
-    {
-        locationName = pLocationName;
-        story = pStory;
-        backgroundImageName = pImageName;
-    }
 
-    public override string ToString()
-    {
-        return story + "\n" + sceneStatus;
-    }
+    //public override string ToString()
+    //{
+    //    return story + "\n" + sceneStatus;
+    //}
 
     public string DisplaySceneDetails()
     {

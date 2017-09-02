@@ -11,13 +11,19 @@ public class GameModel {
 
     private void makeStory()
     {
-        firstScene = new Scene("Smelly Tomb");
+        firstScene = new Scene("Smelly Tomb", "sign3");
         firstScene.item = new Item("Shell", "a");
         firstScene.item.nextItem = new Item("Seagull");
 
-        firstScene.North = new Scene("Pretty Beach");
+        firstScene.North = new Scene("Pretty Beach", "beach1");
         firstScene.North.item = new Item("Jar");
         firstScene.North.South = firstScene;
+
+        firstScene.West = new Scene("Armoured Shoe House");
+        firstScene.West.East = firstScene;
+
+        firstScene.South = new Scene("Unpleasant Village");
+        firstScene.South.North = firstScene;
 
         firstScene.East = new Scene("Stupid Stable");
         firstScene.East.item = new Item("Horse");
