@@ -24,16 +24,16 @@ public class TextInput : MonoBehaviour
             input.onEndEdit = se;
             cmdProcessor = new CommandProcessor();
             output.text = cmdProcessor.DetermineSceneOutput();
-            if (GameManager.instance.GetCurrentUScene() == "GameScene")
-                backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
+            if (GameManager.instance.GetCurrentScene() == "GameScene")
+                backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.backgroundImageName);   //change background image by location
         }
     }
 
     private void SubmitInput(string arg0)
     {
         output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //process inputs to produce output text
-        if (GameManager.instance.GetCurrentUScene() == "GameScene")
-            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
+        if (GameManager.instance.GetCurrentScene() == "GameScene")
+            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.backgroundImageName);   //change background image by location
         input.text = "";
         input.ActivateInputField();
     }

@@ -26,12 +26,12 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    public string GetCurrentUScene()
+    public string GetCurrentScene()
     {
         return SceneManager.GetActiveScene().name;
     }
 
-    public void ChangeUScene(string pSceneName)
+    public void ChangeScene(string pSceneName)
     {
         SceneManager.LoadScene(pSceneName);
     }

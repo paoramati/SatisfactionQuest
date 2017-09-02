@@ -4,39 +4,39 @@ using UnityEngine;
 
 public class GameModel
 {
-    public Scene currentScene;
-    public Scene firstScene;
+    public Location currentLocation;
+    public Location firstLocation;
 
     public GameModel()
     {
-        MakeStory();
+        MakeGameModel();
     }
 
-    private void MakeStory()
+    private void MakeGameModel()
     {
-        firstScene = new Scene("Smelly Tomb", "sign3");
-        firstScene.item = new Item("Toenail", "a");
-        firstScene.item.nextItem = new Item("Pigeon");
+        firstLocation = new Location("Smelly Tomb", "sign3");
+        firstLocation.item = new Item("Toenail", "a");
+        firstLocation.item.nextItem = new Item("Pigeon");
 
-        firstScene.North = new Scene("Pretty Beach", "beach1");
-        firstScene.North.item = new Item("Jar");
-        firstScene.North.South = firstScene;
+        firstLocation.North = new Location("Pretty Beach", "beach1");
+        firstLocation.North.item = new Item("Jar");
+        firstLocation.North.South = firstLocation;
 
-        firstScene.West = new Scene("Desperate Stall", "booth1");
-        firstScene.West.item = new Item("A Kiss");
-        firstScene.West.East = firstScene;
+        firstLocation.West = new Location("Desperate Stall", "booth1");
+        firstLocation.West.item = new Item("A Kiss");
+        firstLocation.West.East = firstLocation;
 
-        firstScene.South = new Scene("Unpleasant Village", "village1");
-        firstScene.South.North = firstScene;
+        firstLocation.South = new Location("Unpleasant Village", "village1");
+        firstLocation.South.North = firstLocation;
 
-        firstScene.East = new Scene("Slippery Lake", "icelake");
-        firstScene.East.item = new Item("Snowflake", "q");
-        firstScene.East.West = firstScene;
+        firstLocation.East = new Location("Slippery Lake", "icelake");
+        firstLocation.East.item = new Item("Snowflake", "q");
+        firstLocation.East.West = firstLocation;
 
-        firstScene.East.East = new Scene("Grassy Knoll", "grass1");
-        firstScene.East.East.West = firstScene.East;
-        firstScene.East.East.West.West = firstScene;
+        firstLocation.East.East = new Location("Grassy Knoll", "grass1");
+        firstLocation.East.East.West = firstLocation.East;
+        firstLocation.East.East.West.West = firstLocation;
 
-        currentScene = firstScene;
+        currentLocation = firstLocation;
     }
 }

@@ -19,20 +19,32 @@ public class CommandProcessor
     public string DetermineSceneOutput()
     {
         string lcOutputText = "";
-        Scene lcScene = GameManager.instance.gameModel.currentScene;
-        switch (GameManager.instance.GetCurrentUScene())       //determine output based on unity scene
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        switch (GameManager.instance.GetCurrentScene())       //determine output based on unity scene
         {
             case "GameScene":
-                lcOutputText = lcScene.GetSceneDetails();
+                lcOutputText = lcLocation.GetLocationDetails();
                 break;
             case "ItemScene":
-                lcOutputText = lcScene.GetSceneItems();
+                lcOutputText = lcLocation.GetLocationItems();
                 break;
             case "MapScene":
-                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcScene.locationName;
+                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.locationName;
+                break;
+            case "HelpScene":
+                lcOutputText = GetHelpOutput();
                 break;
         }
         return lcOutputText;
+    }
+
+    private string GetHelpOutput()
+    {
+        string lcHelpOutput = "Enter commands to perform various actions \nCOMMANDS:\n";
+        lcHelpOutput += "'Go [direction]' - move player location. \n\tAccepts compass or other directions\n";
+        lcHelpOutput += "'Show [scene]'   - change game scene. \n\tValid scenes are: 'location', 'items', 'map', 'help'";
+        return lcHelpOutput;
+
     }
 
     //parse user input into tokenised strings
@@ -66,7 +78,7 @@ public class CommandProcessor
     private string RunCommand(string[] pCommandStrings)
     {
         string lcResult = "Do not understand!";
-        string uSceneName = GameManager.instance.GetCurrentUScene();               //gets current Unity scene
+        string lcUSceneName = GameManager.instance.GetCurrentScene();               //gets current Unity scene
 
         Command aCmd;
         aCmd = CommandMap[pCommandStrings[0]];

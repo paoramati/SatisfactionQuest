@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Scene {
+public class Location {
 
     public string locationName;
     public string backgroundImageName;
@@ -11,24 +11,24 @@ public class Scene {
     public string question;
     public int answer;
 
-    public Scene North;
-    public Scene South;
-    public Scene East;
-    public Scene West;
-    public Scene Previous;
+    public Location North;
+    public Location South;
+    public Location East;
+    public Location West;
+    public Location Previous;
 
-    public Scene(string pLocationName)
+    public Location(string pLocationName)
     {
         locationName = pLocationName;
     }
 
-    public Scene(string pLocationName, string pImageName)
+    public Location(string pLocationName, string pImageName)
 	{
         locationName = pLocationName;
         backgroundImageName = pImageName;
 	}
 
-    public string GetSceneDetails()
+    public string GetLocationDetails()
     {
         string lcResult = "You are at a " + locationName + ":\n";
 
@@ -44,7 +44,7 @@ public class Scene {
         return lcResult;
     }
     
-    public string GetSceneItems()
+    public string GetLocationItems()
     {
         string lcResult = "You can see: ";
         Item currentItem = item;
