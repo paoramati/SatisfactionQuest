@@ -9,39 +9,34 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 
-	private bool gameRunning;
-
 	public GameModel gameModel;
 
+    private bool gameRunning;
 
-	public string CurrentUScene()
-	{
-		return SceneManager.GetActiveScene ().name;
-	}
-
-	public void ChangeUScene(string pSceneName){
-		SceneManager.LoadScene (pSceneName);
-	}	
-
-
-
-	// What is Awake?
-	// What other handlers are there?
-	void Awake() {
+    // What is Awake?
+    void Awake() {
 		if (instance == null) {
 			instance = this;
 			gameRunning = true;
 			Debug.Log("I am the one");
             gameModel = new GameModel ();
 		} else {
-            Debug.Log("Destroying a GameManager");
-
             Destroy(gameObject);
 		}
 	
 	}
-	
-	public bool IsGameRunning(){
+
+    public string GetCurrentUScene()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
+    public void ChangeUScene(string pSceneName)
+    {
+        SceneManager.LoadScene(pSceneName);
+    }
+
+    public bool IsGameRunning(){
 		return gameRunning;
 	}
 }

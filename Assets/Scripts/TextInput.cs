@@ -3,51 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextInput : MonoBehaviour {
+public class TextInput : MonoBehaviour
+{
 
-	InputField input;
-	InputField.SubmitEvent se;
-	InputField.OnChangeEvent ce;
+    InputField input;
+    InputField.SubmitEvent se;
+    InputField.OnChangeEvent ce;
     CommandProcessor cmdProcessor;
     public Text output;
     public Image backgroundImage;
 
     // Use this for initialization
-    void Start () {
-		input = this.GetComponent<InputField>();
-        
-		if (input != null) { // if we get a null this script is running when it should not
-			se = new InputField.SubmitEvent ();
-			se.AddListener (SubmitInput);
-			/*
-		    ce = new InputField.OnChangeEvent();
-		    ce.AddListener(ChangeInput);
-		   */
-			input.onEndEdit = se;
-            //input.onValueChanged = ce;
-
+    void Start()
+    {
+        input = this.GetComponent<InputField>();
+        if (input != null)
+        { // if we get a null this script is running when it should not
+            se = new InputField.SubmitEvent();
+            se.AddListener(SubmitInput);
+            input.onEndEdit = se;
             cmdProcessor = new CommandProcessor();
-
             output.text = cmdProcessor.DetermineSceneOutput();
-
-            //if (GameManager.instance.CurrentUScene() == "GameScene")
+            if (GameManager.instance.GetCurrentUScene() == "GameScene")
                 backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
         }
-	}
+    }
 
-	private void SubmitInput(string arg0)
-	{
+    private void SubmitInput(string arg0)
+    {
         output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //process inputs to produce output text
-
-        //if (GameManager.instance.CurrentUScene() == "GameScene")
+        if (GameManager.instance.GetCurrentUScene() == "GameScene")
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
-
         input.text = "";
-		input.ActivateInputField();
-	}
+        input.ActivateInputField();
+    }
 
-	private void ChangeInput( string arg0)
-	{
-		Debug.Log(arg0);
-	}
+    private void ChangeInput(string arg0)
+    {
+        Debug.Log(arg0);
+    }
 }

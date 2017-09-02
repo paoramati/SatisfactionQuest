@@ -259,7 +259,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1017113383}
-        m_MethodName: LoadScene
+        m_MethodName: LoadUScene
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -797,6 +797,7 @@ GameObject:
   - component: {fileID: 1466631338}
   - component: {fileID: 1466631337}
   - component: {fileID: 1466631336}
+  - component: {fileID: 1466631339}
   m_Layer: 5
   m_Name: txtUsername
   m_TagString: Untagged
@@ -920,6 +921,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1466631334}
+--- !u!114 &1466631339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1466631334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d033d17c22c25f84e8f50a3286bec220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1680928332
 GameObject:
   m_ObjectHideFlags: 0

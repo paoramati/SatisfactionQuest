@@ -6,11 +6,10 @@ using UnityEngine.UI;
 public class Scene {
 
     public string locationName;
-    public string sceneStatus;          //holds the status of the scene
+    public string backgroundImageName;
     public Item item;
     public string question;
     public int answer;
-    public string backgroundImageName;
 
     public Scene North;
     public Scene South;
@@ -29,16 +28,9 @@ public class Scene {
         backgroundImageName = pImageName;
 	}
 
-
-    //public override string ToString()
-    //{
-    //    return story + "\n" + sceneStatus;
-    //}
-
-    public string DisplaySceneDetails()
+    public string GetSceneDetails()
     {
-        string lcResult = "";
-        lcResult = locationName + ":\n";
+        string lcResult = "You are at a " + locationName + ":\n";
 
         if (this.North != null)
             lcResult += "To the North is a " + this.North.locationName + "\n";
@@ -49,19 +41,10 @@ public class Scene {
         if (this.West != null)
             lcResult += "To the West is a " + this.West.locationName + "\n";
 
-
-        //lcResult += sceneStatus;
         return lcResult;
     }
-
-    public void changeSceneBackground()
-    {
-        //BackgroundChanger = new ChangeImage();
-        //BackgroundChanger.changeBackground(BackgroundImageName);
-
-    }
-
-    public string SearchForItems()
+    
+    public string GetSceneItems()
     {
         string lcResult = "You can see: ";
         Item currentItem = item;
@@ -100,6 +83,4 @@ public class Item
     {
         itemName = pName;
     }
-
-
 }

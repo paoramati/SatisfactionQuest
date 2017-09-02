@@ -17,10 +17,8 @@ public class Command
 
 public class GoCommand : Command
 {
-    bool sceneExists;                                               //checks whether a location scene exists at the given direction
+    bool sceneExists;                                       //checks whether a location scene exists at the given direction
     private Dictionary<string, string> goCommands;
-
-//    public GoCommand() { }
 
     public GoCommand()
     {
@@ -30,7 +28,11 @@ public class GoCommand : Command
             { "north", "north" },
             { "south", "south" },
             { "east", "east" },
-            { "west", "west" }
+            { "west", "west" },
+            { "up", "north" },
+            { "down", "south" },
+            { "left", "west" },
+            { "right", "east" }
         };
     }
 
@@ -38,15 +40,14 @@ public class GoCommand : Command
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
         Scene lcScene = GameManager.instance.gameModel.currentScene;
-        string lcUSceneName = GameManager.instance.CurrentUScene();              //gets current Unity scene
-
-        //GameManager.instance.gameModel.currentScene.sceneStatus = "";           //reset location scene status
+        string lcUSceneName = GameManager.instance.GetCurrentUScene();              //gets current Unity scene
+        string lcDirection = "";
 
         if (lcUSceneName == "GameScene")                                        //if in gameScene
         {
-            if (goCommands.ContainsKey(pInputStrings[1]))                            //if a correct direction is given
+            if (goCommands.TryGetValue(pInputStrings[1], out lcDirection))       //if a correctly defined direction is given
             {
-                switch (pInputStrings[1])
+                switch (lcDirection)
                 {
                     case "north":
                         if (lcScene.North != null)
@@ -78,15 +79,15 @@ public class GoCommand : Command
                         break;
                 }
                 if (sceneExists == false)
-                    Result = "Nowhere to go in that direction";
+                    Result = ">Nowhere to go in that direction";
             }
             else  //if direction is not correct
             {
-                Result = "That is not a direction";
+                Result = ">That is not a direction";
             }
         }
         else
-            Result = "Not able to go places when in " + lcUSceneName;
+            Result = ">Not able to go places when in " + lcUSceneName;
     }
 }
 
@@ -95,20 +96,14 @@ public class GoCommand : Command
  */
 public class ShowCommand : Command
 {
-    //private string adverb;
-
     public ShowCommand() { }
-
-    public ShowCommand(string[] pInputStrings)
-    {
-    }
 
     public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Got a Show" + pInputStrings[1]);
+        Debug.Log("Got a Show " + pInputStrings[1]);
         string lcResult = "";
         Scene lcScene = GameManager.instance.gameModel.currentScene;
-        string lcUSceneName = GameManager.instance.CurrentUScene();
+        string lcUSceneName = GameManager.instance.GetCurrentUScene();
 
         switch (pInputStrings[1])
         {
@@ -122,7 +117,7 @@ public class ShowCommand : Command
                 GameManager.instance.ChangeUScene("MapScene");
                 break;
             default:
-                lcResult = "Do not understand. Valid 'show' commands: 'scene', 'items', 'map'";
+                lcResult = ">Do not understand. Valid 'show' commands: 'scene', 'items', 'map'";
                 break;
         }
         Result = lcResult;

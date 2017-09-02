@@ -20,16 +20,16 @@ public class CommandProcessor
     {
         string lcOutputText = "";
         Scene lcScene = GameManager.instance.gameModel.currentScene;
-        switch (GameManager.instance.CurrentUScene())       //determine output based on unity scene
+        switch (GameManager.instance.GetCurrentUScene())       //determine output based on unity scene
         {
             case "GameScene":
-                lcOutputText = lcScene.DisplaySceneDetails();
+                lcOutputText = lcScene.GetSceneDetails();
                 break;
             case "ItemScene":
-                lcOutputText = lcScene.SearchForItems();
+                lcOutputText = lcScene.GetSceneItems();
                 break;
             case "MapScene":
-                lcOutputText = "Map of Beltora. Current location: " + lcScene.locationName;
+                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcScene.locationName;
                 break;
         }
         return lcOutputText;
@@ -46,7 +46,7 @@ public class CommandProcessor
     {
         CommandMap = new Dictionary<string, Command>();
 
-        String lcResult = "Do not understand command";
+        String lcResult = ">Do not understand command";
         if (pCommandStrings.Length >= 2)                                //if no# command strings > 1
         {
             UpdateCommandMap();
@@ -57,7 +57,7 @@ public class CommandProcessor
         }
         else                                                            //else if no# command strings < 2
         {
-            lcResult = "Not enough words";
+            lcResult = ">Not enough words";
             lcResult = DetermineSceneOutput() + "\n" + lcResult;        //else output string of current story? How about if we are in map or inventory?
         }
         return lcResult;
@@ -66,7 +66,7 @@ public class CommandProcessor
     private string RunCommand(string[] pCommandStrings)
     {
         string lcResult = "Do not understand!";
-        string uSceneName = GameManager.instance.CurrentUScene();               //gets current Unity scene
+        string uSceneName = GameManager.instance.GetCurrentUScene();               //gets current Unity scene
 
         Command aCmd;
         aCmd = CommandMap[pCommandStrings[0]];
