@@ -40,7 +40,7 @@ public class GoCommand : Command
         Scene lcScene = GameManager.instance.gameModel.currentScene;
         string lcUSceneName = GameManager.instance.CurrentUScene();              //gets current Unity scene
 
-        GameManager.instance.gameModel.currentScene.sceneStatus = "";           //reset location scene status
+        //GameManager.instance.gameModel.currentScene.sceneStatus = "";           //reset location scene status
 
         if (lcUSceneName == "GameScene")                                        //if in gameScene
         {
@@ -77,9 +77,13 @@ public class GoCommand : Command
                         }
                         break;
                 }
+                if (sceneExists == false)
+                    Result = "Nowhere to go in that direction";
             }
-            if (sceneExists == false)
-                GameManager.instance.gameModel.currentScene.sceneStatus = "Nowhere to go in that direction";
+            else  //if direction is not correct
+            {
+                Result = "That is not a direction";
+            }
         }
         else
             Result = "Not able to go places when in " + lcUSceneName;

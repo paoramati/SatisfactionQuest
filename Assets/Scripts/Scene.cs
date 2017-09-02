@@ -50,7 +50,7 @@ public class Scene {
             lcResult += "To the West is a " + this.West.locationName + "\n";
 
 
-        lcResult += sceneStatus;
+        //lcResult += sceneStatus;
         return lcResult;
     }
 

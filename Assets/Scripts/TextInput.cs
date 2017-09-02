@@ -30,7 +30,7 @@ public class TextInput : MonoBehaviour {
 
             output.text = cmdProcessor.DetermineSceneOutput();
 
-            if (GameManager.instance.CurrentUScene() == "GameScene")
+            //if (GameManager.instance.CurrentUScene() == "GameScene")
                 backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
         }
 	}
@@ -39,7 +39,7 @@ public class TextInput : MonoBehaviour {
 	{
         output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));     //process inputs to produce output text
 
-        if (GameManager.instance.CurrentUScene() == "GameScene")
+        //if (GameManager.instance.CurrentUScene() == "GameScene")
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentScene.backgroundImageName);   //change background image by scene
 
         input.text = "";
