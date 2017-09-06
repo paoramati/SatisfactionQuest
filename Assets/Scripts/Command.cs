@@ -171,7 +171,44 @@ public class ReadCommand : Command
 
     public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Read " + pInputStrings[1]);
+        Debug.Log("Got a Show " + pInputStrings[1]);
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        string lcSceneName = GameManager.instance.GetCurrentScene();
+        string lcResult = "";
+
+        if (pInputStrings[1] == "health")
+        {
+            Persist.control.Health += 10;
+            lcResult = "Health = " + Persist.control.Health;
+        }
+
+        Result = lcResult;
+    }
+}
+
+public class QuitCommand : Command
+{
+    private int Answer;
+
+    public QuitCommand() { }
+
+
+
+    public QuitCommand(string[] pAdverbs)
+    {
+    }
+
+    public override void Do(string[] pInputStrings)
+    {
+        Debug.Log("Quit " + pInputStrings[1]);
+
+        if (pInputStrings[1] == "game")
+        {
+            Persist.control.Save();
+            Application.Quit();
+        }
+            
+            
     }
 }
 

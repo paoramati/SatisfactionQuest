@@ -15,11 +15,12 @@ public class CommandProcessor
     public CommandProcessor()
     {
         CommandMap = new Dictionary<string, Command>();
-        CommandMap.Add("answer", new AnswerCommand());
+        CommandMap.Add("answer", new QuitCommand());
         CommandMap.Add("go", new GoCommand());
         CommandMap.Add("pick", new PickCommand());
         CommandMap.Add("show", new ShowCommand());
         CommandMap.Add("read", new ReadCommand());
+        CommandMap.Add("quit", new QuitCommand());
     }
 
     public string GetSceneOutput()
