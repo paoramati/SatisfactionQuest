@@ -14,13 +14,19 @@ public class CommandProcessor
 
     public CommandProcessor()
     {
+        CommandMap = new Dictionary<string, Command>();
+        CommandMap.Add("answer", new AnswerCommand());
+        CommandMap.Add("go", new GoCommand());
+        CommandMap.Add("pick", new PickCommand());
+        CommandMap.Add("show", new ShowCommand());
+        CommandMap.Add("read", new ReadCommand());
     }
 
-    public string DetermineSceneOutput()
+    public string GetSceneOutput()
     {
         string lcOutputText = "";
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        switch (GameManager.instance.GetCurrentScene())       //determine output based on unity scene
+        switch (GameManager.instance.GetCurrentScene())       
         {
             case "GameScene":
                 lcOutputText = lcLocation.GetLocationDetails();
@@ -32,89 +38,45 @@ public class CommandProcessor
                 lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.locationName;
                 break;
             case "HelpScene":
-                lcOutputText = GetHelpOutput();
+                lcOutputText = "HOW TO PLAY: Enter commands to perform various actions \n\nCOMMANDS:\n";
+                lcOutputText += "'Go [direction]' - Move player location \n\t[direction] = north | south | east | west | up | down | left | right\n";
+                lcOutputText += "'Show [scene]'   - Change game scene \n\t[scene] = location | items | map | help\n";
                 break;
         }
+
         return lcOutputText;
     }
 
-    private string GetHelpOutput()
-    {
-        string lcHelpOutput = "Enter commands to perform various actions \nCOMMANDS:\n";
-        lcHelpOutput += "'Go [direction]' - move player location. \n\tAccepts compass or other directions\n";
-        lcHelpOutput += "'Show [scene]'   - change game scene. \n\tValid scenes are: 'location', 'items', 'map', 'help'";
-        return lcHelpOutput;
-
-    }
-
-    //parse user input into tokenised strings
     public String[] ParseInput(String pCommandString)
     {
         pCommandString = pCommandString.ToLower();
-        return pCommandString.Split(' '); // tokenise the command
+        return pCommandString.Split(' '); 
     }
 
     public String ProcessInput(String[] pCommandStrings)
     {
-        CommandMap = new Dictionary<string, Command>();
+        String lcResult = ">Do not understand command. Enter 'show help' to view valid commands";
+        if (pCommandStrings.Length >= 2)                                
+        {
+            if (CommandMap.ContainsKey(pCommandStrings[0]))            
+                lcResult = RunCommand(pCommandStrings);                
+            else                                                       
+                lcResult = GetSceneOutput() + "\n" + lcResult;    
+        }
+        else                                                           
+            lcResult = GetSceneOutput() + "\n" + ">Not enough words";       
 
-        String lcResult = ">Do not understand command";
-        if (pCommandStrings.Length >= 2)                                //if no# command strings > 1
-        {
-            UpdateCommandMap();
-            if (CommandMap.ContainsKey(pCommandStrings[0]))             //if command is a mapped command
-                lcResult = RunCommand(pCommandStrings);                     //output string 'Result' of the mapped command
-            else                                                        //else if no mapped command is recognised
-                lcResult = DetermineSceneOutput() + "\n" + lcResult;    
-        }
-        else                                                            //else if no# command strings < 2
-        {
-            lcResult = ">Not enough words";
-            lcResult = DetermineSceneOutput() + "\n" + lcResult;        //else output string of current story? How about if we are in map or inventory?
-        }
         return lcResult;
     }
 
     private string RunCommand(string[] pCommandStrings)
     {
-        string lcResult = "Do not understand!";
-        string lcUSceneName = GameManager.instance.GetCurrentScene();               //gets current Unity scene
-
+        string lcResult = "";
         Command aCmd;
         aCmd = CommandMap[pCommandStrings[0]];
-        aCmd.Do(pCommandStrings);                   //do the mapped command
+        aCmd.Do(pCommandStrings);                                          
         lcResult = aCmd.Result;
-
-        lcResult = DetermineSceneOutput() + "\n" + lcResult;
-
+        lcResult = GetSceneOutput() + "\n" + lcResult;
         return lcResult;
     }
-
-    private void UpdateCommandMap()
-    {
-        CommandMap.Add("answer", new AnswerCommand());
-        CommandMap.Add("go", new GoCommand());
-        CommandMap.Add("pick", new PickCommand());
-        CommandMap.Add("show", new ShowCommand());
-        CommandMap.Add("read", new ReadCommand());
-    }
-
-    //private void UpdateCommandMap(string[] pCommandStrings)
-    //{
-    //    CommandMap.Add("answer", new AnswerCommand(pCommandStrings));
-    //    CommandMap.Add("go", new GoCommand(pCommandStrings));
-    //    CommandMap.Add("pick", new PickCommand(pCommandStrings));
-    //    CommandMap.Add("show", new ShowCommand(pCommandStrings));
-    //    CommandMap.Add("read", new ReadCommand(pCommandStrings));
-    //}
 }
-
-
-/* private List<String> Tokenise(String pCmdStr)
-    {
-        Regex regex = new Regex (@"\w\b");
-        List<String> matchList = (from Match m in regex.Matches (pCmdStr)select m.Value).ToList ();
-
-        return matchList;
-    }
-    */

@@ -33,13 +33,13 @@ public class Location {
         string lcResult = "You are at a " + locationName + ":\n";
 
         if (this.North != null)
-            lcResult += "To the North is a " + this.North.locationName + "\n";
+            lcResult += "\tTo the North is a " + this.North.locationName + "\n";
         if (this.South != null)
-            lcResult += "To the South is a " + this.South.locationName + "\n";
+            lcResult += "\tTo the South is a " + this.South.locationName + "\n";
         if (this.East != null)
-            lcResult += "To the East is a " + this.East.locationName + "\n";
+            lcResult += "\tTo the East is a " + this.East.locationName + "\n";
         if (this.West != null)
-            lcResult += "To the West is a " + this.West.locationName + "\n";
+            lcResult += "\tTo the West is a " + this.West.locationName + "\n";
 
         return lcResult;
     }

@@ -6,11 +6,8 @@ public class Command
 {
     private Command next;
     public string Result;
+    public string[] inputCommands;
 
-    // Use this for initialization
-    void Awake() { }
-
-    public virtual void Initialise(string[] pInputStrings) { }
 
     public virtual void Do(string[] pInputStrings) { }
 }
@@ -40,10 +37,9 @@ public class GoCommand : Command
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string lcSceneName = GameManager.instance.GetCurrentScene();              //gets current Unity scene
+        string lcSceneName = GameManager.instance.GetCurrentScene();             
         string lcDirection = "";
-
-        if (lcSceneName == "GameScene")                                        //if in gameScene
+        if (lcSceneName == "GameScene")                                       
         {
             if (goCommands.TryGetValue(pInputStrings[1], out lcDirection))       //if a correctly defined direction is given
             {
@@ -78,22 +74,18 @@ public class GoCommand : Command
                         }
                         break;
                 }
-                if (locationExists == false)
+
+                if (locationExists == false)                        
                     Result = ">Nowhere to go in that direction";
             }
-            else  //if direction is not correct
-            {
+            else  //direction input is not correct                                                  
                 Result = ">That is not a direction";
-            }
         }
-        else
+        else 
             Result = ">Not able to go places when in " + lcSceneName;
     }
 }
 
-/*
- * ShowCommand changes Unity scenes depending on context
- */
 public class ShowCommand : Command
 {
     public ShowCommand() { }
@@ -101,9 +93,9 @@ public class ShowCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
-        string lcResult = "";
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         string lcSceneName = GameManager.instance.GetCurrentScene();
+        string lcResult = "";
 
         switch (pInputStrings[1])
         {
@@ -142,6 +134,10 @@ public class PickCommand : Command
     {
     }
 
+    public override void Do(string[] pInputStrings)
+    {
+        Debug.Log("Pick " + pInputStrings[1]);
+    }
 }
 
 public class AnswerCommand : Command
@@ -159,10 +155,11 @@ public class AnswerCommand : Command
     {
     }
 
-
+    public override void Do(string[] pInputStrings)
+    {
+        Debug.Log("Answer " + pInputStrings[1]);
+    }
 }
-
-
 
 public class ReadCommand : Command
 {
@@ -170,6 +167,11 @@ public class ReadCommand : Command
 
     public ReadCommand(string[] pAdverbs)
     {
+    }
+
+    public override void Do(string[] pInputStrings)
+    {
+        Debug.Log("Read " + pInputStrings[1]);
     }
 }
 
