@@ -186,6 +186,32 @@ public class ReadCommand : Command
     }
 }
 
+public class SaveCommand : Command
+{
+    private int Answer;
+
+    public SaveCommand() { }
+
+
+
+    public SaveCommand(string[] pAdverbs)
+    {
+    }
+
+    public override void Do(string[] pInputStrings)
+    {
+        Debug.Log("Save " + pInputStrings[1]);
+
+        if (pInputStrings[1] == "game")
+        {
+            Persist.control.Save();
+            Application.Quit();
+        }
+
+
+    }
+}
+
 public class QuitCommand : Command
 {
     private int Answer;
@@ -201,12 +227,6 @@ public class QuitCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Quit " + pInputStrings[1]);
-
-        if (pInputStrings[1] == "game")
-        {
-            Persist.control.Save();
-            Application.Quit();
-        }
             
             
     }

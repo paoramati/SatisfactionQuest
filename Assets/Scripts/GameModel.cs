@@ -15,29 +15,40 @@ public class GameModel
 
     private void MakeGameModel()
     {
-        //firstLocation = new Location("Smelly Tomb", "sign3");
-        //firstLocation.item = new Item("Toenail", "a");
-        //firstLocation.item.nextItem = new Item("Pigeon");
+        //worldMap   ("Smelly Tomb", "sign3");
+        //worldMap.Add(new Location("Smelly Tomb", "sign3"));
 
-        //firstLocation.North = new Location("Pretty Beach", "beach1");
-        //firstLocation.North.item = new Item("Jar");
-        //firstLocation.North.South = firstLocation;
 
-        //firstLocation.West = new Location("Desperate Stall", "booth1");
-        //firstLocation.West.item = new Item("A Kiss");
-        //firstLocation.West.East = firstLocation;
+        firstLocation = new Location("Smelly Tomb", "sign3");
+        firstLocation.item = new Item("Toenail", "a");
+        firstLocation.item.nextItem = new Item("Pigeon");
 
-        //firstLocation.South = new Location("Unpleasant Village", "village1");
-        //firstLocation.South.North = firstLocation;
+        firstLocation.North = new Location("Pretty Beach", "beach1");
+        firstLocation.North.item = new Item("Jar");
+        firstLocation.North.South = firstLocation;
 
-        //firstLocation.East = new Location("Slippery Lake", "icelake");
-        //firstLocation.East.item = new Item("Snowflake", "q");
-        //firstLocation.East.West = firstLocation;
+        firstLocation.West = new Location("Desperate Stall", "booth1");
+        firstLocation.West.item = new Item("A Kiss");
+        firstLocation.West.East = firstLocation;
 
-        //firstLocation.East.East = new Location("Grassy Knoll", "grass1");
-        //firstLocation.East.East.West = firstLocation.East;
-        //firstLocation.East.East.West.West = firstLocation;
+        firstLocation.South = new Location("Unpleasant Village", "village1");
+        firstLocation.South.North = firstLocation;
+
+        firstLocation.East = new Location("Slippery Lake", "icelake");
+        firstLocation.East.item = new Item("Snowflake", "q");
+        firstLocation.East.West = firstLocation;
+
+        firstLocation.East.East = new Location("Grassy Knoll", "grass1");
+        firstLocation.East.East.West = firstLocation.East;
+        firstLocation.East.East.West.West = firstLocation;
 
         currentLocation = firstLocation;
+    }
+
+    public void MakeWorldMap()
+    {
+        
+        worldMap = new Dictionary<string, Location>();
+
     }
 }

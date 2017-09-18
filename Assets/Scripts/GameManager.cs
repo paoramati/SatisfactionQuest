@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour {
 			gameRunning = true;
 			Debug.Log("I am the one");
             gameModel = new GameModel ();
-            Persist.control.Load();
 		} else {
+            Persist.control.Load();
             Destroy(gameObject);
 		}
 	

@@ -21,6 +21,7 @@ public class CommandProcessor
         CommandMap.Add("show", new ShowCommand());
         CommandMap.Add("read", new ReadCommand());
         CommandMap.Add("quit", new QuitCommand());
+        CommandMap.Add("save", new SaveCommand());
     }
 
     public string GetSceneOutput()
@@ -57,7 +58,7 @@ public class CommandProcessor
     public String ProcessInput(String[] pCommandStrings)
     {
         String lcResult = ">Do not understand command. Enter 'show help' to view valid commands";
-        if (pCommandStrings.Length >= 2)                                
+        if (pCommandStrings.Length >= 1)                                
         {
             if (CommandMap.ContainsKey(pCommandStrings[0]))            
                 lcResult = RunCommand(pCommandStrings);                
