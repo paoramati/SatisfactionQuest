@@ -15,8 +15,14 @@ public class GameModel
 
     private void MakeGameModel()
     {
-        //worldMap   ("Smelly Tomb", "sign3");
-        //worldMap.Add(new Location("Smelly Tomb", "sign3"));
+        worldMap = new Dictionary<string, Location>();
+        //worldMap.add("Smelly Tomb", "sign3");
+        worldMap.Add("Smelly Tomb", new Location("Smelly Tomb", "sign3"));
+
+        worldMap.Add("Pretty Beach", new Location("Pretty Beach", "beach1"));
+
+
+
 
 
         firstLocation = new Location("Smelly Tomb", "sign3");
