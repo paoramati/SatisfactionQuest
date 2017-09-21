@@ -29,34 +29,9 @@ public class GameState
     {
         List<String> keyList = new List<string>(inventory.Keys);
         String[] keyArray = keyList.ToArray();
-        // 
+        
         return "Items in the inventory are:\n" + String.Join("\n", keyArray);
     }
-
-    //public void setActiveCanvas(string pName)
-    //{
-
-    //    if (GameManager.canvases.ContainsKey(pName))
-    //    {
-
-    //        // set all to not active;
-    //        foreach (Canvas acanvas in GameManager.canvases.Values)
-    //        {
-    //            acanvas.gameObject.SetActive(false);
-    //        }
-
-    //        GameManager.activeCanvas = GameManager.canvases[pName];
-    //        Debug.Log("I am the active one " + pName);
-    //        GameManager.activeCanvas.gameObject.SetActive(true);
-
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("I can not find " + pName + " to make active.");
-    //    }
-    //}
-
-
 
     public bool IsGameRunning()
     {
@@ -77,7 +52,7 @@ public class GameState
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/models.dat", FileMode.Open);
-            GameManager.instance = (GameState)bf.Deserialize(file);
+            GameManager.gameStateInstance = (GameState)bf.Deserialize(file);
             file.Close();
 
         }
@@ -89,25 +64,26 @@ public class GameState
 
 public class GameManager : MonoBehaviour {
 
-	public static GameState instance;
+    //public static GameState instance;
+    public static GameManager instance;
+    public static GameState gameStateInstance;
 
-	//public GameModel gameModel;
+    //public GameModel gameModel;
 
-//private bool gameRunning;
+    //private bool gameRunning;
 
     void Awake() {
 		if (instance == null) {
-			instance = new GameState();
-			instance.gameRunning = true;
+			gameStateInstance = new GameState();
+			gameStateInstance.gameRunning = true;
 			Debug.Log("I am the one");
-            instance.gameModel = new GameModel ();
-            instance.inventory = new Dictionary<string, Item>();
+            gameStateInstance.gameModel = new GameModel ();
+            gameStateInstance.inventory = new Dictionary<string, Item>();
         }
         else {
             Persist.control.Load();
             Destroy(gameObject);
 		}
-	
 	}
 
     public string GetCurrentScene()

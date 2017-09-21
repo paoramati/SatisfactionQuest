@@ -36,7 +36,7 @@ public class GoCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
         string lcSceneName = GameManager.instance.GetCurrentScene();             
         string lcDirection = "";
         if (lcSceneName == "GameScene")                                       
@@ -48,28 +48,28 @@ public class GoCommand : Command
                     case "north":
                         if (lcLocation.North != null)
                         {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.North;
+                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.North;
                             locationExists = true;
                         }
                         break;
                     case "south":
                         if (lcLocation.South != null)
                         {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.South;
+                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.South;
                             locationExists = true;
                         }
                         break;
                     case "east":
                         if (lcLocation.East != null)
                         {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.East;
+                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.East;
                             locationExists = true;
                         }
                         break;
                     case "west":
                         if (lcLocation.West != null)
                         {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.West;
+                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.West;
                             locationExists = true;
                         }
                         break;
@@ -93,7 +93,7 @@ public class ShowCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
         string lcSceneName = GameManager.instance.GetCurrentScene();
         string lcResult = "";
 
@@ -172,7 +172,7 @@ public class ReadCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
         string lcSceneName = GameManager.instance.GetCurrentScene();
         string lcResult = "";
 
