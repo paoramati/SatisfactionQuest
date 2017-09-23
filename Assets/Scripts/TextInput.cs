@@ -38,8 +38,13 @@ public class TextInput : MonoBehaviour
 
     private void ChangeBackgroundImage()
     {
+<<<<<<< HEAD
         if (GameManager.instance.GetCurrentScene() == "GameScene")
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.gameStateInstance.gameModel.currentLocation.backgroundImageName);
+=======
+        if (GameManager._Instance.GetCurrentScene() == "GameScene")
+            backgroundImage.sprite = Resources.Load<Sprite>(GameManager._Instance._GameModel.currentLocation.backgroundImageName);
+>>>>>>> parent of f2f3a4c... added LoginController
     }
 
     private void ChangeInput(string arg0)
