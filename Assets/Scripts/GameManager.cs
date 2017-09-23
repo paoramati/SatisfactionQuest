@@ -20,7 +20,6 @@ public class GameState
     {
         _Inventory.Add(pItem.description, pItem);
     }
-
     public void DropFromInventory(string pItemName)
     {
         _Inventory.Remove(pItemName);
@@ -107,9 +106,12 @@ public class GameState
             GameManager.instance = (GameState)bf.Deserialize(file);
 >>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
             file.Close();
+
         }
+
     }
 }
+
 
 
 public class GameManager : MonoBehaviour {
