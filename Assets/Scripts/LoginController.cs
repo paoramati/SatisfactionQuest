@@ -12,7 +12,7 @@ public class LoginController : MonoBehaviour {
 
     private void Awake()
     {
-        
+        GameManager.GetCurrentScene();
     }
 
     public bool IsLoginValid()

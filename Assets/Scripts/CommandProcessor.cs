@@ -27,17 +27,9 @@ public class CommandProcessor
     public string GetSceneOutput()
     {
         string lcOutputText = "";
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
-=======
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
+
         switch (GameManager.instance.GetCurrentScene())       
-=======
-        Location lcLocation = GameManager._Instance._GameModel.currentLocation;
-        switch (GameManager._Instance.GetCurrentScene())       
->>>>>>> parent of f2f3a4c... added LoginController
         {
             case "GameScene":
                 lcOutputText = lcLocation.GetLocationDetails();

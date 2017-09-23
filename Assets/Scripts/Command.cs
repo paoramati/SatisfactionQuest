@@ -36,17 +36,8 @@ public class GoCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
-=======
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();             
-=======
-        Location lcLocation = GameManager._Instance._GameModel.currentLocation;
-        string lcSceneName = GameManager._Instance.GetCurrentScene();             
->>>>>>> parent of f2f3a4c... added LoginController
         string lcDirection = "";
         if (lcSceneName == "GameScene")                                       
         {
@@ -57,60 +48,28 @@ public class GoCommand : Command
                     case "north":
                         if (lcLocation.North != null)
                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.North;
-=======
-                            GameManager._Instance._GameModel.currentLocation = lcLocation.North;
->>>>>>> parent of f2f3a4c... added LoginController
-=======
                             GameManager.instance.gameModel.currentLocation = lcLocation.North;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
                     case "south":
                         if (lcLocation.South != null)
                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.South;
-=======
-                            GameManager._Instance._GameModel.currentLocation = lcLocation.South;
->>>>>>> parent of f2f3a4c... added LoginController
-=======
                             GameManager.instance.gameModel.currentLocation = lcLocation.South;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
                     case "east":
                         if (lcLocation.East != null)
                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.East;
-=======
-                            GameManager._Instance._GameModel.currentLocation = lcLocation.East;
->>>>>>> parent of f2f3a4c... added LoginController
-=======
                             GameManager.instance.gameModel.currentLocation = lcLocation.East;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
                     case "west":
                         if (lcLocation.West != null)
                         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.West;
-=======
-                            GameManager._Instance._GameModel.currentLocation = lcLocation.West;
->>>>>>> parent of f2f3a4c... added LoginController
-=======
                             GameManager.instance.gameModel.currentLocation = lcLocation.West;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
@@ -134,32 +93,23 @@ public class ShowCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
-=======
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();
-=======
-        Location lcLocation = GameManager._Instance._GameModel.currentLocation;
-        string lcSceneName = GameManager._Instance.GetCurrentScene();
->>>>>>> parent of f2f3a4c... added LoginController
         string lcResult = "";
 
         switch (pInputStrings[1])
         {
             case "items":
-                GameManager._Instance.ChangeScene("ItemScene");
+                GameManager.instance.ChangeScene("ItemScene");
                 break;
             case "location":
-                GameManager._Instance.ChangeScene("GameScene");
+                GameManager.instance.ChangeScene("GameScene");
                 break;
             case "map":
-                GameManager._Instance.ChangeScene("MapScene");
+                GameManager.instance.ChangeScene("MapScene");
                 break;
             case "help":
-                GameManager._Instance.ChangeScene("HelpScene");
+                GameManager.instance.ChangeScene("HelpScene");
                 break;
             default:
                 lcResult = ">Do not understand. Valid 'show' commands: 'location', 'items', 'map', 'help'";
@@ -222,17 +172,8 @@ public class ReadCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
-=======
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
->>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();
-=======
-        Location lcLocation = GameManager._Instance._GameModel.currentLocation;
-        string lcSceneName = GameManager._Instance.GetCurrentScene();
->>>>>>> parent of f2f3a4c... added LoginController
         string lcResult = "";
 
         if (pInputStrings[1] == "health")
