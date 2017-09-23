@@ -20,6 +20,7 @@ public class GameState
     {
         inventory.Add(pItem.description, pItem);
     }
+
     public void DropFromInventory(string pItemName)
     {
         inventory.Remove(pItemName);
@@ -54,12 +55,9 @@ public class GameState
             FileStream file = File.Open(Application.persistentDataPath + "/models.dat", FileMode.Open);
             GameManager.gameStateInstance = (GameState)bf.Deserialize(file);
             file.Close();
-
         }
-
     }
 }
-
 
 
 public class GameManager : MonoBehaviour {
