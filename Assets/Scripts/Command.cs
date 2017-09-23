@@ -14,12 +14,11 @@ public class Command
 
 public class GoCommand : Command
 {
-    bool locationExists;                                       //checks whether a location exists at the given direction
+    private bool locationExists;                                       //checks whether a location exists at the given direction
     private Dictionary<string, string> goCommands;
 
     public GoCommand()
     {
-        locationExists = false;
         goCommands = new Dictionary<string, string>
         {
             { "north", "north" },
@@ -36,8 +35,9 @@ public class GoCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
+        locationExists = false;
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string lcSceneName = GameManager.instance.GetCurrentScene();             
+        string lcSceneName = GameManager.GetCurrentScene();             
         string lcDirection = "";
         if (lcSceneName == "GameScene")                                       
         {
@@ -74,7 +74,6 @@ public class GoCommand : Command
                         }
                         break;
                 }
-
                 if (locationExists == false)                        
                     Result = ">Nowhere to go in that direction";
             }
@@ -94,7 +93,7 @@ public class ShowCommand : Command
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string lcSceneName = GameManager.instance.GetCurrentScene();
+        string lcSceneName = GameManager.GetCurrentScene();
         string lcResult = "";
 
         switch (pInputStrings[1])
@@ -173,7 +172,7 @@ public class ReadCommand : Command
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string lcSceneName = GameManager.instance.GetCurrentScene();
+        string lcSceneName = GameManager.GetCurrentScene();
         string lcResult = "";
 
         if (pInputStrings[1] == "health")

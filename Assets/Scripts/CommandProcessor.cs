@@ -29,7 +29,7 @@ public class CommandProcessor
         string lcOutputText = "";
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
 
-        switch (GameManager.instance.GetCurrentScene())       
+        switch (GameManager.GetCurrentScene())       
         {
             case "GameScene":
                 lcOutputText = lcLocation.GetLocationDetails();
