@@ -99,16 +99,16 @@ public class ShowCommand : Command
         switch (pInputStrings[1])
         {
             case "items":
-                GameManager.instance.ChangeScene("ItemScene");
+                GameManager.ChangeScene("ItemScene");
                 break;
             case "location":
-                GameManager.instance.ChangeScene("GameScene");
+                GameManager.ChangeScene("GameScene");
                 break;
             case "map":
-                GameManager.instance.ChangeScene("MapScene");
+                GameManager.ChangeScene("MapScene");
                 break;
             case "help":
-                GameManager.instance.ChangeScene("HelpScene");
+                GameManager.ChangeScene("HelpScene");
                 break;
             default:
                 lcResult = ">Do not understand. Valid 'show' commands: 'location', 'items', 'map', 'help'";

@@ -38,17 +38,16 @@ public class GameState
         return "Items in the inventory are:\n" + String.Join("\n", keyArray);
     }
 
-    public string GetCurrentScene()
-    {
-        return SceneManager.GetActiveScene().name;
-    }
+    //public string GetCurrentScene()
+    //{
+    //    return SceneManager.GetActiveScene().name;
+    //}
 
-    public void ChangeScene(string pSceneName)
-    {
-        SceneManager.LoadScene(pSceneName);
-    }
+    //public void ChangeScene(string pSceneName)
+    //{
+    //    SceneManager.LoadScene(pSceneName);
+    //}
 
-   
     public bool IsGameRunning()
     {
         return gameRunning;
