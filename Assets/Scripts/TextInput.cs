@@ -40,11 +40,15 @@ public class TextInput : MonoBehaviour
     {
 <<<<<<< HEAD
         if (GameManager.instance.GetCurrentScene() == "GameScene")
+<<<<<<< HEAD
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.gameStateInstance.gameModel.currentLocation.backgroundImageName);
 =======
         if (GameManager._Instance.GetCurrentScene() == "GameScene")
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager._Instance._GameModel.currentLocation.backgroundImageName);
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.backgroundImageName);
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
     }
 
     private void ChangeInput(string arg0)

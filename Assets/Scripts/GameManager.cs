@@ -30,12 +30,15 @@ public class GameState
     {
         List<String> keyList = new List<string>(_Inventory.Keys);
         String[] keyArray = keyList.ToArray();
-        
+        // 
         return "Items in the inventory are:\n" + String.Join("\n", keyArray);
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
     //public void setActiveCanvas(string pName)
     //{
 
@@ -59,6 +62,7 @@ public class GameState
     //    }
     //}
 
+<<<<<<< HEAD
     public string GetCurrentScene()
     {
         return SceneManager.GetActiveScene().name;
@@ -70,6 +74,10 @@ public class GameState
     }
 
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+
+
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
     public bool IsGameRunning()
     {
         return _GameRunning;
@@ -90,10 +98,14 @@ public class GameState
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/models.dat", FileMode.Open);
 <<<<<<< HEAD
+<<<<<<< HEAD
             GameManager.gameStateInstance = (GameState)bf.Deserialize(file);
 =======
             GameManager._Instance = (GameState)bf.Deserialize(file);
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+            GameManager.instance = (GameState)bf.Deserialize(file);
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
             file.Close();
         }
     }
@@ -103,24 +115,29 @@ public class GameState
 public class GameManager : MonoBehaviour {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     //public static GameState instance;
     public static GameManager instance;
     public static GameState gameStateInstance;
 =======
 	public static GameState _Instance;
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+	public static GameState instance;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
 
-    //public GameModel gameModel;
+	//public GameModel gameModel;
 
-    //private bool gameRunning;
+//private bool gameRunning;
 
     // What is Awake?
     void Awake() {
 <<<<<<< HEAD
 		if (instance == null) {
-			gameStateInstance = new GameState();
-			gameStateInstance.gameRunning = true;
+			instance = new GameState();
+			instance.gameRunning = true;
 			Debug.Log("I am the one");
+<<<<<<< HEAD
             gameStateInstance.gameModel = new GameModel ();
             gameStateInstance.inventory = new Dictionary<string, Item>();
 =======
@@ -132,11 +149,16 @@ public class GameManager : MonoBehaviour {
             _Instance._Inventory = new Dictionary<string, Item>();
 
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+            instance.gameModel = new GameModel ();
+            instance.inventory = new Dictionary<string, Item>();
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         }
         else {
             Persist.control.Load();
             Destroy(gameObject);
 		}
+	
 	}
 
  

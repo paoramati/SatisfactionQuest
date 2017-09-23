@@ -37,7 +37,11 @@ public class GoCommand : Command
     {
         Debug.Log("Got a Go " + pInputStrings[1]);
 <<<<<<< HEAD
+<<<<<<< HEAD
         Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
+=======
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();             
 =======
         Location lcLocation = GameManager._Instance._GameModel.currentLocation;
@@ -54,10 +58,14 @@ public class GoCommand : Command
                         if (lcLocation.North != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.North;
 =======
                             GameManager._Instance._GameModel.currentLocation = lcLocation.North;
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+                            GameManager.instance.gameModel.currentLocation = lcLocation.North;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
@@ -65,10 +73,14 @@ public class GoCommand : Command
                         if (lcLocation.South != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.South;
 =======
                             GameManager._Instance._GameModel.currentLocation = lcLocation.South;
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+                            GameManager.instance.gameModel.currentLocation = lcLocation.South;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
@@ -76,10 +88,14 @@ public class GoCommand : Command
                         if (lcLocation.East != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.East;
 =======
                             GameManager._Instance._GameModel.currentLocation = lcLocation.East;
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+                            GameManager.instance.gameModel.currentLocation = lcLocation.East;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
@@ -87,10 +103,14 @@ public class GoCommand : Command
                         if (lcLocation.West != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             GameManager.gameStateInstance.gameModel.currentLocation = lcLocation.West;
 =======
                             GameManager._Instance._GameModel.currentLocation = lcLocation.West;
 >>>>>>> parent of f2f3a4c... added LoginController
+=======
+                            GameManager.instance.gameModel.currentLocation = lcLocation.West;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
                             locationExists = true;
                         }
                         break;
@@ -115,7 +135,11 @@ public class ShowCommand : Command
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
 <<<<<<< HEAD
+<<<<<<< HEAD
         Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
+=======
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();
 =======
         Location lcLocation = GameManager._Instance._GameModel.currentLocation;
@@ -199,7 +223,11 @@ public class ReadCommand : Command
     {
         Debug.Log("Got a Show " + pInputStrings[1]);
 <<<<<<< HEAD
+<<<<<<< HEAD
         Location lcLocation = GameManager.gameStateInstance.gameModel.currentLocation;
+=======
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+>>>>>>> parent of 0ed74a4... 2 singletons in GameManager?
         string lcSceneName = GameManager.instance.GetCurrentScene();
 =======
         Location lcLocation = GameManager._Instance._GameModel.currentLocation;
