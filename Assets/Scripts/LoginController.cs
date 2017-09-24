@@ -13,20 +13,25 @@ public class LoginController : MonoBehaviour
     public string password;
 
     InputField txtUsername;
-    Button btnLogin;
+    public Button btnLogin;
 
     InputField.SubmitEvent se;
     Button.ButtonClickedEvent ce;
 
-    private void Start()
+    void Start()
     {
         txtUsername = this.GetComponent<InputField>();
-        btnLogin = this.GetComponent<Button>();
+        btnLogin = GetComponent<Button>();
 
-        ce = new Button.ButtonClickedEvent();
-        ce.AddListener(CheckLogin);
+        btnLogin.onClick.AddListener(() => CheckLogin());
 
-        btnLogin.onClick = ce;
+
+
+
+        //ce = new Button.ButtonClickedEvent();
+        //ce.AddListener(CheckLogin);
+
+        //btnLogin.onClick = ce;
         //ce.AddListener
 
 
@@ -46,6 +51,8 @@ public class LoginController : MonoBehaviour
 
     public void CheckLogin()
     {
+        //Debug.Log("change material to HIT  on material");
+
         GameManager.ChangeScene("GameScene");
     }
 
