@@ -13,19 +13,17 @@ public class LoginController : MonoBehaviour
     public bool loginStatus;
     public string password;
 
-    public InputField inputLogin;
     InputField input;
     Button btnLogin;
+    public Text output;
 
     InputField.SubmitEvent se;
     Button.ButtonClickedEvent ce;
 
     void Start()
     {
-        //inputLogin = GetComponent<InputField>();
+        output.text = "";
         input = GetComponentInChildren<InputField>();
-
-
         btnLogin = GetComponentInChildren<Button>();
 
         //if (inputLogin != null)
@@ -33,44 +31,25 @@ public class LoginController : MonoBehaviour
             Debug.Log("in if");
             username = "";
 
-
-            //se = new InputField.SubmitEvent();
-            //se.AddListener(SetUsername);
-            //input.onEndEdit = se;
-
-
             btnLogin.onClick.AddListener(() => CheckLogin());
-
         }
     }
 
     private void CheckLogin()
     {
-
-        SetUsername(input.text);
+        username = input.text;
 
         if (input.text != "")
         {
             Debug.Log("input = " + input.text);
-            //GameManager.ChangeScene("GameScene");
+            output.text = "You entered '" + username + "'"; 
         }
         else
         {
             Debug.Log("No username");
+            output.text = "Username can not be empty";
+
         }
-    }
-
-    private void SetUsername(string arg0)
-    {
-        username = input.text;
-        Debug.Log("username = " + username);
-        //inputLogin.ActivateInputField();
-
-    }
-
-    private void CheckLogin(string arg0)
-    {
-        Debug.Log("not working");
     }
 
 }
