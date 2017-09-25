@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,51 +13,64 @@ public class LoginController : MonoBehaviour
     public bool loginStatus;
     public string password;
 
-    InputField txtUsername;
-    public Button btnLogin;
+    public InputField inputLogin;
+    InputField input;
+    Button btnLogin;
 
     InputField.SubmitEvent se;
     Button.ButtonClickedEvent ce;
 
     void Start()
     {
-        txtUsername = this.GetComponent<InputField>();
-        btnLogin = GetComponent<Button>();
-
-        btnLogin.onClick.AddListener(() => CheckLogin());
+        //inputLogin = GetComponent<InputField>();
+        input = GetComponentInChildren<InputField>();
 
 
+        btnLogin = GetComponentInChildren<Button>();
+
+        //if (inputLogin != null)
+        {
+            Debug.Log("in if");
+            username = "";
 
 
-        //ce = new Button.ButtonClickedEvent();
-        //ce.AddListener(CheckLogin);
-
-        //btnLogin.onClick = ce;
-        //ce.AddListener
+            //se = new InputField.SubmitEvent();
+            //se.AddListener(SetUsername);
+            //input.onEndEdit = se;
 
 
-        //GameManager.GetCurrentScene();
+            btnLogin.onClick.AddListener(() => CheckLogin());
+
+        }
     }
 
-    public bool IsLoginValid()
+    private void CheckLogin()
     {
 
-        return false;
+        SetUsername(input.text);
+
+        if (input.text != "")
+        {
+            Debug.Log("input = " + input.text);
+            //GameManager.ChangeScene("GameScene");
+        }
+        else
+        {
+            Debug.Log("No username");
+        }
     }
 
-    public void LoginPlayer()
+    private void SetUsername(string arg0)
     {
+        username = input.text;
+        Debug.Log("username = " + username);
+        //inputLogin.ActivateInputField();
 
     }
 
-    public void CheckLogin()
+    private void CheckLogin(string arg0)
     {
-        //Debug.Log("change material to HIT  on material");
-
-        GameManager.ChangeScene("GameScene");
+        Debug.Log("not working");
     }
-
-
-
 
 }
