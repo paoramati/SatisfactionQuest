@@ -40,7 +40,7 @@ public class TextInput : MonoBehaviour
     {
 
         if (GameManager.GetCurrentScene() == "GameScene")
-            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.backgroundImageName);
+            backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.background);
     }
 
     private void ChangeInput(string arg0)

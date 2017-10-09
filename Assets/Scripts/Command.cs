@@ -15,20 +15,33 @@ public class Command
 public class GoCommand : Command
 {
     private bool locationExists;                                       //checks whether a location exists at the given direction
-    private Dictionary<string, string> goCommands;
+    //private Dictionary<string, string> goCommands;
+    private Dictionary<string, Location.DIRECTION> goCommands;
 
     public GoCommand()
     {
-        goCommands = new Dictionary<string, string>
+        //goCommands = new Dictionary<string, string>
+        //{
+        //    { "north", "north" },
+        //    { "south", "south" },
+        //    { "east", "east" },
+        //    { "west", "west" },
+        //    { "up", "north" },
+        //    { "down", "south" },
+        //    { "left", "west" },
+        //    { "right", "east" }
+        //};
+
+        goCommands = new Dictionary<string, Location.DIRECTION>
         {
-            { "north", "north" },
-            { "south", "south" },
-            { "east", "east" },
-            { "west", "west" },
-            { "up", "north" },
-            { "down", "south" },
-            { "left", "west" },
-            { "right", "east" }
+            { "north", Location.DIRECTION.NORTH },
+            { "south", Location.DIRECTION.SOUTH },
+            { "east", Location.DIRECTION.EAST },
+            { "west", Location.DIRECTION.WEST },
+            { "up", Location.DIRECTION.NORTH },
+            { "down", Location.DIRECTION.SOUTH },
+            { "left", Location.DIRECTION.WEST },
+            { "right", Location.DIRECTION.EAST }
         };
     }
 
@@ -38,44 +51,63 @@ public class GoCommand : Command
         locationExists = false;
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         string lcSceneName = GameManager.GetCurrentScene();             
-        string lcDirection = "";
+        Location.DIRECTION lcDirection;
+        string nextLocationName;
         if (lcSceneName == "GameScene")                                       
         {
+
+
+
             if (goCommands.TryGetValue(pInputStrings[1], out lcDirection))       //if a correctly defined direction is given
+            //if (goCommands.ContainsKey(pInputStrings[1]))
             {
-                switch (lcDirection)
+                if (lcLocation.exits.TryGetValue(lcDirection, out nextLocationName ))       //if current location has exit at this direction
                 {
-                    case "north":
-                        if (lcLocation.North != null)
-                        {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.North;
-                            locationExists = true;
-                        }
-                        break;
-                    case "south":
-                        if (lcLocation.South != null)
-                        {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.South;
-                            locationExists = true;
-                        }
-                        break;
-                    case "east":
-                        if (lcLocation.East != null)
-                        {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.East;
-                            locationExists = true;
-                        }
-                        break;
-                    case "west":
-                        if (lcLocation.West != null)
-                        {
-                            GameManager.instance.gameModel.currentLocation = lcLocation.West;
-                            locationExists = true;
-                        }
-                        break;
+                    //GameManager.instance.gameModel.locationMap[GameManager.instance.gameModel.currentLocation.exits[lcDirection]];
+                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.locationMap[nextLocationName];
                 }
-                if (locationExists == false)                        
+                else
+                {
                     Result = ">Nowhere to go in that direction";
+                }
+
+
+                //if (lcLocation.exits.TryGetValue(lcLocation.exits[)
+
+
+                //switch (lcDirection)
+                //{
+                //    case "north":
+                //        if (lcLocation.South != null)
+                //        {
+                //            GameManager.instance.gameModel.currentLocation = lcLocation.North;
+                //            locationExists = true;
+                //        }
+                //        break;
+                //    case "south":
+                //        if (lcLocation.South != null)
+                //        {
+                //            GameManager.instance.gameModel.currentLocation = lcLocation.South;
+                //            locationExists = true;
+                //        }
+                //        break;
+                //    case "east":
+                //        if (lcLocation.East != null)
+                //        {
+                //            GameManager.instance.gameModel.currentLocation = lcLocation.East;
+                //            locationExists = true;
+                //        }
+                //        break;
+                //    case "west":
+                //        if (lcLocation.West != null)
+                //        {
+                //            GameManager.instance.gameModel.currentLocation = lcLocation.West;
+                //            locationExists = true;
+                //        }
+                //        break;
+                //}
+                //if (locationExists == false)                        
+                    
             }
             else  //direction input is not correct                                                  
                 Result = ">That is not a direction";

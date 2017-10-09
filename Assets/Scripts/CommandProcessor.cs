@@ -38,7 +38,7 @@ public class CommandProcessor
                 lcOutputText = lcLocation.GetLocationItems();
                 break;
             case "MapScene":
-                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.locationName;
+                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.name;
                 break;
             case "HelpScene":
                 lcOutputText = "HOW TO PLAY: Enter commands to perform various actions \n\nCOMMANDS:\n";
@@ -46,7 +46,6 @@ public class CommandProcessor
                 lcOutputText += "'Show [scene]'   - Change game scene \n\t[scene] = location | items | map | help\n";
                 break;
         }
-
         return lcOutputText;
     }
 
@@ -68,7 +67,6 @@ public class CommandProcessor
         }
         else                                                           
             lcResult = GetSceneOutput() + "\n" + ">Not enough words";       
-
         return lcResult;
     }
 
