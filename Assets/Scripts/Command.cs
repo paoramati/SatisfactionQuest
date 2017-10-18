@@ -14,24 +14,10 @@ public class Command
 
 public class GoCommand : Command
 {
-    private bool locationExists;                                       //checks whether a location exists at the given direction
-    //private Dictionary<string, string> goCommands;
-    private Dictionary<string, Location.DIRECTION> goCommands;
+    private Dictionary<string, Location.DIRECTION> goCommands;      //valid direction adverbs mapped to proper direction enums
 
     public GoCommand()
     {
-        //goCommands = new Dictionary<string, string>
-        //{
-        //    { "north", "north" },
-        //    { "south", "south" },
-        //    { "east", "east" },
-        //    { "west", "west" },
-        //    { "up", "north" },
-        //    { "down", "south" },
-        //    { "left", "west" },
-        //    { "right", "east" }
-        //};
-
         goCommands = new Dictionary<string, Location.DIRECTION>
         {
             { "north", Location.DIRECTION.NORTH },
@@ -47,73 +33,36 @@ public class GoCommand : Command
 
     public override void Do(string[] pInputStrings)
     {
+        string lcResult = "";
         Debug.Log("Got a Go " + pInputStrings[1]);
-        locationExists = false;
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         string lcSceneName = GameManager.GetCurrentScene();             
         Location.DIRECTION lcDirection;
         string nextLocationName;
+
         if (lcSceneName == "GameScene")                                       
         {
-
-
-
             if (goCommands.TryGetValue(pInputStrings[1], out lcDirection))       //if a correctly defined direction is given
-            //if (goCommands.ContainsKey(pInputStrings[1]))
             {
                 if (lcLocation.exits.TryGetValue(lcDirection, out nextLocationName ))       //if current location has exit at this direction
                 {
-                    //GameManager.instance.gameModel.locationMap[GameManager.instance.gameModel.currentLocation.exits[lcDirection]];
                     GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.locationMap[nextLocationName];
                 }
                 else
                 {
-                    Result = ">Nowhere to go in that direction";
-                }
-
-
-                //if (lcLocation.exits.TryGetValue(lcLocation.exits[)
-
-
-                //switch (lcDirection)
-                //{
-                //    case "north":
-                //        if (lcLocation.South != null)
-                //        {
-                //            GameManager.instance.gameModel.currentLocation = lcLocation.North;
-                //            locationExists = true;
-                //        }
-                //        break;
-                //    case "south":
-                //        if (lcLocation.South != null)
-                //        {
-                //            GameManager.instance.gameModel.currentLocation = lcLocation.South;
-                //            locationExists = true;
-                //        }
-                //        break;
-                //    case "east":
-                //        if (lcLocation.East != null)
-                //        {
-                //            GameManager.instance.gameModel.currentLocation = lcLocation.East;
-                //            locationExists = true;
-                //        }
-                //        break;
-                //    case "west":
-                //        if (lcLocation.West != null)
-                //        {
-                //            GameManager.instance.gameModel.currentLocation = lcLocation.West;
-                //            locationExists = true;
-                //        }
-                //        break;
-                //}
-                //if (locationExists == false)                        
-                    
+                    lcResult = ">Nowhere to go in that direction";
+                }                    
             }
-            else  //direction input is not correct                                                  
-                Result = ">That is not a direction";
+            else    //direction input is not correct                                                  
+            {
+                lcResult = ">That is not a direction";
+            }
         }
-        else 
-            Result = ">Not able to go places when in " + lcSceneName;
+        else    //Unity scene is not GameScene
+        {
+            lcResult = ">Not able to go places when in " + lcSceneName;
+        }
+        Result = lcResult;
     }
 }
 
@@ -130,6 +79,9 @@ public class ShowCommand : Command
 
         switch (pInputStrings[1])
         {
+            case "exits":
+                lcResult = lcLocation.GetLocationExits();
+                break;
             case "items":
                 GameManager.ChangeScene("ItemScene");
                 break;
@@ -143,7 +95,7 @@ public class ShowCommand : Command
                 GameManager.ChangeScene("HelpScene");
                 break;
             default:
-                lcResult = ">Do not understand. Valid 'show' commands: 'location', 'items', 'map', 'help'";
+                lcResult = ">Do not understand. Valid 'show' commands: 'exits', 'location', 'items', 'map', 'help'";
                 break;
         }
         Result = lcResult;
@@ -219,7 +171,6 @@ public class ReadCommand : Command
 
 public class SaveCommand : Command
 {
-    private int Answer;
 
     public SaveCommand() { }
 
@@ -245,7 +196,6 @@ public class SaveCommand : Command
 
 public class QuitCommand : Command
 {
-    private int Answer;
 
     public QuitCommand() { }
 

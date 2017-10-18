@@ -7,11 +7,6 @@ using UnityEngine.UI;
 [Serializable]
 public class Location
 {
-    //public enum LOCATION_NAME
-    //{
-    //    tomb, beach, VILLAGE, STALL, CLIFF, HOUSE, CASTLE, FOREST
-    //};
-
     public enum DIRECTION
     {
         NORTH, SOUTH, EAST, WEST
@@ -21,25 +16,15 @@ public class Location
     public string name;
     public string description;
     public string background;
-    public List<Item> items;
+    public List<Item> items;        //deprecated; items have locations instead
     public Dictionary<DIRECTION, string> exits;     //exits only available at given directions. If no match for direction, no exit
-
 
     public string question;
     public int answer;
 
-    public List<string> locationExits;
-
-
-    public Location North;
-    public Location South;
-    public Location East;
-    public Location West;
-    public Location Previous;
-
     public Location(string pLocationName)
     {
-        name = pLocationName;
+        name = pLocationName; 
         items = new List<Item>();
     }
 
@@ -56,24 +41,29 @@ public class Location
         name = pName;
         description = pDescription;
         background = pBackground;
-
-        items = new List<Item>();
+        //items = new List<Item>();
         exits = new Dictionary<DIRECTION, string>();
     }
 
     public string GetLocationDetails()
     {
-        string lcResult = "Current location: " + name + "\n";
-        lcResult += description + "\n";
+        string lcResult = "Current location: " + name + "\n" + description + "\n";
+        //lcResult += GetLocationExits();
+        return lcResult;
+    }
 
-        if (this.North != null)
-            lcResult += "\tTo the North is a " + this.North.name + "\n";
-        if (this.South != null)
-            lcResult += "\tTo the South is a " + this.South.name + "\n";
-        if (this.East != null)
-            lcResult += "\tTo the East is a " + this.East.name + "\n";
-        if (this.West != null)
-            lcResult += "\tTo the West is a " + this.West.name + "\n";
+    public string GetLocationExits()
+    {
+        string lcResult = "";
+
+        if (exits.ContainsKey(DIRECTION.NORTH))
+            lcResult += "\tTo the North is a " + exits[DIRECTION.NORTH] + "\n";
+        if (exits.ContainsKey(DIRECTION.SOUTH))
+            lcResult += "\tTo the South is a " + exits[DIRECTION.SOUTH] + "\n";
+        if (exits.ContainsKey(DIRECTION.EAST))
+            lcResult += "\tTo the East is a " + exits[DIRECTION.EAST] + "\n";
+        if (exits.ContainsKey(DIRECTION.WEST))
+            lcResult += "\tTo the West is a " + exits[DIRECTION.WEST] + "\n";
 
         return lcResult;
     }
@@ -90,7 +80,7 @@ public class Location
         {
             foreach (Item item in items)
             {
-                lcResult = lcResult + "\n\t-" + item.itemName;
+                lcResult = lcResult + "\n\t-" + item.name;
             }
         }
         return lcResult;
