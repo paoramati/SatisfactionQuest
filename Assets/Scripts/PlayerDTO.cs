@@ -11,3 +11,9 @@ public class PlayerDTO {
     public string Password { get; set; }
     public int EsteemPoints { get; set; }
 }
+
+public class PlayerInventoryDTO
+{
+    [PrimaryKey,AutoIncrement]
+    public int Id { get; set; }
+}

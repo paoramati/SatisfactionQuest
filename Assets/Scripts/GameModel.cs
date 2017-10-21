@@ -9,6 +9,8 @@ public class GameModel
     public List<Item> worldItems;
     public List<string> locationNames;
 
+    private DataService dataService;
+
     public Location firstLocation;
 
     public GameModel()
@@ -33,6 +35,29 @@ public class GameModel
 
         MakeWorldMap();
         GenerateWorldItems();
+
+        //saving game world to database. Drop tables first whilst testing, then figure out how to load without neccessarily dropping
+        
+
+    }
+
+    public void SaveGameState()
+    {
+        dataService = new DataService();
+
+
+        dataService.SaveLocations();
+        dataService.SaveItems();
+    }
+
+    public void LoadWorldMap()
+    {
+
+    }
+
+    public void LoadWorldItems()
+    {
+        //dataService.
     }
 
     public void MakeWorldMap()
@@ -68,6 +93,9 @@ public class GameModel
         currentLocation = locationMap["tomb"];
 
         firstLocation = currentLocation;
+
+        Debug.Log("In GameModel GenerateWorldMap");
+        
     }
 
     private void GenerateWorldItems()

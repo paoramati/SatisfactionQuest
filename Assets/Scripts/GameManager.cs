@@ -12,6 +12,10 @@ public class GameState
 {
     public bool gameRunning;
 
+    public int sessionId;
+
+    //public 
+
     public GameModel gameModel;
 
     public Dictionary<string, Item> inventory;
@@ -21,22 +25,22 @@ public class GameState
         gameRunning = false;
     }
 
-    public void AddToInventory(Item pItem)
-    {
-        inventory.Add(pItem.description, pItem);
-    }
-    public void DropFromInventory(string pItemName)
-    {
-        inventory.Remove(pItemName);
-    }
+    //public void AddToInventory(Item pItem)
+    //{
+    //    inventory.Add(pItem.description, pItem);
+    //}
+    //public void DropFromInventory(string pItemName)
+    //{
+    //    inventory.Remove(pItemName);
+    //}
 
-    public string InventoryListStr()
-    {
-        List<String> keyList = new List<string>(inventory.Keys);
-        String[] keyArray = keyList.ToArray();
-        // 
-        return "Items in the inventory are:\n" + String.Join("\n", keyArray);
-    }
+    //public string InventoryListStr()
+    //{
+    //    List<String> keyList = new List<string>(inventory.Keys);
+    //    String[] keyArray = keyList.ToArray();
+    //    // 
+    //    return "Items in the inventory are:\n" + String.Join("\n", keyArray);
+    //}
 
     //public string GetCurrentScene()
     //{
@@ -92,8 +96,29 @@ public class GameManager : MonoBehaviour {
 			instance = new GameState();
 			instance.gameRunning = true;
 			Debug.Log("I am the one");
-            instance.gameModel = new GameModel ();
-            instance.inventory = new Dictionary<string, Item>();
+            instance.gameModel = new GameModel();
+
+            /*
+             * FROM MAIN MENU BUTTON
+             * if new game, then the game model should be newly created
+             * if load game, then the game model should be loaded form saved game state
+             * 
+             * if (new game)
+             * {
+             *      sessionId = some incremental token
+             *      OR create a new session (GameStateDTO), then
+             *      use it's id here to set the sessionId value
+             *      instance.gameModel.Load 
+             * 
+             * 
+             * 
+             */
+
+
+
+
+            instance.gameModel.SaveGameState();
+            //instance.inventory = new Dictionary<string, Item>();
         }
         else {
             Persist.control.Load();

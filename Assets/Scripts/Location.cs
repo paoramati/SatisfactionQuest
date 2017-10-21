@@ -24,7 +24,7 @@ public class Location
 
     public Location(string pLocationName)
     {
-        name = pLocationName; 
+        name = pLocationName;
         items = new List<Item>();
     }
 
@@ -70,23 +70,37 @@ public class Location
 
     public string GetLocationItems()
     {
-        string lcResult = "You can see: ";
 
-        if (items.Count == 0)
+        string lcResult = "You can see: \n";
+
+        //GameManager.instance.gameModel.worldItems
+
+        DataService dataService = new DataService();
+
+        //var lcItems = dataService.GetLocationItems(name);
+
+        //if (lcItems)
+
+        foreach (ItemDTO item in dataService.GetLocationItems(name))
         {
-            lcResult = lcResult + "nothing here.";
+            lcResult += "- " + item.Name + "\n";
         }
-        else
-        {
-            foreach (Item item in items)
-            {
-                lcResult = lcResult + "\n\t-" + item.name;
-            }
-        }
+
+        //if (items.Count == 0)
+        //{
+        //    lcResult = lcResult + "nothing here.";
+        //}
+        //else
+        //{
+        //    foreach (Item item in items)
+        //    {
+        //        lcResult = lcResult + "\n\t-" + item.name;
+        //    }
+        //}
         return lcResult;
     }
 
-    
+
 }
 
 public class Exit
