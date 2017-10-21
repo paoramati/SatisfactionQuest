@@ -20,7 +20,7 @@ public class LoginController : MonoBehaviour
 
     void Start()
     {
-        output.text = "";
+        //output.text = "";
         username = "";
         password = "";
 
@@ -28,24 +28,13 @@ public class LoginController : MonoBehaviour
         inputPassword = UnityUtilities.AssignInputField("inputPassword");
         btnLogin = UnityUtilities.AssignButton("btnLogin");
 
-        //inputUsername = UnityUtilities.AssignGameObject<InputField>("inputUsername");
-
-        //GameObject usernameObject = GameObject.Find("inputUsername");
-        //inputUsername = usernameObject.GetComponent<InputField>();
-
-        //GameObject passwordObject = GameObject.Find("inputPassword");
-        //inputPassword = passwordObject.GetComponent<InputField>();
-
-        //btnLogin = GetComponentInChildren<Button>();
+        inputUsername.ActivateInputField();
 
         btnLogin.onClick.AddListener(() => CheckLogin());
 
         //DisplayPlayers();
     }
 
-
-
-    //public void AssignButton
 
 
     private void CheckLogin()
@@ -64,11 +53,9 @@ public class LoginController : MonoBehaviour
             {
                 if (dataService.CheckLogin(username, password))         //if login is successful
                 {
-                    //Debug.Log("Checked Login " + username);
+                    Destroy(this);
 
-                    //ChangeScene();
                     GameManager.ChangeScene("MenuScene");
-
                 }
                 else
                 {       
@@ -81,9 +68,8 @@ public class LoginController : MonoBehaviour
             {       
                 //add new player
                 dataService.AddPlayer(username, password);
-                //Debug.Log("Added " + username);
-                //ChangeScene();
                 GameManager.ChangeScene("MenuScene");
+                Destroy(this);
 
             }
         }

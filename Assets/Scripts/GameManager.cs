@@ -25,32 +25,6 @@ public class GameState
         gameRunning = false;
     }
 
-    //public void AddToInventory(Item pItem)
-    //{
-    //    inventory.Add(pItem.description, pItem);
-    //}
-    //public void DropFromInventory(string pItemName)
-    //{
-    //    inventory.Remove(pItemName);
-    //}
-
-    //public string InventoryListStr()
-    //{
-    //    List<String> keyList = new List<string>(inventory.Keys);
-    //    String[] keyArray = keyList.ToArray();
-    //    // 
-    //    return "Items in the inventory are:\n" + String.Join("\n", keyArray);
-    //}
-
-    //public string GetCurrentScene()
-    //{
-    //    return SceneManager.GetActiveScene().name;
-    //}
-
-    //public void ChangeScene(string pSceneName)
-    //{
-    //    SceneManager.LoadScene(pSceneName);
-    //}
 
     public bool IsGameRunning()
     {
