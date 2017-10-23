@@ -35,6 +35,7 @@ public class CommandProcessor
                 lcOutputText = lcLocation.GetLocationDetails();
                 break;
             case "ItemScene":
+                //lcOutputText = lcLocation.GetLocationItems();
                 lcOutputText = lcLocation.GetLocationItems();
                 break;
             case "MapScene":

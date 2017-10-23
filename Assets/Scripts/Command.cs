@@ -161,8 +161,8 @@ public class ReadCommand : Command
 
         if (pInputStrings[1] == "health")
         {
-            Persist.control.Health += 10;
-            lcResult = "Health = " + Persist.control.Health;
+            //Persist.control.Health += 10;
+            //lcResult = "Health = " + Persist.control.Health;
         }
 
         Result = lcResult;
@@ -186,7 +186,7 @@ public class SaveCommand : Command
 
         if (pInputStrings[1] == "game")
         {
-            Persist.control.Save();
+            //Persist.control.Save();
             Application.Quit();
         }
 

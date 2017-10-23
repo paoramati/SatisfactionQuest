@@ -14,6 +14,12 @@ public class GameState
 
     public int sessionId;
 
+    public Session session;
+
+    public Player player1;
+
+    public Player player2;
+
     //public 
 
     public GameModel gameModel;
@@ -22,6 +28,12 @@ public class GameState
 
     public GameState()
     {
+        DataService dataService = new DataService();
+
+        sessionId = dataService.CreateGameSession();
+
+        Debug.Log("sessionId = " + sessionId);
+
         gameRunning = false;
     }
 
@@ -51,6 +63,17 @@ public class GameState
         }
 
     }
+    public void SaveGameState()
+    {
+        DataService dataService = new DataService();
+
+
+        dataService.SaveLocations();
+        dataService.SaveItems();
+        dataService.SaveSessionItems(1);        //need to fetch session id from game manager?
+    }
+
+
 }
 
 
@@ -91,11 +114,11 @@ public class GameManager : MonoBehaviour {
 
 
 
-            instance.gameModel.SaveGameState();
+            instance.SaveGameState();
             //instance.inventory = new Dictionary<string, Item>();
         }
         else {
-            Persist.control.Load();
+            //Persist.control.Load();
             Destroy(gameObject);
 		}	
 	}

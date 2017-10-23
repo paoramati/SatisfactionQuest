@@ -16,6 +16,12 @@ public static class DataServiceUtilities
         _connection.SaveItems();
     }
 
+    public static void DeleteDatabase()
+    {
+        DataService _connection = new DataService();
+        _connection.DeleteDatabaseFile();
+    }
+
     public static void CreateNewGame()
     {
         DataService _connection = new DataService();

@@ -41,14 +41,6 @@ public class GameModel
 
     }
 
-    public void SaveGameState()
-    {
-        dataService = new DataService();
-
-
-        dataService.SaveLocations();
-        dataService.SaveItems();
-    }
 
     public void LoadWorldMap()
     {

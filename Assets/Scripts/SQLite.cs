@@ -2897,7 +2897,12 @@ namespace SQLite4Unity3d
 			var query = Take (1);
 			return query.ToList<T>().FirstOrDefault ();
 		}
-	}
+
+        internal IEnumerable<object> Join<T1>()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 	public static class SQLite3
 	{

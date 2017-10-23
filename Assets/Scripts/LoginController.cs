@@ -33,6 +33,16 @@ public class LoginController : MonoBehaviour
         btnLogin.onClick.AddListener(() => CheckLogin());
 
         //DisplayPlayers();
+
+        //DataServiceUtilities.DeleteDatabase();
+
+        //DataServiceUtilities.DeleteDatabase();
+
+        DataService.DisplayAllSessions();
+        //DataService.DisplayAllLocations();
+        //DataService.DisplayAllItems();
+        //DataService.DisplayAllSessionItems();
+
     }
 
 
@@ -84,15 +94,7 @@ public class LoginController : MonoBehaviour
         GameManager.ChangeScene("GameScene");
     }
 
-    private void DisplayPlayers()
-    {
-        DataService dataService = new DataService();    //could be replaced by a static object
 
-        foreach (PlayerDTO player in dataService.GetPlayers())
-        {
-            Debug.Log(player.Id + " - " + player.Username + " - " + player.Password);
-        }
-    }
 
 
     //public UnityEngine.UI.InputField AssignInputField(string pObjectName)

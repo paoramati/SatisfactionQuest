@@ -81,7 +81,8 @@ public class Location
 
         //if (lcItems)
 
-        foreach (ItemDTO item in dataService.GetLocationItems(name))
+        //foreach (ItemDTO item in dataService.GetLocationItems(name))
+        foreach (ItemDTO item in dataService.GetSessionLocationItems(1, name))
         {
             lcResult += "- " + item.Name + "\n";
         }
