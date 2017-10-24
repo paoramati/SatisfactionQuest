@@ -467,7 +467,7 @@ public class DataService
 
         foreach (SessionItemDTO sessionItem in dataService.GetSessionItems())
         {
-            Debug.Log("SessionItem: " + sessionItem.Id + " - " + sessionItem.ItemName + " - " + sessionItem.SessionId + " - " + sessionItem.Location + "\n");
+            Debug.Log("SessionItem: " + "itemId = " +sessionItem.Id + " - itemName = " + sessionItem.ItemName + " - sessionId = " + sessionItem.SessionId + " - location = " + sessionItem.Location + "\n");
         }
     }
 }

@@ -36,10 +36,10 @@ public class Item
     public Item(NAME pId, string pName, string pLocation, string pSecretLetter)
     {
         id = (int)pId;
-        //name = pName;
-        //location = pLocation;
-        name = pName.ToLower();
-        location = pLocation.ToLower();
+        name = pName;
+        location = pLocation;
+        //name = pName.ToLower();
+        //location = pLocation.ToLower();
         secretLetter = pSecretLetter;
     }
 
@@ -58,5 +58,10 @@ public class Item
     public Item(string pName)
     {
         name = pName;
+    }
+
+    public void ChangeItemLocation(string pLocationOrUsername)
+    {
+        location = pLocationOrUsername;
     }
 }

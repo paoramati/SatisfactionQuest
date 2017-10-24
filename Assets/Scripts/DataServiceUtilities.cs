@@ -6,7 +6,7 @@ public static class DataServiceUtilities
 {
 
     // Use this for initialization
-    public static void Save()
+    public static void CreateGameWorld()
     {
         DataService _connection = new DataService();
         //if (_connection.DbExists("GameNameDb"))

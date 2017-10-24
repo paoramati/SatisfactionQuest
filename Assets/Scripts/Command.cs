@@ -111,29 +111,50 @@ public class PickCommand : Command
 
     public override void Do(string[] pInputStrings)
     {
-        string lcResult = "";
         Debug.Log("Got a Pick " + pInputStrings[1]);
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+
+        string lcResult = "";
+        int lcSessionId = GameManager.instance.sessionId;
         string lcSceneName = GameManager.GetCurrentScene();
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        List<Item> lcItems;
         DataService dataService = new DataService();
 
         if (lcSceneName == "ItemScene")
         {
-            //return list of ItemDTOs, not SessionItemDTOs
-            foreach (var item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, lcLocation.name))
+            //return list of SessionItemDTOs
+            Debug.Log("In Pick Up - Session ID = " + lcSessionId);
+            foreach (var sessionItem in dataService.GetSessionLocationItems(lcSessionId, lcLocation.name))
             {
-                if (item.ItemName == pInputStrings[1])
+                if (sessionItem.ItemName == pInputStrings[1])
                 {
-                    
+                    string lcSessionItemName = sessionItem.ItemName;
+
+                    Debug.Log("In Pick Up Before - Item ID = " + sessionItem.ItemId + " - Item Name = " + sessionItem.ItemName + " - ItemLocation = " + sessionItem.Location);
+
+                    //GameManager.instance.gameModel.worldItems[lcItemId].ChangeItemLocation(GameManager.instance.player1.username);
+
+                    //dataService.SaveSessionItems(lcSessionId);
+                    //GameManager.instance.SaveGameState();
+                    lcResult = "Picked up " + sessionItem.ItemName + "\n";
+
+                    Debug.Log("In Pick Up After - Item ID = " + sessionItem.ItemId + " - Item Name = " + sessionItem.ItemName + " - ItemLocation = " + sessionItem.Location);
+
                     //GameManager.instance.gameModel.worldItems[]
                     //update sessionItem location based on this item's Id
                     //item.Id
                     //GameManager.instance.gameModel.worldItems.FindIndex()
                 }
+                else
+                {
+                    lcResult = "No item by that name here\n";
+                }
 
             }
             //if (dataService.GetSessionLocationItems)
         }
+
+        Result = lcResult;
     }
 }
 

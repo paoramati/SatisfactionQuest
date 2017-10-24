@@ -51,7 +51,7 @@ public class GameState
 
         GameManager.instance.gameModel.GenerateWorldItems();            //generate world items with inital state
 
-        DataServiceUtilities.Save();
+        DataServiceUtilities.CreateGameWorld();
 
 
         sessionId = dataService.CreateGameSession(player1.username);

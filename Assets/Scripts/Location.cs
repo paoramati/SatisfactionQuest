@@ -144,6 +144,22 @@ public class Location
         return lcResult;
     }
 
+    public static DIRECTION GetOppositeDirection(DIRECTION pDirection)
+    {
+        DIRECTION oppositeDirection = DIRECTION.NORTH;  //initialize with north
+
+        if (pDirection == DIRECTION.NORTH)
+            oppositeDirection = DIRECTION.SOUTH;
+        if (pDirection == DIRECTION.SOUTH)
+            oppositeDirection = DIRECTION.NORTH;
+        if (pDirection == DIRECTION.EAST)
+            oppositeDirection = DIRECTION.WEST;
+        if (pDirection == DIRECTION.WEST)
+            oppositeDirection = DIRECTION.EAST;
+
+        return oppositeDirection;
+    }
+
 
 }
 
