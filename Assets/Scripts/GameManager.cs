@@ -10,6 +10,8 @@ using System.IO;
 [Serializable]
 public class GameState
 {
+    public GameModel gameModel;
+
     public bool gameRunning;
 
     public int sessionId;
@@ -20,59 +22,65 @@ public class GameState
 
     public Player player2;
 
-    //public 
 
-    public GameModel gameModel;
 
     public Dictionary<string, Item> inventory;
 
     public GameState()
     {
-        DataService dataService = new DataService();
-
-        sessionId = dataService.CreateGameSession();
-
-        Debug.Log("sessionId = " + sessionId);
-
+ 
         gameRunning = false;
     }
 
+    public GameState(string pUsername)
+    {
+        player1 = new Player(pUsername);
+        gameRunning = false;
+    }
 
     public bool IsGameRunning()
     {
         return gameRunning;
     }
 
-    public void Save()
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/models.dat");
-        bf.Serialize(file, this);
-        file.Close();
-    }
-
-    public void Load()
-    {
-        if (File.Exists(Application.persistentDataPath + "/models.dat"))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/models.dat", FileMode.Open);
-            GameManager.instance = (GameState)bf.Deserialize(file);
-            file.Close();
-
-        }
-
-    }
-    public void SaveGameState()
+    internal void CreateNewGameSession()
     {
         DataService dataService = new DataService();
 
 
-        dataService.SaveLocations();
-        dataService.SaveItems();
-        dataService.SaveSessionItems(1);        //need to fetch session id from game manager?
+
+        GameManager.instance.gameModel.GenerateWorldItems();            //generate world items with inital state
+
+        DataServiceUtilities.Save();
+
+
+        sessionId = dataService.CreateGameSession(player1.username);
+
+        dataService.SaveSessionItems(sessionId);
+
+
+
+        //Debug.Log("GameState: sessionId - " + sessionId + " - username: " + player1.username );
+        DataService.DisplayAllItems();
+        DataService.DisplayAllLocations();
+        DataService.DisplayAllSessions();
+        DataService.DisplayAllSessionItems();
     }
 
+    internal void LoadExistingGameSession()
+    {
+        DataService dataService = new DataService();
+
+        Debug.Log("LoadExistingGameSession() ");
+
+    }
+
+    public void SaveGameState()
+    {
+        DataService dataService = new DataService();
+
+        dataService.SaveSessionItems(sessionId);        //need to fetch session id from game manager?
+    }
 
 }
 
@@ -80,41 +88,26 @@ public class GameState
 
 public class GameManager : MonoBehaviour {
 
-    //public static GameState instance;
     public static GameState instance;
-    //public GameState gameState;
 
-	//public static GameState instance;
+    public GameModel gameModel;
+
 
     // What is Awake?
     void Awake() {
 
 		if (instance == null) {
-			instance = new GameState();
-			instance.gameRunning = true;
+
+			//instance = new GameState();
+   //         instance.gameModel = new GameModel();
+
+            //instance.gameRunning = true;
 			Debug.Log("I am the one");
-            instance.gameModel = new GameModel();
-
-            /*
-             * FROM MAIN MENU BUTTON
-             * if new game, then the game model should be newly created
-             * if load game, then the game model should be loaded form saved game state
-             * 
-             * if (new game)
-             * {
-             *      sessionId = some incremental token
-             *      OR create a new session (GameStateDTO), then
-             *      use it's id here to set the sessionId value
-             *      instance.gameModel.Load 
-             * 
-             * 
-             * 
-             */
 
 
 
 
-            instance.SaveGameState();
+            //instance.SaveGameState();
             //instance.inventory = new Dictionary<string, Item>();
         }
         else {
@@ -122,6 +115,12 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
 		}	
 	}
+
+    public static void InitializeGameState(string pUsername)
+    {
+        instance = new GameState(pUsername);
+        instance.gameModel = new GameModel();
+    }
 
     public static string GetCurrentScene()
     {
@@ -133,5 +132,6 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(pSceneName);
     }
 
-
 }
+
+

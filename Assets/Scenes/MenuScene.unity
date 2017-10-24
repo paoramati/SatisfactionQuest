@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 1129721325}
   - component: {fileID: 1129721324}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: MenuCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -833,7 +833,6 @@ GameObject:
   - component: {fileID: 1822784663}
   - component: {fileID: 1822784665}
   - component: {fileID: 1822784664}
-  - component: {fileID: 1822784666}
   m_Layer: 5
   m_Name: Input Panel
   m_TagString: Untagged
@@ -896,21 +895,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1822784662}
---- !u!114 &1822784666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1822784662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf00c45bc691f8646a287667b0c2b12b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  username: 
-  password: 
-  loginSuccessful: 0
-  output: {fileID: 0}
 --- !u!1 &1946017062
 GameObject:
   m_ObjectHideFlags: 0

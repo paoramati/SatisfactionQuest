@@ -18,6 +18,7 @@ public class CommandProcessor
         CommandMap.Add("go", new GoCommand());
         CommandMap.Add("answer", new AnswerCommand());
         CommandMap.Add("pick", new PickCommand());
+        CommandMap.Add("pickup", new PickCommand());
         CommandMap.Add("show", new ShowCommand());
         CommandMap.Add("read", new ReadCommand());
         CommandMap.Add("quit", new QuitCommand());
@@ -35,7 +36,6 @@ public class CommandProcessor
                 lcOutputText = lcLocation.GetLocationDetails();
                 break;
             case "ItemScene":
-                //lcOutputText = lcLocation.GetLocationItems();
                 lcOutputText = lcLocation.GetLocationItems();
                 break;
             case "MapScene":

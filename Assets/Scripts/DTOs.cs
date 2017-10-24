@@ -10,7 +10,7 @@ using SQLite4Unity3d;
 
 public class LocationDTO
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey]
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -24,11 +24,13 @@ public class LocationDTO
 
 public class ExitDTO
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey]
     public int Id { get; set; }
-    public int Direction { get; set; }      
-    public string FromLocation { get; set; }
-    public string ToLocation { get; set; }
+    public int Direction { get; set; }
+    public int FromLocation { get; set; }
+    public int ToLocation { get; set; }
+    //public string FromLocation { get; set; }
+    //public string ToLocation { get; set; }
 }
 
 /*
@@ -38,7 +40,7 @@ public class ExitDTO
 
 public class ItemDTO
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey]
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }

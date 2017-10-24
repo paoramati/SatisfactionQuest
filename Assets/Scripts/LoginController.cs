@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
 {
-    public string username;
-    public string password;
+    private string username;
+    private string password;
     public bool loginSuccessful;
 
     InputField inputUsername;
@@ -23,6 +23,7 @@ public class LoginController : MonoBehaviour
         //output.text = "";
         username = "";
         password = "";
+        loginSuccessful = false;
 
         inputUsername = UnityUtilities.AssignInputField("inputUsername");
         inputPassword = UnityUtilities.AssignInputField("inputPassword");
@@ -38,10 +39,13 @@ public class LoginController : MonoBehaviour
 
         //DataServiceUtilities.DeleteDatabase();
 
-        DataService.DisplayAllSessions();
+
         //DataService.DisplayAllLocations();
         //DataService.DisplayAllItems();
+        ////DataService.DisplayAllSessions();
         //DataService.DisplayAllSessionItems();
+
+        //Debug.Log(Item.NAME.COMPUTER.ToString());
 
     }
 
@@ -50,6 +54,7 @@ public class LoginController : MonoBehaviour
     private void CheckLogin()
     {
         output.text = "";
+        loginSuccessful = false;
         username = inputUsername.text;
         password = inputPassword.text;
 
@@ -63,9 +68,7 @@ public class LoginController : MonoBehaviour
             {
                 if (dataService.CheckLogin(username, password))         //if login is successful
                 {
-                    Destroy(this);
-
-                    GameManager.ChangeScene("MenuScene");
+                    loginSuccessful = true;
                 }
                 else
                 {       
@@ -78,20 +81,24 @@ public class LoginController : MonoBehaviour
             {       
                 //add new player
                 dataService.AddPlayer(username, password);
-                GameManager.ChangeScene("MenuScene");
-                Destroy(this);
-
+                loginSuccessful = true;
             }
         }
         else
         {
             output.text = "Username or password can not be empty!";
         }
+
+        if (loginSuccessful)
+        {
+            GameManager.InitializeGameState(username);
+            GameManager.ChangeScene("MenuScene");
+        }
     }
 
     private void ChangeScene()
     {
-        GameManager.ChangeScene("GameScene");
+        GameManager.ChangeScene("MenuScene");
     }
 
 

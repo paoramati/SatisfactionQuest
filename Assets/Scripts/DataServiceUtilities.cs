@@ -11,7 +11,7 @@ public static class DataServiceUtilities
         DataService _connection = new DataService();
         //if (_connection.DbExists("GameNameDb"))
         //{
-        _connection.Connect();
+        //_connection.Connect();
         _connection.SaveLocations();
         _connection.SaveItems();
     }

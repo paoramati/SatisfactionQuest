@@ -1,44 +1,47 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameModel
 {
+    //public Dictionary<string, Location> locationMap;
+    public Dictionary<Location.NAME, Location> worldMap;
+    public Dictionary<Item.NAME, Item> worldItems;
+    //public List<Item> worldItems;
+    public Location firstLocation;
     public Location currentLocation;
-    public Dictionary<string, Location> locationMap;
-    public List<Item> worldItems;
-    public List<string> locationNames;
+
+    public static List<string> locationNames = new List<string>
+    {
+        "tomb",         //0
+        "beach",        //1
+        "village",      //2
+        "stall",        //3
+        "cliff",        //4
+        "house",        //5
+        "castle",       //6
+        "forest",       //7
+        "desert",       //8
+        "plain",        //9
+        "swamp",        //10
+        "estuary",      //11
+        "paddock",      //12
+        "marsh"         //13
+    };
+
+
+
+    private int locationCounter = 0;        //to provide PK values to locations
+    private int exitCounter = 0;            //to provide PK values to exits
+    private int itemCounter = 0;            //to provide PK values to items
 
     private DataService dataService;
 
-    public Location firstLocation;
 
     public GameModel()
     {
-        locationNames = new List<string>
-        {
-            "tomb",         //0
-            "beach",        //1
-            "village",      //2
-            "stall",        //3
-            "cliff",        //4
-            "house",        //5
-            "castle",       //6
-            "forest",       //7
-            "desert",       //8
-            "plain",        //9
-            "swamp",        //10
-            "estuary",      //11
-            "paddock",      //12
-            "marsh"         //13
-        };
-
-        MakeWorldMap();
-        GenerateWorldItems();
-
-        //saving game world to database. Drop tables first whilst testing, then figure out how to load without neccessarily dropping
-        
-
+        GenerateWorldMap();
     }
 
 
@@ -52,57 +55,89 @@ public class GameModel
         //dataService.
     }
 
-    public void MakeWorldMap()
+    public void GenerateWorldMap()
     {
-        locationMap = new Dictionary<string, Location>();
+        worldMap = new Dictionary<Location.NAME, Location>();
 
-        locationMap.Add("tomb", new Location("tomb", "A smelly tomb with a smelly corpse.", "sign3"));
-        locationMap.Add("beach", new Location("beach", "A pretty beach with beautiful nothing to see.", "beach1"));
-        locationMap.Add("village", new Location("village", "A stupid village with stupid people.", "village1"));
-        locationMap.Add("stall", new Location("stall", "An uncomfortable kissing booth.", "booth1"));
-        locationMap.Add("house", new Location("house", "A stupid interior of a stupid house.", "house1"));
-        locationMap.Add("forest", new Location("forest", "A dark, dark, musty forest.", "forest1"));
+        //add locations
+        AddWorldLocation(Location.NAME.TOMB, "A smelly tomb with a smelly corpse", "sign3");
+        AddWorldLocation(Location.NAME.BEACH, "A pretty beach with beautiful nothing to see.", "beach1");
+        AddWorldLocation(Location.NAME.VILLAGE, "A stupid village with stupid people.", "village1");
+        AddWorldLocation(Location.NAME.STALL, "An uncomfortable kissing booth.", "booth1");
+        AddWorldLocation(Location.NAME.HOUSE, "A stupid interior of a stupid house.", "house1");
+        AddWorldLocation(Location.NAME.FOREST, "A dark, dark, musty forest.", "forest1");
+
+        //add location exits
+        worldMap[Location.NAME.TOMB].exits.Add(Location.DIRECTION.NORTH, Location.NAME.BEACH);
+        worldMap[Location.NAME.TOMB].exits.Add(Location.DIRECTION.EAST, Location.NAME.FOREST);
+        worldMap[Location.NAME.TOMB].exits.Add(Location.DIRECTION.WEST, Location.NAME.VILLAGE);
+
+        worldMap[Location.NAME.BEACH].exits.Add(Location.DIRECTION.SOUTH, Location.NAME.TOMB);
+        worldMap[Location.NAME.BEACH].exits.Add(Location.DIRECTION.NORTH, Location.NAME.VILLAGE);
+
+        worldMap[Location.NAME.FOREST].exits.Add(Location.DIRECTION.WEST, Location.NAME.TOMB);
+        worldMap[Location.NAME.FOREST].exits.Add(Location.DIRECTION.EAST, Location.NAME.STALL);
+
+        worldMap[Location.NAME.VILLAGE].exits.Add(Location.DIRECTION.EAST, Location.NAME.TOMB);
+        worldMap[Location.NAME.VILLAGE].exits.Add(Location.DIRECTION.SOUTH, Location.NAME.BEACH);
+
+
+
+
+
+
+
+        //AddWorldLocation(Location.NAME.DESERT, "An uncomfortable kissing booth.", "booth1");
+
+        //worldMap.Add(Location.NAME.TOMB, new Location(Location.NAME.TOMB, "tomb", "A smelly tomb with a smelly corpse.", "sign3"));
+        //worldMap.Add(Location.NAME.BEACH, new Location(Location.NAME.BEACH, "beach", "A pretty beach with beautiful nothing to see.", "beach1"));
+        //worldMap.Add(Location.NAME.VILLAGE, new Location(Location.NAME.VILLAGE, "village", "A stupid village with stupid people.", "village1"));
+        //worldMap.Add(Location.NAME.STALL, new Location(Location.NAME.STALL, "stall", "An uncomfortable kissing booth.", "booth1"));
+        //worldMap.Add(Location.NAME.HOUSE, new Location(Location.NAME.HOUSE, "house", "A stupid interior of a stupid house.", "house1"));
+        //worldMap.Add(Location.NAME.FOREST, new Location(Location.NAME.FOREST, "forest", "A dark, dark, musty forest.", "forest1"));
         //locationMap.Add("desert", new Location("desert", "A pretty beach with beautiful nothing to see.", "beach1"));
 
 
-        locationMap["tomb"].exits.Add(Location.DIRECTION.NORTH, "beach");
-        locationMap["tomb"].exits.Add(Location.DIRECTION.EAST, "forest");
-        locationMap["tomb"].exits.Add(Location.DIRECTION.WEST, "village");
 
+        currentLocation = worldMap[Location.NAME.TOMB];
 
-        locationMap["beach"].exits.Add(Location.DIRECTION.SOUTH, "tomb");
-        locationMap["beach"].exits.Add(Location.DIRECTION.NORTH, "village");
-
-
-        locationMap["forest"].exits.Add(Location.DIRECTION.WEST, "tomb");
-        locationMap["forest"].exits.Add(Location.DIRECTION.EAST, "stall");
-
-        locationMap["village"].exits.Add(Location.DIRECTION.EAST, "tomb");
-        locationMap["village"].exits.Add(Location.DIRECTION.SOUTH, "beach");
-
-
-
-        currentLocation = locationMap["tomb"];
-
-        firstLocation = currentLocation;
-
-        Debug.Log("In GameModel GenerateWorldMap");
-        
+        firstLocation = currentLocation;        
     }
 
-    private void GenerateWorldItems()
+
+    public void GenerateWorldItems()
     {
-        worldItems = new List<Item>();
+        //worldItems = new List<Item>();
+        worldItems = new Dictionary<Item.NAME, Item>();
 
-        worldItems.Add(new Item("Jar", locationNames[0], "i"));
-        worldItems.Add(new Item("Mop", locationNames[0], "l"));
-        worldItems.Add(new Item("Shell", locationNames[1], "a"));
-        worldItems.Add(new Item("Toe", locationNames[1], "z"));
-        worldItems.Add(new Item("Helmet", locationNames[2], "b"));
-        worldItems.Add(new Item("Cup", locationNames[3], "e"));
-        worldItems.Add(new Item("Computer?", locationNames[4], "s"));
-        worldItems.Add(new Item("Fireplace", locationNames[5], "t"));
+        AddWorldItem(Item.NAME.JAR, Location.NAME.TOMB, "i");
 
+
+        //worldItems.Add(Item.NAME.JAR, new Item(Item.NAME.JAR, "Jar", locationNames[0], "i"));
+        //worldItems.Add(new Item(itemCounter++, "Mop", locationNames[0], "l"));
+        //worldItems.Add(new Item(itemCounter++, "Shell", locationNames[1], "a"));
+        //worldItems.Add(new Item(itemCounter++, "Toe", locationNames[1], "z"));
+        //worldItems.Add(new Item(itemCounter++, "Helmet", locationNames[2], "b"));
+        //worldItems.Add(new Item(itemCounter++, "Cup", locationNames[3], "e"));
+        //worldItems.Add(new Item(itemCounter++, "Computer?", locationNames[4], "s"));
+        //worldItems.Add(new Item(itemCounter++, "Fireplace", locationNames[5], "t"));
+
+    }
+
+    private void AddWorldLocation(Location.NAME pLocation, string pDescription, string pBackground)
+    {
+        worldMap.Add(pLocation, new Location(pLocation, pLocation.ToString().ToLower(), pDescription, pBackground));
+    }
+
+    private void AddWorldLocationExits()
+    {
+        //worldMap[Location.NAME.TOMB].exits.Add(Location.DIRECTION.NORTH, Location.NAME.BEACH);
+        worldMap[pFromLocation].exits.Add(pDirection, pDestinationLocation);
+    }
+
+    private void AddWorldItem(Item.NAME pName, Location.NAME pLocation, string pSecretLetter)
+    {
+        worldItems.Add(pName, new Item(pName, pName.ToString(), pLocation.ToString(), pSecretLetter));
     }
 
     //public void MakeWorldMap()

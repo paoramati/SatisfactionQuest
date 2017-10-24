@@ -36,22 +36,23 @@ public class GoCommand : Command
         string lcResult = "";
         Debug.Log("Got a Go " + pInputStrings[1]);
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        string lcSceneName = GameManager.GetCurrentScene();             
+        string lcSceneName = GameManager.GetCurrentScene();
         Location.DIRECTION lcDirection;
-        string nextLocationName;
+        Location.NAME nextLocation;
+        //string nextLocationName;
 
-        if (lcSceneName == "GameScene")                                       
+        if (lcSceneName == "GameScene")
         {
             if (goCommands.TryGetValue(pInputStrings[1], out lcDirection))       //if a correctly defined direction is given
             {
-                if (lcLocation.exits.TryGetValue(lcDirection, out nextLocationName ))       //if current location has exit at this direction
+                if (lcLocation.exits.TryGetValue(lcDirection, out nextLocation))       //if current location has exit at this direction
                 {
-                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.locationMap[nextLocationName];
+                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[nextLocation];
                 }
                 else
                 {
                     lcResult = ">Nowhere to go in that direction";
-                }                    
+                }
             }
             else    //direction input is not correct                                                  
             {
@@ -108,18 +109,31 @@ public class PickCommand : Command
 
     public PickCommand() { }
 
-    public PickCommand(string pAdverb)
-    {
-        adverb = pAdverb;
-    }
-
-    public PickCommand(string[] pAdverbs)
-    {
-    }
-
     public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Pick " + pInputStrings[1]);
+        string lcResult = "";
+        Debug.Log("Got a Pick " + pInputStrings[1]);
+        Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        string lcSceneName = GameManager.GetCurrentScene();
+        DataService dataService = new DataService();
+
+        if (lcSceneName == "ItemScene")
+        {
+            //return list of ItemDTOs, not SessionItemDTOs
+            foreach (var item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, lcLocation.name))
+            {
+                if (item.ItemName == pInputStrings[1])
+                {
+                    
+                    //GameManager.instance.gameModel.worldItems[]
+                    //update sessionItem location based on this item's Id
+                    //item.Id
+                    //GameManager.instance.gameModel.worldItems.FindIndex()
+                }
+
+            }
+            //if (dataService.GetSessionLocationItems)
+        }
     }
 }
 
@@ -208,8 +222,8 @@ public class QuitCommand : Command
     public override void Do(string[] pInputStrings)
     {
         Debug.Log("Quit " + pInputStrings[1]);
-            
-            
+
+
     }
 }
 

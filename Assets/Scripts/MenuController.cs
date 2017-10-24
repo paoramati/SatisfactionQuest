@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
-
     Button[] btnLogin;
-    List<Button> buttons;
     Dictionary<string, Button> buttonsDictionary;
 
     // Use this for initialization
@@ -23,38 +21,23 @@ public class MenuController : MonoBehaviour
         buttonsDictionary["New"].onClick.AddListener(() => NewGame());
         buttonsDictionary["Load"].onClick.AddListener(() => LoadGame());
         buttonsDictionary["Quit"].onClick.AddListener(() => QuitGame());
-
-
-        //GameObject btnNew = GameObject.Find("btnNewGame");
-        //buttons.Add("New", btnNew.GetComponent<Button>());
-
-        //GameObject btnLoad = GameObject.Find("btnLoadGame");
-        //buttons.Add("Load", btnLoad.GetComponent<Button>());
-
-        //GameObject btnQuit = GameObject.Find("btnQuit");
-        //buttons.Add("Quit", btnQuit.GetComponent<Button>());
-
-        //buttons["New"].onClick.AddListener(() => NewGame());
-        //buttons["Load"].onClick.AddListener(() => LoadGame());
-        //buttons["Quit"].onClick.AddListener(() => QuitGame());
-
-        //buttons = new List<Button>();
-
-
-
-
-
     }
 
     private void NewGame()
     {
-        Debug.Log("NewGame()");
+        Debug.Log("MenuController.NewGame()");
+
+        GameManager.instance.CreateNewGameSession();
+
         GameManager.ChangeScene("GameScene");
     }
 
     private void LoadGame()
     {
-        Debug.Log("LoadGame()");
+        Debug.Log("MenuController.LoadGame()");
+
+        GameManager.instance.LoadExistingGameSession();
+
         GameManager.ChangeScene("GameScene");
     }
 

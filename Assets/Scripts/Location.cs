@@ -12,37 +12,79 @@ public class Location
         NORTH, SOUTH, EAST, WEST
     };
 
+    public enum NAME
+    {
+        TOMB,
+        BEACH,
+        VILLAGE,
+        STALL,
+        CLIFF,
+        HOUSE,
+        CASTLE,
+        FOREST,
+        DESERT,
+        PLAIN,
+        SWAMP,
+        ESTUARY,
+        PADDOCK,
+        MARSH
+    }
+
     public int id;
     public string name;
     public string description;
     public string background;
-    public List<Item> items;        //deprecated; items have locations instead
-    public Dictionary<DIRECTION, string> exits;     //exits only available at given directions. If no match for direction, no exit
+    public Dictionary<DIRECTION, NAME> exits;     //exits only available at given directions. If no match for direction, no exit
+
+
+    public List<Item> items;                        //deprecated; items have locations instead
+    
+    //public Dictionary<DIRECTION, string> exits;     //exits only available at given directions. If no match for direction, no exit
+
 
     public string question;
     public int answer;
 
-    public Location(string pLocationName)
-    {
-        name = pLocationName;
-        items = new List<Item>();
-    }
+    //public Location(string pLocationName)
+    //{
+    //    name = pLocationName;
+    //    items = new List<Item>();
+    //}
 
-    public Location(string pName, string pBackground)
-    {
-        name = pName;
-        background = pBackground;
-        items = new List<Item>();
-        exits = new Dictionary<DIRECTION, string>();
-    }
+    //public Location(string pName, string pBackground)
+    //{
+    //    name = pName;
+    //    background = pBackground;
+    //    items = new List<Item>();
+    //    exits = new Dictionary<DIRECTION, string>();
+    //}
 
-    public Location(string pName, string pDescription, string pBackground)
+    //public Location(string pName, string pDescription, string pBackground)
+    //{
+    //    //id = 
+    //    name = pName;
+    //    description = pDescription;
+    //    background = pBackground;
+    //    //items = new List<Item>();
+    //    exits = new Dictionary<DIRECTION, string>();
+    //}
+
+    public Location(int pId, string pName, string pDescription, string pBackground)
     {
+        id = pId;
         name = pName;
         description = pDescription;
         background = pBackground;
-        //items = new List<Item>();
-        exits = new Dictionary<DIRECTION, string>();
+        exits = new Dictionary<DIRECTION, NAME>();
+    }
+
+    public Location(NAME pId, string pName, string pDescription, string pBackground)
+    {
+        id = (int)pId;
+        name = pName;
+        description = pDescription;
+        background = pBackground;
+        exits = new Dictionary<DIRECTION, NAME>();
     }
 
     public string GetLocationDetails()
@@ -80,11 +122,12 @@ public class Location
         //var lcItems = dataService.GetLocationItems(name);
 
         //if (lcItems)
+        //Debug.Log("name = " + name);
 
-        //foreach (ItemDTO item in dataService.GetLocationItems(name))
-        foreach (ItemDTO item in dataService.GetSessionLocationItems(1, name))
+        //foreach (ItemDTO item in dataService.GetSessionLocationItems(name))
+        foreach (SessionItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
         {
-            lcResult += "- " + item.Name + "\n";
+            lcResult += "- " + item.ItemName + "\n";
         }
 
         //if (items.Count == 0)

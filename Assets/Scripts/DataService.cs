@@ -6,7 +6,8 @@ using System;
 using System.IO;
 using System.Linq;
 
-public class DataService {
+public class DataService
+{
 
     public static DataService instance;
 
@@ -78,77 +79,143 @@ public class DataService {
         });
     }
 
+    private bool LocationExists(int pLocationId)
+    {
+        var y = _connection.Table<LocationDTO>().Where(
+                x => x.Id == pLocationId).FirstOrDefault();
+
+        return y != null;
+    }
+
+    private bool ExitExists(int pExitId)
+    {
+        var y = _connection.Table<ExitDTO>().Where(
+                x => x.Id == pExitId).FirstOrDefault();
+
+        return y != null;
+    }
+
+    private bool ItemExists(int pItemId)
+    {
+        var y = _connection.Table<ItemDTO>().Where(
+                x => x.Id == pItemId).FirstOrDefault();
+
+        return y != null;
+    }
+
+    private bool SessionItemExists(int pSessionItemId)
+    {
+        var y = _connection.Table<SessionItemDTO>().Where(
+                x => x.Id == pSessionItemId).FirstOrDefault();
+
+        return y != null;
+    }
+
+    private void SetLocation(LocationDTO pLocationDTO)
+    {
+        CreateIfNotExists<LocationDTO>();
+
+        if (LocationExists(pLocationDTO.Id))
+        {
+            _connection.Update(pLocationDTO);
+        }
+        else
+        {
+            _connection.Insert(pLocationDTO);
+        }
+    }
+
+    private void SetExit(ExitDTO pExitDTO)
+    {
+        CreateIfNotExists<ExitDTO>();
+
+        if (ExitExists(pExitDTO.Id))
+        {
+            _connection.Update(pExitDTO);
+        }
+        else
+        {
+            _connection.Insert(pExitDTO);
+        }
+    }
+
+    private void SetItem(ItemDTO pItemDTO)
+    {
+        CreateIfNotExists<ItemDTO>();
+
+        if (ItemExists(pItemDTO.Id))
+        {
+            _connection.Update(pItemDTO);
+        }
+        else
+        {
+            _connection.Insert(pItemDTO);
+        }
+    }
+
+    private void SetSessionItem(SessionItemDTO pSessionItemDTO)
+    {
+        CreateIfNotExists<SessionItemDTO>();
+
+        if (SessionItemExists(pSessionItemDTO.Id))
+        {
+            _connection.Update(pSessionItemDTO);
+        }
+        else
+        {
+            _connection.Insert(pSessionItemDTO);
+        }
+    }
+
 
     /**
      * Save locations from the GameModel location map, including their exits and items (deprecated)
      */
-
     public void SaveLocations()
     {
-        var lcLocationMap = GameManager.instance.gameModel.locationMap;
+        var lcLocationMap = GameManager.instance.gameModel.worldMap;
 
         foreach (var location in lcLocationMap)    //for every location in the location map
         {
             LocationDTO locationDTO = new LocationDTO
             {
+                Id = location.Value.id,
                 Name = location.Value.name,
                 Description = location.Value.description,
                 Background = location.Value.background
             };
 
-            _connection.Insert(locationDTO);   //insert the location DTO
+            SetLocation(locationDTO);       //set location is slightly unnessary because Locations are static in this implementation
+            //_connection.Insert(locationDTO);   //insert the location DTO
 
             foreach (var exit in location.Value.exits)      //for every exit in the location's exit dictionary
             {
                 ExitDTO exitDTO = new ExitDTO
                 {
-                    FromLocation = location.Value.name,
+                    FromLocation = location.Value.id,
                     Direction = (int)exit.Key,          //the key value corresponds to the enum's int value for that direction
-                    ToLocation = exit.Value
+                    ToLocation = (int)exit.Value
                 };
-
-                _connection.Insert(exitDTO);   //insert the location's exit DTO
+                SetExit(exitDTO);
+                //_connection.Insert(exitDTO);   //insert the location's exit DTO
             }
-
-
-
-
-            /*
-             *  update will not delete items that have been picked up. So does this need a dropped table every time?
-             *  Also, how will these DTOs capture the correct player's world?
-             */
-
-            //foreach (var anItem in aLocation.Value.items)   //for every item at the location
-            //{
-            //    ItemDTO anItemDTO = new ItemDTO
-            //    {
-            //        Name = anItem.name,
-            //        Location = anItem.location,
-            //        Description = anItem.description
-            //    };
-
-            //    _connection.Insert(anItemDTO);   //insert an item at the location
-            //}
         }
     }   //SaveLocations
-
-    /**
-     * Insert or update the permanent details of the game model - location and items
-     */
 
     public void SaveItems()
     {
         var lcWorldItems = GameManager.instance.gameModel.worldItems;
 
-        foreach(var item in lcWorldItems)
+        foreach (var item in lcWorldItems)
         {
             ItemDTO itemDTO = new ItemDTO
             {
-                Name = item.name,
-                Description = item.description
+                Id = (int)item.Key,
+                Name = item.Value.name,
+                Description = item.Value.description
             };
-
-            _connection.Insert(itemDTO);   //insert an item 
+            SetItem(itemDTO);
+            //_connection.Insert(itemDTO);   //insert an item 
         }
     }
 
@@ -160,37 +227,14 @@ public class DataService {
         {
             SessionItemDTO sessionItemDTO = new SessionItemDTO
             {
-                ItemName = item.name,
+                ItemName = item.Value.name,
                 SessionId = pSessionId,
-                Location = item.location
+                Location = item.Value.location
             };
-
-            _connection.Insert(sessionItemDTO);   //insert an item 
+            SetSessionItem(sessionItemDTO);
+            //_connection.Insert(sessionItemDTO);   //insert an item 
         }
     }
-
-    //private bool SceneExists(int pSceneID)
-    //{
-    //    var y = _connection.Table<SceneDTO>().Where(
-    //            x => x.SceneID == pSceneID).FirstOrDefault();
-
-    //    return y != null;
-
-    //}
-
-    //private void SetScene(SceneDTO aSceneDTO)
-    //{
-    //    CreateIfNotExists<SceneDTO>();
-
-    //    if (SceneExists(aSceneDTO.SceneID))
-    //    {
-    //        _connection.Update(aSceneDTO);
-    //    }
-    //    else
-    //    {
-    //        _connection.Insert(aSceneDTO);
-    //    }
-    //}
 
     /**
      * GET methods to retrieve data
@@ -226,43 +270,44 @@ public class DataService {
         return _connection.Table<SessionItemDTO>();
     }
 
-
-    //public IEnumerable<ItemDTO> GetLocationItems(string pLocationName)
+    /*
+     * Get list of items from given session at given location
+     * REFERENCE: https://stackoverflow.com/a/16007371 Author: chue x
+     */
+    //public IEnumerable<ItemDTO> GetSessionLocationItems(int pSessionId, string pLocationName)
     //{
-    //    return _connection.Table<ItemDTO>().Where(x => x.Location == pLocationName);
+    //    var q = _connection.Query<ItemDTO>(
+    //        "select * from ItemDTO inner join SessionItemDTO"
+    //        + " on ItemDTO.Name = SessionItemDTO.ItemName where (SessionItemDTO.Location = ?"
+    //        + " and SessionItemDTO.SessionId = ?)", pLocationName, pSessionId);
+
+    //    return q;
     //}
 
-    //REFERENCE: https://stackoverflow.com/a/16007371 Author: chue x
-
-    public IEnumerable<ItemDTO> GetSessionLocationItems(string pLocationName)
+    public IEnumerable<SessionItemDTO> GetSessionLocationItems(int pSessionId, string pLocationName)
     {
-        //_connection.Table<SessionItemDTO>().Join<ItemDTO>().Where(x => x.Location)
-        //return _connection.Table<ItemDTO>().Where(x => x.Location == pLocationName);
-
-        Debug.Log("In DataService.GetSessionLocationItems");
-
-        var q = _connection.Query<ItemDTO>(
-            "select * from ItemDTO inner join SessionItemDTO"
-            + " on ItemDTO.Name = SessionItemDTO.ItemName where SessionItemDTO.Location = ?", pLocationName);
-
+        var q = _connection.Query<SessionItemDTO>(
+            "select * from SessionItemDTO inner join ItemDTO"
+            + " on ItemDTO.Name = SessionItemDTO.ItemName where (SessionItemDTO.Location = ?"
+            + " and SessionItemDTO.SessionId = ?)", pLocationName, pSessionId);
 
         return q;
     }
 
-    public IEnumerable<ItemDTO> GetSessionLocationItems(int pSessionId, string pLocationName)
-    {
-        //_connection.Table<SessionItemDTO>().Join<ItemDTO>().Where(x => x.Location)
-        //return _connection.Table<ItemDTO>().Where(x => x.Location == pLocationName);
+    //public IEnumerable<ItemDTO> GetSessionLocationItems(string pLocationName)
+    //{
+    //    //_connection.Table<SessionItemDTO>().Join<ItemDTO>().Where(x => x.Location)
+    //    //return _connection.Table<ItemDTO>().Where(x => x.Location == pLocationName);
 
-        Debug.Log("In DataService.GetSessionLocationItems2");
+    //    Debug.Log("In DataService.GetSessionLocationItems");
 
-        var q = _connection.Query<ItemDTO>(
-            "select * from ItemDTO inner join SessionItemDTO"
-            + " on ItemDTO.Name = SessionItemDTO.ItemName where SessionItemDTO.Location = ?"
-            + " and SessionItemDTO.SessionId = ?", pLocationName, pSessionId);
+    //    var q = _connection.Query<ItemDTO>(
+    //        "select * from ItemDTO inner join SessionItemDTO"
+    //        + " on ItemDTO.Name = SessionItemDTO.ItemName where SessionItemDTO.Location = ?", pLocationName);
 
-        return q;
-    }
+
+    //    return q;
+    //}
 
     //var q = db.Query<Questions>(
     //"select Q.* from Questions Q inner join GameSaved G"
@@ -286,8 +331,8 @@ public class DataService {
         {
             ItemDTO itemDTO = new ItemDTO
             {
-                Name = item.name,
-                Description = item.description
+                Name = item.Value.name,
+                Description = item.Value.description
             };
             _connection.Update(itemDTO);   //insert an item 
         }
@@ -313,18 +358,48 @@ public class DataService {
         _connection.Insert(sessionDTO);
 
         var q = _connection.Query<SessionDTO>(
-            "select Id from SessionDTO"  
-            
+            "select Id from SessionDTO"
             ).LastOrDefault();
         return q.Id;
-
-
-
-        //SessionDTO temp = q;
-
-
-        //return temp.Id;
     }
+
+    public int CreateGameSession(string pUsername)
+    {
+        SessionDTO sessionDTO = new SessionDTO
+        {
+            Name_Player1 = pUsername,
+            Location_Player1 = GameModel.locationNames[0]
+        };
+        _connection.Insert(sessionDTO);
+
+        var q = _connection.Query<SessionDTO>(
+            "select Id from SessionDTO"
+            ).LastOrDefault();
+        return q.Id;
+    }
+
+    public SessionDTO LoadGameSession(string pUsername)
+    {
+        return _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
+        //_connection.Table<SessionDTO>.
+
+        //        public PlayerDTO GetPlayer(string pUsername)
+        //{
+        //    return _connection.Table<PlayerDTO>().Where(x => x.Username == pUsername).FirstOrDefault();
+        //}
+        //SessionDTO sessionDTO = new SessionDTO
+        //{
+        //    Name_Player1 = pUsername,
+        //    Location_Player1 = GameModel.locationNames[0]
+        //};
+        //_connection.Insert(sessionDTO);
+
+        //var q = _connection.Query<SessionDTO>(
+        //    "select Id from SessionDTO"
+        //    ).LastOrDefault();
+        //return q.Id;
+    }
+
 
     public void AddPlayerToGameSession(string pUsername)
     {
