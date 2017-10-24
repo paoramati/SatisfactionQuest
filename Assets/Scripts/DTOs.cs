@@ -43,6 +43,7 @@ public class ItemDTO
     public string Name { get; set; }
     public string Description { get; set; }
     public string Location { get; set; }
+    public string SecretLetter { get; set; }
     public int SessionId { get; set; }
 }
 

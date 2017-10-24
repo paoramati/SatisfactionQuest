@@ -112,35 +112,23 @@ public class Location
 
     public string GetLocationItems()
     {
-
         string lcResult = "You can see: \n";
 
-        //GameManager.instance.gameModel.worldItems
-
-        DataService dataService = new DataService();
-
-        //var lcItems = dataService.GetLocationItems(name);
-
-        //if (lcItems)
-        //Debug.Log("name = " + name);
-
-        //foreach (ItemDTO item in dataService.GetSessionLocationItems(name))
-        foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
+        foreach (var item in GameManager.instance.gameModel.worldItems)
         {
-            lcResult += "- " + item.Name + "\n";
+            if (item.Value.location == name)
+            {
+                lcResult += "- " + item.Value.name + "\n";
+            }
         }
 
-        //if (items.Count == 0)
+        //DataService dataService = new DataService();
+
+        //foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
         //{
-        //    lcResult = lcResult + "nothing here.";
+        //    lcResult += "- " + item.Name + "\n";
         //}
-        //else
-        //{
-        //    foreach (Item item in items)
-        //    {
-        //        lcResult = lcResult + "\n\t-" + item.name;
-        //    }
-        //}
+
         return lcResult;
     }
 

@@ -36,6 +36,14 @@ public class Item
         sessionId = GameManager.instance.sessionId;
     }
 
+    public Item(string pName, string pLocation, string pSecretLetter)
+    {
+        name = pName;
+        location = pLocation;
+        secretLetter = pSecretLetter;
+        sessionId = GameManager.instance.sessionId;
+    }
+
     //public Item(int pId, string pName, string pLocation, string pSecretLetter)
     //{
     //    id = pId;

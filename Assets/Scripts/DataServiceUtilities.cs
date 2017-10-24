@@ -47,6 +47,14 @@ public static class DataServiceUtilities
         }
     }
 
+    public static void DisplayItem()
+    {
+        DataService dataService = new DataService();    //could be replaced by a static object
+
+
+
+    }
+
     public static void DisplayAllItems()
     {
         DataService dataService = new DataService();    //could be replaced by a static object
@@ -54,7 +62,7 @@ public static class DataServiceUtilities
         foreach (ItemDTO item in dataService.GetItems())
         {
             Debug.Log("Item: Id = " + item.Id + ", Name = " + item.Name + ", Location = " + item.Location + ", Desc. = " + item.Description 
-                + ", SessionId = " + item.SessionId + "\n");
+                + ", SessionId = " + item.SessionId + ", secret = " + item.SecretLetter + "\n");
         }
     }
 

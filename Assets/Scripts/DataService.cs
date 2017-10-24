@@ -142,6 +142,7 @@ public class DataService
                 Name = item.Key,
                 Description = item.Value.description,
                 Location = item.Value.location,
+                SecretLetter = item.Value.secretLetter,
                 SessionId = pSessionId,
             };
             SetItem(itemDTO);
@@ -223,23 +224,24 @@ public class DataService
         }
     }
 
-    internal void SaveSessionItem(int pId)
-    {
-        var lcWorldItems = GameManager.instance.gameModel.worldItems;
+    //internal void SaveSessionItem(int pId)
+    //{
+    //    var lcWorldItems = GameManager.instance.gameModel.worldItems;
 
-        foreach (var item in lcWorldItems)
-        {
-            ItemDTO itemDTO = new ItemDTO
-            {
-                Id = item.Value.id,
-                Name = item.Key,
-                Description = item.Value.description,
-                Location = item.Value.location,
-                SessionId = item.Value.sessionId
-            };
-            SetItem(itemDTO);
-        }
-    }
+    //    foreach (var item in lcWorldItems)
+    //    {
+    //        ItemDTO itemDTO = new ItemDTO
+    //        {
+    //            Id = item.Value.id,
+    //            Name = item.Key,
+    //            Description = item.Value.description,
+    //            Location = item.Value.location,
+    //            SecretLetter = item.Value.secretLetter,
+    //            SessionId = item.Value.sessionId
+    //        };
+    //        SetItem(itemDTO);
+    //    }
+    //}
 
     internal void SaveSessionItems()
     {
@@ -253,33 +255,45 @@ public class DataService
                 Name = item.Key,
                 Description = item.Value.description,
                 Location = item.Value.location,
+                SecretLetter = item.Value.secretLetter,
                 SessionId = item.Value.sessionId
             };
             SetItem(itemDTO);
         }
     }
 
-    internal void SaveSessionItems(int pSessionId)
-    {
-        var lcWorldItems = GameManager.instance.gameModel.worldItems;
+    //internal void SaveSessionItems(int pSessionId)
+    //{
+    //    var lcWorldItems = GameManager.instance.gameModel.worldItems;
 
-        foreach (var item in lcWorldItems)
+    //    foreach (var item in lcWorldItems)
+    //    {
+    //        ItemDTO itemDTO = new ItemDTO
+    //        {
+    //            Id = item.Value.id,
+    //            Name = item.Key,
+    //            Description = item.Value.description,
+    //            Location = item.Value.location,
+    //            SecretLetter = item.Value.secretLetter,
+    //            SessionId = item.Value.sessionId
+    //        };
+    //        SetItem(itemDTO);
+    //    }
+    //}
+
+    public void LoadSessionItems()
+    {
+        //GameManager.instance.gameModel.worldItems.Clear();
+        //Debug.Log(GameManager.instance.gameModel.worldItems.Count());
+
+        var itemDTOs = GetSessionItems(GameManager.instance.sessionId);
+
+        foreach (ItemDTO itemDTO in itemDTOs)
         {
-            ItemDTO itemDTO = new ItemDTO
-            {
-                Id = item.Value.id,
-                Name = item.Key,
-                Description = item.Value.description,
-                Location = item.Value.location,
-                SessionId = item.Value.sessionId
-            };
-            SetItem(itemDTO);
+            GameManager.instance.gameModel.LoadWorldItem(itemDTO.Name, itemDTO.Location, itemDTO.SecretLetter);
         }
-    }
 
-    public SessionDTO LoadGameSession(string pUsername)
-    {
-        return _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
+
 
     }
 
@@ -312,6 +326,18 @@ public class DataService
     public IEnumerable<SessionDTO> GetSessions()
     {
         return _connection.Table<SessionDTO>();
+    }
+
+    //returns last played session
+    public SessionDTO GetPreviousSession(string pUsername)
+    {
+        return _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
+    }
+
+    public bool PreviousSessionExists(string pUsername)
+    {
+        var y =  _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
+        return y != null;
     }
 
     public IEnumerable<ItemDTO> GetSessionItems(int pSessionId)

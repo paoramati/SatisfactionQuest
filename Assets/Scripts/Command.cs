@@ -128,100 +128,24 @@ public class PickCommand : Command
 
         if (lcSceneName == "ItemScene")
         {
-            //return list of SessionItemDTOs
-            Debug.Log("In Pick Up - Session ID = " + lcSessionId);
-
-            Debug.Log("Username = " + GameManager.instance.player1.username);
-
-
-            if (lcWorldItems.TryGetValue(pInputStrings[1], out lcItem))     //if a valid item is given
+            if (lcWorldItems.TryGetValue(pInputStrings[1], out lcItem))                         //if a valid item is given
             {
                 if (pInputStrings[1] == lcItem.name && lcItem.location == lcLocation.name)
                 {
                     lcItem.location = GameManager.instance.player1.username;
-                    dataService.SaveSessionItems(lcSessionId);
+                    dataService.SaveSessionItems();
                     lcResult = "Picked up " + lcItem.name;
-                    //dataService.UpdateItemLocation(lcItem.id, GameManager.instance.player1.username);   //can not discrimiate which player
                 }
-
             }
             else
             {
                 lcResult = "No item by that name here\n";
             }
-
-            //    foreach (var item in lcWorldItems)
-            //{
-            //    Debug.Log("In Pick Up Before: Item ID = " + item.Value.id + " - Item Name = " + item.Value.name + " - ItemLocation = " + item.Value.location + " - SessionId = " + item.Value.sessionId);
-
-            //    if (pInputStrings[1] == item.Value.name && item.Value.location == lcLocation.name)
-            //    {
-            //        dataService.UpdateItemLocation(item.Value.id, GameManager.instance.player1.username);   //can not discrimiate which player
-            //    }
-            //    else
-            //    {
-            //        lcResult = "No item by that name here\n";
-            //    }
-            //    Debug.Log("In Pick Up After: Item ID = " + item.Value.id + " - Item Name = " + item.Value.name + " - ItemLocation = " + item.Value.location + " - SessionId = " + item.Value.sessionId);
-
-            //}
-
-
-            //foreach (var item in dataService.GetSessionLocationItems(lcSessionId, lcLocation.name))
-            //{
-            //    if (item.Name == pInputStrings[1])
-            //    {
-            //        Debug.Log("In Pick Up Before - Item ID = " + item.ItemId + " - Item Name = " + item.Name + " - ItemLocation = " + item.Location);
-
-
-            //        //dataService.UpdateSessionItem(item.Id);
-
-            //        //update this sessions game items
-            //        //THEN
-            //        //load this change into this gameState's gameModel
-
-
-            //        lcWorldItems[lcItemName].location = GameManager.instance.player1.username;
-
-            //        Debug.Log("username = " + GameManager.instance.player1.username);
-
-            //        dataService.SaveSessionItems(lcSessionId);
-
-            //        //dataService.CreateSessionItems(lcSessionId);
-
-            //        //Debug.Log("lcItemName = " + lcItemName);
-
-
-            //        //Item.NAME lcItemName = (Item.NAME)
-
-            //        //string lcSessionItemName = sessionItem.ItemName;
-
-
-            //        //GameManager.instance.gameModel.worldItems[]
-
-            //        //GameManager.instance.gameModel.worldItems[lcItemId].ChangeItemLocation(GameManager.instance.player1.username);
-
-            //        //dataService.SaveSessionItems(lcSessionId);
-            //        //GameManager.instance.SaveGameState();
-            //        lcResult = "Picked up " + item.Name + "\n";
-
-            //        Debug.Log("In Pick Up After - Item ID = " + item.ItemId + " - Item Name = " + item.Name + " - ItemLocation = " + item.Location);
-
-            //        //GameManager.instance.gameModel.worldItems[]
-            //        //update sessionItem location based on this item's Id
-            //        //item.Id
-            //        //GameManager.instance.gameModel.worldItems.FindIndex()
-            //    }
-
         }
         else
         {
             lcResult = "Not in ItemScene\n";
         }
-
-
-
-
         Result = lcResult;
     }
 }

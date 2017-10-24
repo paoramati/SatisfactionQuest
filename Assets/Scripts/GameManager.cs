@@ -45,36 +45,14 @@ public class GameState
 
     internal void CreateNewGameSession()
     {
-
-
         DataService dataService = new DataService();
 
-        sessionId = dataService.CreateGameSession(player1.username);
+        sessionId = dataService.CreateGameSession(player1.username);    //create session
+        GameManager.instance.gameModel = new GameModel();               //create gameModel
+        GameManager.instance.gameModel.GenerateWorldItems();            //generate world items
+        dataService.CreateSessionItems(sessionId);                      //save session items to database
 
-        GameManager.instance.gameModel = new GameModel();
-
-
-        //dataService.SaveLocations();
-
-        dataService.CreateSessionItems(sessionId);
-
-
-
-
-
-
-        //GameManager.instance.gameModel.GenerateWorldItems();            //generate world items with inital state
-
-
-        //DataServiceUtilities.CreateGameWorld();
-
-
-        //dataService.CreateSessionItems(sessionId);
-
-
-
-
-        //Debug.Log("GameState: sessionId - " + sessionId + " - username: " + player1.username );
+        
         //DataService.DisplayAllItems();
         //DataService.DisplayAllLocations();
         //DataService.DisplayAllSessions();
@@ -87,6 +65,31 @@ public class GameState
 
         Debug.Log("LoadExistingGameSession() ");
 
+        if (dataService.PreviousSessionExists(player1.username))
+        {
+
+            var previousSession = dataService.GetPreviousSession(player1.username);
+            sessionId = previousSession.Id;
+
+            Debug.Log("Previous Game Exists - Session Id =  " + sessionId);
+
+            player1.esteem = previousSession.Esteem_Player1;
+            GameManager.instance.gameModel = new GameModel();
+            //GameManager.instance.gameModel.GenerateWorldItems();        //items need to be created first, then cleared. Should change this
+
+
+            //load previous location somehow here, after creating the game model, reset current / first location
+
+            //dataService.LoadSessionItems();
+
+            GameManager.instance.gameModel.LoadWorldItems();
+
+        }
+        else
+        {
+            Debug.Log("No Previous Game Exists");
+            CreateNewGameSession();
+        }
     }
 
     public void SaveGameState()
@@ -100,7 +103,7 @@ public class GameState
     {
         DataService dataService = new DataService();
 
-        
+
     }
 
 }
