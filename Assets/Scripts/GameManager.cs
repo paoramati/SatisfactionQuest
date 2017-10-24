@@ -45,26 +45,40 @@ public class GameState
 
     internal void CreateNewGameSession()
     {
+
+
         DataService dataService = new DataService();
-
-
-
-        GameManager.instance.gameModel.GenerateWorldItems();            //generate world items with inital state
-
-        DataServiceUtilities.CreateGameWorld();
-
 
         sessionId = dataService.CreateGameSession(player1.username);
 
-        dataService.SaveSessionItems(sessionId);
+        GameManager.instance.gameModel = new GameModel();
+
+
+        //dataService.SaveLocations();
+
+        dataService.CreateSessionItems(sessionId);
+
+
+
+
+
+
+        //GameManager.instance.gameModel.GenerateWorldItems();            //generate world items with inital state
+
+
+        //DataServiceUtilities.CreateGameWorld();
+
+
+        //dataService.CreateSessionItems(sessionId);
+
 
 
 
         //Debug.Log("GameState: sessionId - " + sessionId + " - username: " + player1.username );
-        DataService.DisplayAllItems();
-        DataService.DisplayAllLocations();
-        DataService.DisplayAllSessions();
-        DataService.DisplayAllSessionItems();
+        //DataService.DisplayAllItems();
+        //DataService.DisplayAllLocations();
+        //DataService.DisplayAllSessions();
+        //DataService.DisplayAllSessionItems();
     }
 
     internal void LoadExistingGameSession()
@@ -79,7 +93,14 @@ public class GameState
     {
         DataService dataService = new DataService();
 
-        dataService.SaveSessionItems(sessionId);        //need to fetch session id from game manager?
+        //dataService.CreateSessionItems(sessionId);        //need to fetch session id from game manager?
+    }
+
+    public void LoadGameState()
+    {
+        DataService dataService = new DataService();
+
+        
     }
 
 }
@@ -119,7 +140,6 @@ public class GameManager : MonoBehaviour {
     public static void InitializeGameState(string pUsername)
     {
         instance = new GameState(pUsername);
-        instance.gameModel = new GameModel();
     }
 
     public static string GetCurrentScene()

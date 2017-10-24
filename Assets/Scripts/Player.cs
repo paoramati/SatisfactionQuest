@@ -21,4 +21,19 @@ public class Player {
     {
         username = pUsername;
     }
+
+    internal string GetInventoryItems()
+    {
+        string lcResult = "You have: \n";
+
+        DataService dataService = new DataService();
+
+        foreach (ItemDTO item in dataService.GetPlayerItems(GameManager.instance.sessionId, username))
+        {
+            lcResult += "- " + item.Name + "\n";
+        }
+
+        return lcResult;
+
+    }
 }

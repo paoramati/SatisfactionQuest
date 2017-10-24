@@ -29,8 +29,6 @@ public class ExitDTO
     public int Direction { get; set; }
     public int FromLocation { get; set; }
     public int ToLocation { get; set; }
-    //public string FromLocation { get; set; }
-    //public string ToLocation { get; set; }
 }
 
 /*
@@ -40,10 +38,12 @@ public class ExitDTO
 
 public class ItemDTO
 {
-    [PrimaryKey]
+    [PrimaryKey,AutoIncrement]
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public string Location { get; set; }
+    public int SessionId { get; set; }
 }
 
 /*
@@ -80,15 +80,15 @@ public class SessionDTO
  * DTO of an item's details that are retained for each individual game session.
  */
 
-public class SessionItemDTO
-{
-    [PrimaryKey,AutoIncrement]
-    public int Id { get; set; }
-    public int ItemId { get; set; }         //Id of the item. Virtual FK of ItemDTO
-    public string ItemName { get; set; }    //Name of the item. Virtal FK of ItemDTO
-    public int SessionId { get; set; }      //Id of the session. Virtual FK of SessionDTO
-    public string Location { get; set; }    //either a location name, or a player username - this will not work if username same as a location name!
-}
+//public class SessionItemDTO
+//{
+//    [PrimaryKey,AutoIncrement]
+//    public int Id { get; set; }
+//    public int ItemId { get; set; }         //Id of the item. Virtual FK of ItemDTO
+//    public string ItemName { get; set; }    //Name of the item. Virtal FK of ItemDTO
+//    public int SessionId { get; set; }      //Id of the session. Virtual FK of SessionDTO
+//    public string Location { get; set; }    //either a location name, or a player username - this will not work if username same as a location name!
+//}
 
 
 

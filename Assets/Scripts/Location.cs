@@ -14,7 +14,7 @@ public class Location
 
     public enum NAME
     {
-        TOMB,
+        TOMB = 1,
         BEACH,
         VILLAGE,
         STALL,
@@ -125,9 +125,9 @@ public class Location
         //Debug.Log("name = " + name);
 
         //foreach (ItemDTO item in dataService.GetSessionLocationItems(name))
-        foreach (SessionItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
+        foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
         {
-            lcResult += "- " + item.ItemName + "\n";
+            lcResult += "- " + item.Name + "\n";
         }
 
         //if (items.Count == 0)

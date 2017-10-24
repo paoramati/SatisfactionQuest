@@ -29,6 +29,7 @@ public class CommandProcessor
     {
         string lcOutputText = "";
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
+        Player lcPlayer = GameManager.instance.player1;
 
         switch (GameManager.GetCurrentScene())       
         {
@@ -37,6 +38,9 @@ public class CommandProcessor
                 break;
             case "ItemScene":
                 lcOutputText = lcLocation.GetLocationItems();
+                break;
+            case "InventoryScene":
+                lcOutputText = lcPlayer.GetInventoryItems();
                 break;
             case "MapScene":
                 lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.name;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ public class GoCommand : Command
             {
                 if (lcLocation.exits.TryGetValue(lcDirection, out nextLocation))       //if current location has exit at this direction
                 {
-                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[nextLocation];
+                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[nextLocation.ToString().ToLower()];
                 }
                 else
                 {
@@ -89,6 +90,9 @@ public class ShowCommand : Command
             case "location":
                 GameManager.ChangeScene("GameScene");
                 break;
+            case "inventory":
+                GameManager.ChangeScene("InventoryScene");
+                break;
             case "map":
                 GameManager.ChangeScene("MapScene");
                 break;
@@ -117,42 +121,106 @@ public class PickCommand : Command
         int lcSessionId = GameManager.instance.sessionId;
         string lcSceneName = GameManager.GetCurrentScene();
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        List<Item> lcItems;
+        var lcWorldItems = GameManager.instance.gameModel.worldItems;
+        Item lcItem;
+
         DataService dataService = new DataService();
 
         if (lcSceneName == "ItemScene")
         {
             //return list of SessionItemDTOs
             Debug.Log("In Pick Up - Session ID = " + lcSessionId);
-            foreach (var sessionItem in dataService.GetSessionLocationItems(lcSessionId, lcLocation.name))
+
+            Debug.Log("Username = " + GameManager.instance.player1.username);
+
+
+            if (lcWorldItems.TryGetValue(pInputStrings[1], out lcItem))     //if a valid item is given
             {
-                if (sessionItem.ItemName == pInputStrings[1])
+                if (pInputStrings[1] == lcItem.name && lcItem.location == lcLocation.name)
                 {
-                    string lcSessionItemName = sessionItem.ItemName;
-
-                    Debug.Log("In Pick Up Before - Item ID = " + sessionItem.ItemId + " - Item Name = " + sessionItem.ItemName + " - ItemLocation = " + sessionItem.Location);
-
-                    //GameManager.instance.gameModel.worldItems[lcItemId].ChangeItemLocation(GameManager.instance.player1.username);
-
-                    //dataService.SaveSessionItems(lcSessionId);
-                    //GameManager.instance.SaveGameState();
-                    lcResult = "Picked up " + sessionItem.ItemName + "\n";
-
-                    Debug.Log("In Pick Up After - Item ID = " + sessionItem.ItemId + " - Item Name = " + sessionItem.ItemName + " - ItemLocation = " + sessionItem.Location);
-
-                    //GameManager.instance.gameModel.worldItems[]
-                    //update sessionItem location based on this item's Id
-                    //item.Id
-                    //GameManager.instance.gameModel.worldItems.FindIndex()
-                }
-                else
-                {
-                    lcResult = "No item by that name here\n";
+                    lcItem.location = GameManager.instance.player1.username;
+                    dataService.SaveSessionItems(lcSessionId);
+                    lcResult = "Picked up " + lcItem.name;
+                    //dataService.UpdateItemLocation(lcItem.id, GameManager.instance.player1.username);   //can not discrimiate which player
                 }
 
             }
-            //if (dataService.GetSessionLocationItems)
+            else
+            {
+                lcResult = "No item by that name here\n";
+            }
+
+            //    foreach (var item in lcWorldItems)
+            //{
+            //    Debug.Log("In Pick Up Before: Item ID = " + item.Value.id + " - Item Name = " + item.Value.name + " - ItemLocation = " + item.Value.location + " - SessionId = " + item.Value.sessionId);
+
+            //    if (pInputStrings[1] == item.Value.name && item.Value.location == lcLocation.name)
+            //    {
+            //        dataService.UpdateItemLocation(item.Value.id, GameManager.instance.player1.username);   //can not discrimiate which player
+            //    }
+            //    else
+            //    {
+            //        lcResult = "No item by that name here\n";
+            //    }
+            //    Debug.Log("In Pick Up After: Item ID = " + item.Value.id + " - Item Name = " + item.Value.name + " - ItemLocation = " + item.Value.location + " - SessionId = " + item.Value.sessionId);
+
+            //}
+
+
+            //foreach (var item in dataService.GetSessionLocationItems(lcSessionId, lcLocation.name))
+            //{
+            //    if (item.Name == pInputStrings[1])
+            //    {
+            //        Debug.Log("In Pick Up Before - Item ID = " + item.ItemId + " - Item Name = " + item.Name + " - ItemLocation = " + item.Location);
+
+
+            //        //dataService.UpdateSessionItem(item.Id);
+
+            //        //update this sessions game items
+            //        //THEN
+            //        //load this change into this gameState's gameModel
+
+
+            //        lcWorldItems[lcItemName].location = GameManager.instance.player1.username;
+
+            //        Debug.Log("username = " + GameManager.instance.player1.username);
+
+            //        dataService.SaveSessionItems(lcSessionId);
+
+            //        //dataService.CreateSessionItems(lcSessionId);
+
+            //        //Debug.Log("lcItemName = " + lcItemName);
+
+
+            //        //Item.NAME lcItemName = (Item.NAME)
+
+            //        //string lcSessionItemName = sessionItem.ItemName;
+
+
+            //        //GameManager.instance.gameModel.worldItems[]
+
+            //        //GameManager.instance.gameModel.worldItems[lcItemId].ChangeItemLocation(GameManager.instance.player1.username);
+
+            //        //dataService.SaveSessionItems(lcSessionId);
+            //        //GameManager.instance.SaveGameState();
+            //        lcResult = "Picked up " + item.Name + "\n";
+
+            //        Debug.Log("In Pick Up After - Item ID = " + item.ItemId + " - Item Name = " + item.Name + " - ItemLocation = " + item.Location);
+
+            //        //GameManager.instance.gameModel.worldItems[]
+            //        //update sessionItem location based on this item's Id
+            //        //item.Id
+            //        //GameManager.instance.gameModel.worldItems.FindIndex()
+            //    }
+
         }
+        else
+        {
+            lcResult = "Not in ItemScene\n";
+        }
+
+
+
 
         Result = lcResult;
     }
