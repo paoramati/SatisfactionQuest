@@ -42,7 +42,22 @@ public class Item
         name = pName;
         location = pLocation;
         secretLetter = pSecretLetter;
-        sessionId = GameManager.instance.sessionId;
+        sessionId = GameManager.instance.Id;
+    }
+
+    public string GetLocationItems()
+    {
+        string lcResult = "You can see: \n";
+
+        foreach (var item in GameManager.instance.gameModel.worldItems)
+        {
+            if (item.Value.location == name)
+            {
+                lcResult += "- " + item.Value.name + "\n";
+            }
+        }
+
+        return lcResult;
     }
 
     //public Item(int pId, string pName, string pLocation, string pSecretLetter)

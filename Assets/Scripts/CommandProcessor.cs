@@ -30,7 +30,7 @@ public class CommandProcessor
     {
         string lcOutputText = "";
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        Player lcPlayer = GameManager.instance.player1;
+        Player lcPlayer = GameManager.instance.Player1;
 
         switch (GameManager.GetCurrentScene())       
         {
@@ -38,18 +38,22 @@ public class CommandProcessor
                 lcOutputText = lcLocation.GetLocationDetails();
                 break;
             case "ItemScene":
+                //DataServiceUtilities.RefreshGameSession();
                 lcOutputText = lcLocation.GetLocationItems();
                 break;
             case "InventoryScene":
+                //DataServiceUtilities.RefreshGameSession();
                 lcOutputText = lcPlayer.GetInventoryItems();
                 break;
-            case "MapScene":
-                lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.name;
-                break;
+            //case "MapScene":
+            //    lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.name;
+            //    break;
             case "HelpScene":
                 lcOutputText = "HOW TO PLAY: Enter commands to perform various actions \n\nCOMMANDS:\n";
                 lcOutputText += "'Go [direction]' - Move player location \n\t[direction] = north | south | east | west | up | down | left | right\n";
-                lcOutputText += "'Show [scene]'   - Change game scene \n\t[scene] = location | items | map | help\n";
+                lcOutputText += "'Show [scene]'   - Change game scene \n\t[scene] = location | items | inventory | help\n";
+                lcOutputText += "'Pick | Take [object]'   - Retrieve \n\t[object] = any item visible in ItemScene\n";
+                lcOutputText += "'Save game'   - Save current game state from any screen\n";
                 break;
         }
         return lcOutputText;

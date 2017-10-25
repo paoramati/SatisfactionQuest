@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Command
 {
+    //var model = GameManager.instance.gameModel;
     private Command next;
     public string Result;
     public string[] inputCommands;
@@ -48,7 +49,7 @@ public class GoCommand : Command
             {
                 if (lcLocation.exits.TryGetValue(lcDirection, out nextLocation))       //if current location has exit at this direction
                 {
-                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[nextLocation.ToString().ToLower()];
+                    GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[nextLocation];
                 }
                 else
                 {
@@ -93,14 +94,14 @@ public class ShowCommand : Command
             case "inventory":
                 GameManager.ChangeScene("InventoryScene");
                 break;
-            case "map":
-                GameManager.ChangeScene("MapScene");
-                break;
+            //case "map":
+            //    GameManager.ChangeScene("MapScene");
+            //    break;
             case "help":
                 GameManager.ChangeScene("HelpScene");
                 break;
             default:
-                lcResult = ">Do not understand. Valid 'show' commands: 'exits', 'location', 'items', 'map', 'help'";
+                lcResult = ">Do not understand. Valid 'show' commands: 'exits', 'location', 'items', 'inventory', 'help'";
                 break;
         }
         Result = lcResult;
@@ -115,35 +116,30 @@ public class PickCommand : Command
 
     public override void Do(string[] pInputStrings)
     {
-        Debug.Log("Got a Pick " + pInputStrings[1]);
-
         string lcResult = "";
-        Player lcPlayer = GameManager.instance.player1;
-        int lcSessionId = GameManager.instance.sessionId;
-        Location lcLocation = GameManager.instance.gameModel.currentLocation;
-        var lcWorldItems = GameManager.instance.gameModel.worldItems;
-        Item lcItem;
+        var session = GameManager.instance;
+        Player lcPlayer = session.Player1;
+        var lcWorldItems = session.gameModel.worldItems;
 
-        DataService dataService = new DataService();
+        //Debug.Log("Got a Pick " + pInputStrings[1]);
+        //DataService dataService = new DataService();
+        //int lcSessionId = GameManager.instance.sessionId;
+        //Location lcLocation = GameManager.instance.gameModel.currentLocation;
+
 
         if (GameManager.GetCurrentScene() == "ItemScene")
         {
+            Item lcItem;
             if (lcWorldItems.TryGetValue(pInputStrings[1], out lcItem))                         //if a valid item is given
             {
-                if (pInputStrings[1] == lcItem.name && lcItem.location == lcLocation.name)
+                if (pInputStrings[1] == lcItem.name && lcItem.location == GameManager.instance.gameModel.currentLocation.name)  //if item at location
                 {
-                    Debug.Log("lcItem: " + lcItem.id + " - " + lcItem.name + " - " + lcItem.sessionId + " - " + lcItem.location);
-
                     lcItem.location = lcPlayer.username;        //change location from location name to player name
-
-                    Debug.Log("lcItem: " + lcItem.id + " - " + lcItem.name + " - " + lcItem.sessionId + " - " + lcItem.location);
-
-                    //saving the session items here is creating duplicate item sets. how to avoid this?
-
-                    dataService.SaveSessionItems();
-                    //dataService.LoadSessionItems();
                     lcPlayer.esteem += 10;
                     lcResult = "Picked up " + lcItem.name;
+
+                    //NEED TO SAVE GAME STATE AFTER THIS CALL?
+
                 }
             }
             else
@@ -222,14 +218,18 @@ public class SaveCommand : Command
 
         if (pInputStrings[1] == "game")
         {
-            DataService dataService = new DataService();
+
+            DataServiceUtilities.SaveGame();
 
             //save current location
             //save player state
             //save session items
             //inform player game is saved
 
+            Result = "Game Saved.";
+
             Application.Quit();
+
         }
 
 

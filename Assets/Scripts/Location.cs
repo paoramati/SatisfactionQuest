@@ -45,15 +45,6 @@ public class Location
         exits = new Dictionary<DIRECTION, string>();
     }
 
-    //public Location(NAME pId, string pName, string pDescription, string pBackground)
-    //{
-    //    id = (int)pId;
-    //    name = pName;
-    //    description = pDescription;
-    //    background = pBackground;
-    //    exits = new Dictionary<DIRECTION, string>();
-    //}
-
     public Location(string pName, string pDescription, string pBackground)
     {
         name = pName;
@@ -85,34 +76,34 @@ public class Location
         return lcResult;
     }
 
-    //public string GetLocationItems()
-    //{
-    //    string lcResult = "You can see: \n";
-
-    //    foreach (var item in GameManager.instance.gameModel.worldItems)
-    //    {
-    //        if (item.Value.location == name)
-    //        {
-    //            lcResult += "- " + item.Value.name + "\n";
-    //        }
-    //    }
-    //    return lcResult;
-    //}
-
     public string GetLocationItems()
     {
         string lcResult = "You can see: \n";
 
-        DataService dataService = new DataService();
-
-        foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
+        foreach(var item in GameManager.instance.gameModel.worldItems)
         {
-            lcResult += "- " + item.Name + "\n";
+            if (item.Value.location == name)
+            {
+                lcResult += "- " + item.Value.name + "\n";
+            }
         }
 
         return lcResult;
-
     }
+
+    //public string GetLocationItems()
+    //{
+    //    string lcResult = "You can see: \n";
+
+    //    DataService dataService = new DataService();
+
+    //    foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
+    //    {
+    //        lcResult += "- " + item.Name + "\n";
+    //    }
+
+    //    return lcResult;
+    //}
 
     public static DIRECTION GetOppositeDirection(DIRECTION pDirection)
     {

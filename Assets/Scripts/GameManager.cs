@@ -11,14 +11,50 @@ using System.IO;
 public class GameState
 {
     public GameModel gameModel;
+    private int id;
+    private Player player1;
+    private Player player2;
+
     public bool gameRunning;
 
-    public int sessionId;
+    public Player Player1
+    {
+        get
+        {
+            return player1;
+        }
 
-    public Player player1;
-    public Player player2;
+        set
+        {
+            player1 = value;
+        }
+    }
 
-    public Dictionary<string, Item> inventory;
+    public Player Player2
+    {
+        get
+        {
+            return player2;
+        }
+
+        set
+        {
+            player2 = value;
+        }
+    }
+
+    public int Id
+    {
+        get
+        {
+            return id;
+        }
+
+        set
+        {
+            id = value;
+        }
+    }
 
     public GameState()
     {
@@ -27,7 +63,7 @@ public class GameState
 
     public GameState(string pUsername)
     {
-        player1 = new Player(pUsername);
+        Player1 = new Player(pUsername);
         gameRunning = false;
     }
 
@@ -36,57 +72,62 @@ public class GameState
         return gameRunning;
     }
 
+    //create new game session
     internal void CreateNewGameSession()
     {
         DataService dataService = new DataService();
 
-        sessionId = dataService.CreateGameSession(player1.username);    //create session
+        Id = dataService.CreateGameSession(Player1.username);    //create session
         GameManager.instance.gameModel = new GameModel();               //create gameModel
-        //GameManager.instance.gameModel.GenerateWorldItems();            //generate world items
-        //dataService.SaveSessionItems();
-        dataService.CreateSessionItems(sessionId);                      //save session items to database
-        dataService.UpdateLocalItems();
-        //dataService.SaveSessionItems();
-        //dataService
+        GameManager.instance.gameModel.GenerateWorldMap();
+        GameManager.instance.gameModel.GenerateWorldItems();
 
+        dataService.CreateSessionItems(Id);                      //save session items to database
     }
 
+    /**
+     * Load previous game session of the player.
+     * Creates new game session if none exists
+     */
     internal void LoadExistingGameSession()
     {
         DataService dataService = new DataService();
 
-        //Debug.Log("LoadExistingGameSession() ");
-
-        if (dataService.PreviousSessionExists(player1.username))
+        if (dataService.PreviousSessionExists(Player1.username))
         {
-
-            var previousSession = dataService.GetPreviousSession(player1.username);
-            sessionId = previousSession.Id;
-
-            //Debug.Log("Previous Game Exists - Session Id =  " + sessionId);
-
-            player1.esteem = previousSession.Esteem_Player1;
+            var previousSession = dataService.GetPreviousSession(Player1.username);
+            Id = previousSession.Id;
+            Player1.esteem = previousSession.Esteem_Player1;
             GameManager.instance.gameModel = new GameModel();
-            dataService.UpdateLocalItems();
+            GameManager.instance.gameModel.GenerateWorldMap();
+            GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[previousSession.Location_Player1];
+            GameManager.instance.gameModel.firstLocation = GameManager.instance.gameModel.currentLocation;
 
-            //GameManager.instance.gameModel.worldItems.Clear();
 
-            //dataService.LoadSessionItems();
+            //dataService.LoadLocations();
+            dataService.LoadSessionItems();
+
+
+            //dataService.UpdateLocalSessionItems();
         }
         else
         {
             Debug.Log("No Previous Game Exists");
-            //CreateNewGameSession();
+            CreateNewGameSession();
         }
     }
 
+    //save current game state (items, player location, esteem)
     public void SaveGameState()
     {
         DataService dataService = new DataService();
 
+        dataService.SaveSessionItems();
+
         //dataService.CreateSessionItems(sessionId);        //need to fetch session id from game manager?
     }
 
+    //load last saved game state
     public void LoadGameState()
     {
         DataService dataService = new DataService();
@@ -94,7 +135,8 @@ public class GameState
 }
 
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public static GameState instance;
 
@@ -102,17 +144,20 @@ public class GameManager : MonoBehaviour {
 
 
     // What is Awake?
-    void Awake() {
+    void Awake()
+    {
 
-		if (instance == null) {
+        if (instance == null)
+        {
 
-			Debug.Log("I am the one");
+            Debug.Log("I am the one");
 
         }
-        else {
+        else
+        {
             Destroy(gameObject);
-		}	
-	}
+        }
+    }
 
     public static void InitializeGameState(string pUsername)
     {

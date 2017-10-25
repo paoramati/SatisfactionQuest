@@ -10,15 +10,12 @@ public class GameModel
     public Location firstLocation;
     public Location currentLocation;
 
-    private DataService dataService;
-
     public GameModel()
     {
+        DataService dataService = new DataService();
+
         worldMap = new Dictionary<string, Location>();
         worldItems = new Dictionary<string, Item>();
-
-        GenerateWorldMap();
-        GenerateWorldItems();
     }
 
     public void GenerateWorldMap()
@@ -45,7 +42,7 @@ public class GameModel
 
         currentLocation = worldMap["tomb"];
 
-        firstLocation = currentLocation;        
+        firstLocation = currentLocation;
     }
 
 
@@ -59,7 +56,6 @@ public class GameModel
         AddWorldItem("helmut", "plain", "o");
         AddWorldItem("shell", "beach", "p");
         AddWorldItem("toe", "village", "r");
-
     }
 
     //add a location to the game model
@@ -68,14 +64,14 @@ public class GameModel
         worldMap.Add(pLocation, new Location(pLocation, pDescription, pBackground));
     }
 
-    //add an exit to the game model
+    //add a pair of exits to the game model
     public void AddWorldLocationExits(string pFromLocation, Location.DIRECTION pDirection, string pDestinationLocation)
     {
-        //assign exit to from location
+        //assign exit to 'from' location
         worldMap[pFromLocation].exits.Add(pDirection, pDestinationLocation);
-        
-        //assign reverse exit to destination location
-        worldMap[pDestinationLocation].exits.Add(Location.GetOppositeDirection(pDirection), pFromLocation);    
+
+        //assign reverse exit to 'destination' location
+        worldMap[pDestinationLocation].exits.Add(Location.GetOppositeDirection(pDirection), pFromLocation);
     }
 
     //add an item to the game model
@@ -84,47 +80,58 @@ public class GameModel
         worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
     }
 
-    //load a location to the game model
-    public void LoadWorldLocation(string pLocation, string pDescription, string pBackground)
+    //load a location from the db
+    public void LoadWorldLocation(LocationDTO pLocationDTO)
     {
-        worldMap.Add(pLocation, new Location(pLocation, pDescription, pBackground));
+        AddWorldLocation(pLocationDTO.Name, pLocationDTO.Description, pLocationDTO.Background);
     }
 
-    //load a location to the game model
-    public void LoadWorldLocation(int pId, string pLocation, string pDescription, string pBackground)
+    //load an exit from the db
+    public void LoadWorldLocationExit(ExitDTO pExitDTO)
     {
-        worldMap.Add(pLocation, new Location(pId, pLocation, pDescription, pBackground));
+        Location.DIRECTION lcDirection = (Location.DIRECTION)pExitDTO.Direction;
+        AddWorldLocationExits(pExitDTO.FromLocation, lcDirection, pExitDTO.ToLocation);
     }
 
-    //load an exit to the game model
-    public void LoadWorldLocationExits(string pFromLocation, int pDirection, string pDestinationLocation)
-    {
-        Location.DIRECTION lcDirection = (Location.DIRECTION)pDirection;
-
-        worldMap[pFromLocation].exits.Add(lcDirection, pDestinationLocation);                                    //assign exit to from location
-        worldMap[pDestinationLocation].exits.Add(Location.GetOppositeDirection(lcDirection), pFromLocation);     //assign reverse exit to destination location
-    }
-
-    //load an item to the game model
-    public void LoadWorldItem(string pName, string pLocation, string pSecretLetter)
-    {
-        //Debug.Log("pName = " + pName + " worldItems[pName] = " + worldItems.Keys);
-        worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
-
-
-
-    }
-
+    //load a session item from the db
     public void LoadWorldItem(ItemDTO pItemDTO)
+    {
+        AddWorldItem(pItemDTO.Name, pItemDTO.Location, pItemDTO.SecretLetter);
+    }
+
+    //update details of an item in the local game model
+    public void UpdateWorldItem(ItemDTO pItemDTO)
     {
         worldItems[pItemDTO.Name].id = pItemDTO.Id;
         worldItems[pItemDTO.Name].location = pItemDTO.Location;
-
     }
 }
 
 
 
+
+
+
+
+
+////load a location to the game model
+//public void LoadWorldLocation(int pId, string pLocation, string pDescription, string pBackground)
+//{
+//    worldMap.Add(pLocation, new Location(pId, pLocation, pDescription, pBackground));
+//}
+
+////load an item to the game model
+//public void LoadWorldItem(string pName, string pLocation, string pSecretLetter)
+//{
+//    worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
+//}
+
+////load a location to the game model
+//public void LoadWorldLocation(string pLocation, string pDescription, string pBackground)
+//{
+//    worldMap[pLocation].
+//    //worldMap.Add(pLocation, new Location(pLocation, pDescription, pBackground));
+//}
 //public static List<string> locationNames = new List<string>
 //    {
 //        "tomb",         //0
@@ -142,3 +149,8 @@ public class GameModel
 //        "paddock",      //12
 //        "marsh"         //13
 //    };
+
+
+
+//worldMap[pExitDTO.FromLocation].exits.Add(lcDirection, pExitDTO.ToLocation);                                    //assign exit to from location
+//worldMap[pExitDTO.ToLocation].exits.Add(Location.GetOppositeDirection(lcDirection), pExitDTO.FromLocation);     //assign reverse exit to destination location

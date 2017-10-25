@@ -75,6 +75,8 @@ public class SessionDTO
     public string Location_Player2 { get; set; }
     public int Esteem_Player1 { get; set; }
     public int Esteem_Player2 { get; set; }
+    public int Score_Player1 { get; set; }
+    public int Score_Player2 { get; set; }
 }
 
 /*

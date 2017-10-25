@@ -26,14 +26,29 @@ public class Player {
     {
         string lcResult = "You have: \n";
 
-        DataService dataService = new DataService();
-
-        foreach (ItemDTO item in dataService.GetPlayerItems(GameManager.instance.sessionId, username))
+        foreach (var item in GameManager.instance.gameModel.worldItems)
         {
-            lcResult += "- " + item.Name + "\n";
+            if (item.Value.location == username)
+            {
+                lcResult += "- " + item.Value.name + "\n";
+            }
         }
 
         return lcResult;
-
     }
+
+    //internal string GetInventoryItems()
+    //{
+    //    string lcResult = "You have: \n";
+
+    //    DataService dataService = new DataService();
+
+    //    foreach (ItemDTO item in dataService.GetPlayerItems(GameManager.instance.sessionId, username))
+    //    {
+    //        lcResult += "- " + item.Name + "\n";
+    //    }
+
+    //    return lcResult;
+
+    //}
 }

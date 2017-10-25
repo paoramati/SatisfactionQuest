@@ -32,6 +32,27 @@ public static class DataServiceUtilities
 
     }
 
+    public static void SaveGame()
+    {
+        DataService dataService = new DataService();
+
+        dataService.SaveSessionItems();
+        dataService.SaveSession();
+        dataService.UpdateLocalSessionItems();
+        dataService.UpdateLocalSessionState();
+    }
+
+    public static void RefreshGameSession()
+    {
+        DataService dataService = new DataService();
+
+        SaveGame();
+
+        dataService.UpdateLocalSessionItems();
+        dataService.UpdateLocalSessionState();
+
+    }
+
 
     /**
        * Test methods for debugging purposes
