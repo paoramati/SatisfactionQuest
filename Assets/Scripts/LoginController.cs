@@ -8,15 +8,12 @@ public class LoginController : MonoBehaviour
 {
     private string username;
     private string password;
-    public bool loginSuccessful;
+    public bool loginSuccessful;        
 
     InputField inputUsername;
     InputField inputPassword;
     Button btnLogin;
     public Text output;
-
-    InputField.SubmitEvent se;
-    Button.ButtonClickedEvent ce;
 
     void Start()
     {
@@ -25,31 +22,14 @@ public class LoginController : MonoBehaviour
         password = "";
         loginSuccessful = false;
 
-        inputUsername = UnityUtilities.AssignInputField("inputUsername");
+        inputUsername = UnityUtilities.AssignInputField("inputUsername");   
         inputPassword = UnityUtilities.AssignInputField("inputPassword");
         btnLogin = UnityUtilities.AssignButton("btnLogin");
 
         inputUsername.ActivateInputField();
 
         btnLogin.onClick.AddListener(() => CheckLogin());
-
-        //DisplayPlayers();
-
-        //DataServiceUtilities.DeleteDatabase();
-
-        //DataServiceUtilities.DeleteDatabase();
-
-
-        //DataService.DisplayAllLocations();
-        //DataService.DisplayAllItems();
-        ////DataService.DisplayAllSessions();
-        //DataService.DisplayAllSessionItems();
-
-        //Debug.Log(Item.NAME.COMPUTER.ToString());
-
     }
-
-
 
     private void CheckLogin()
     {
@@ -58,7 +38,7 @@ public class LoginController : MonoBehaviour
         username = inputUsername.text;
         password = inputPassword.text;
 
-        DataService dataService = new DataService();    //could be replaced by a static object
+        DataService dataService = new DataService();        //could be replaced by a static object
 
         dataService.Connect();
 
@@ -89,15 +69,10 @@ public class LoginController : MonoBehaviour
             output.text = "Username or password can not be empty!";
         }
 
-        if (loginSuccessful)
+        if (loginSuccessful)    //start game state and change scene
         {
             GameManager.InitializeGameState(username);
             GameManager.ChangeScene("MenuScene");
         }
-    }
-
-    private void ChangeScene()
-    {
-        GameManager.ChangeScene("MenuScene");
     }
 }

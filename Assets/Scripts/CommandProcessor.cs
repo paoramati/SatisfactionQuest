@@ -19,6 +19,7 @@ public class CommandProcessor
         CommandMap.Add("answer", new AnswerCommand());
         CommandMap.Add("pick", new PickCommand());
         CommandMap.Add("pickup", new PickCommand());
+        CommandMap.Add("take", new PickCommand());
         CommandMap.Add("show", new ShowCommand());
         CommandMap.Add("read", new ReadCommand());
         CommandMap.Add("quit", new QuitCommand());

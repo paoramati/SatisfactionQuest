@@ -39,7 +39,7 @@ public class GoCommand : Command
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         string lcSceneName = GameManager.GetCurrentScene();
         Location.DIRECTION lcDirection;
-        Location.NAME nextLocation;
+        string nextLocation;
         //string nextLocationName;
 
         if (lcSceneName == "GameScene")
@@ -118,33 +118,42 @@ public class PickCommand : Command
         Debug.Log("Got a Pick " + pInputStrings[1]);
 
         string lcResult = "";
+        Player lcPlayer = GameManager.instance.player1;
         int lcSessionId = GameManager.instance.sessionId;
-        string lcSceneName = GameManager.GetCurrentScene();
         Location lcLocation = GameManager.instance.gameModel.currentLocation;
         var lcWorldItems = GameManager.instance.gameModel.worldItems;
         Item lcItem;
 
         DataService dataService = new DataService();
 
-        if (lcSceneName == "ItemScene")
+        if (GameManager.GetCurrentScene() == "ItemScene")
         {
             if (lcWorldItems.TryGetValue(pInputStrings[1], out lcItem))                         //if a valid item is given
             {
                 if (pInputStrings[1] == lcItem.name && lcItem.location == lcLocation.name)
                 {
-                    lcItem.location = GameManager.instance.player1.username;
+                    Debug.Log("lcItem: " + lcItem.id + " - " + lcItem.name + " - " + lcItem.sessionId + " - " + lcItem.location);
+
+                    lcItem.location = lcPlayer.username;        //change location from location name to player name
+
+                    Debug.Log("lcItem: " + lcItem.id + " - " + lcItem.name + " - " + lcItem.sessionId + " - " + lcItem.location);
+
+                    //saving the session items here is creating duplicate item sets. how to avoid this?
+
                     dataService.SaveSessionItems();
+                    //dataService.LoadSessionItems();
+                    lcPlayer.esteem += 10;
                     lcResult = "Picked up " + lcItem.name;
                 }
             }
             else
             {
-                lcResult = "No item by that name here\n";
+                lcResult = "No item by that name here";
             }
         }
         else
         {
-            lcResult = "Not in ItemScene\n";
+            lcResult = "Not in ItemScene";
         }
         Result = lcResult;
     }
@@ -213,7 +222,13 @@ public class SaveCommand : Command
 
         if (pInputStrings[1] == "game")
         {
-            //Persist.control.Save();
+            DataService dataService = new DataService();
+
+            //save current location
+            //save player state
+            //save session items
+            //inform player game is saved
+
             Application.Quit();
         }
 

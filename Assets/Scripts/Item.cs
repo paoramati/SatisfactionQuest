@@ -27,14 +27,15 @@ public class Item
         FIREPLACE
     }
 
-    public Item(NAME pId, string pName, string pLocation, string pSecretLetter)
-    {
-        id = (int)pId;
-        name = pName;
-        location = pLocation;
-        secretLetter = pSecretLetter;
-        sessionId = GameManager.instance.sessionId;
-    }
+
+    //public Item(NAME pId, string pName, string pLocation, string pSecretLetter)
+    //{
+    //    id = (int)pId;
+    //    name = pName;
+    //    location = pLocation;
+    //    secretLetter = pSecretLetter;
+    //    sessionId = GameManager.instance.sessionId;
+    //}
 
     public Item(string pName, string pLocation, string pSecretLetter)
     {

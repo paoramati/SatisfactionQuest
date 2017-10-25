@@ -34,40 +34,7 @@ public class Location
     public string name;
     public string description;
     public string background;
-    public Dictionary<DIRECTION, NAME> exits;     //exits only available at given directions. If no match for direction, no exit
-
-
-    public List<Item> items;                        //deprecated; items have locations instead
-    
-    //public Dictionary<DIRECTION, string> exits;     //exits only available at given directions. If no match for direction, no exit
-
-
-    public string question;
-    public int answer;
-
-    //public Location(string pLocationName)
-    //{
-    //    name = pLocationName;
-    //    items = new List<Item>();
-    //}
-
-    //public Location(string pName, string pBackground)
-    //{
-    //    name = pName;
-    //    background = pBackground;
-    //    items = new List<Item>();
-    //    exits = new Dictionary<DIRECTION, string>();
-    //}
-
-    //public Location(string pName, string pDescription, string pBackground)
-    //{
-    //    //id = 
-    //    name = pName;
-    //    description = pDescription;
-    //    background = pBackground;
-    //    //items = new List<Item>();
-    //    exits = new Dictionary<DIRECTION, string>();
-    //}
+    public Dictionary<DIRECTION, string> exits;     //exits only available at given directions. If no match for direction, no exit
 
     public Location(int pId, string pName, string pDescription, string pBackground)
     {
@@ -75,16 +42,24 @@ public class Location
         name = pName;
         description = pDescription;
         background = pBackground;
-        exits = new Dictionary<DIRECTION, NAME>();
+        exits = new Dictionary<DIRECTION, string>();
     }
 
-    public Location(NAME pId, string pName, string pDescription, string pBackground)
+    //public Location(NAME pId, string pName, string pDescription, string pBackground)
+    //{
+    //    id = (int)pId;
+    //    name = pName;
+    //    description = pDescription;
+    //    background = pBackground;
+    //    exits = new Dictionary<DIRECTION, string>();
+    //}
+
+    public Location(string pName, string pDescription, string pBackground)
     {
-        id = (int)pId;
         name = pName;
         description = pDescription;
         background = pBackground;
-        exits = new Dictionary<DIRECTION, NAME>();
+        exits = new Dictionary<DIRECTION, string>();
     }
 
     public string GetLocationDetails()
@@ -110,26 +85,33 @@ public class Location
         return lcResult;
     }
 
+    //public string GetLocationItems()
+    //{
+    //    string lcResult = "You can see: \n";
+
+    //    foreach (var item in GameManager.instance.gameModel.worldItems)
+    //    {
+    //        if (item.Value.location == name)
+    //        {
+    //            lcResult += "- " + item.Value.name + "\n";
+    //        }
+    //    }
+    //    return lcResult;
+    //}
+
     public string GetLocationItems()
     {
         string lcResult = "You can see: \n";
 
-        foreach (var item in GameManager.instance.gameModel.worldItems)
+        DataService dataService = new DataService();
+
+        foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
         {
-            if (item.Value.location == name)
-            {
-                lcResult += "- " + item.Value.name + "\n";
-            }
+            lcResult += "- " + item.Name + "\n";
         }
 
-        //DataService dataService = new DataService();
-
-        //foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
-        //{
-        //    lcResult += "- " + item.Name + "\n";
-        //}
-
         return lcResult;
+
     }
 
     public static DIRECTION GetOppositeDirection(DIRECTION pDirection)
@@ -147,13 +129,4 @@ public class Location
 
         return oppositeDirection;
     }
-
-
 }
-
-public class Exit
-{
-
-}
-
-

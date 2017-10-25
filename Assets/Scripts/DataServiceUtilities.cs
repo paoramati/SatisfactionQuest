@@ -12,7 +12,7 @@ public static class DataServiceUtilities
         //if (_connection.DbExists("GameNameDb"))
         //{
         //_connection.Connect();
-        _connection.CreateLocations();
+        _connection.SaveLocations();
         //_connection.CreateItems();
     }
 
@@ -72,7 +72,7 @@ public static class DataServiceUtilities
 
         foreach (LocationDTO location in dataService.GetLocations())
         {
-            Debug.Log("Location: " + location.Id + " - " + location.Name + " - " + location.Description + " - " 
+            Debug.Log("Location: " + location.Name + " - " + location.Description + " - " 
                 + location.Background + "\n");
         }
     }

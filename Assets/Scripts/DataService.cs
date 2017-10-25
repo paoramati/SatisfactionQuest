@@ -8,7 +8,6 @@ using System.Linq;
 
 public class DataService
 {
-
     public static DataService instance;
 
     private SQLiteConnection _connection;
@@ -26,10 +25,7 @@ public class DataService
         CreateIfNotExists<ExitDTO>();
         CreateIfNotExists<ItemDTO>();
         CreateIfNotExists<SessionDTO>();
-        //CreateIfNotExists<SessionItemDTO>();
     }
-
-
 
     //creates a database with the given name at the specified path
     private void CreateDB(string DatabaseName)
@@ -53,9 +49,6 @@ public class DataService
     {
         _connection.CreateTable<T>();
     }
-
-   
-
 
     //Check if username and password is valid. Return true if count greater than 0
     public bool CheckLogin(string pUsername, string pPassword)
@@ -84,38 +77,6 @@ public class DataService
         });
     }
 
-    /**
-    * Save locations from the GameModel location map, including their exits and items (deprecated)
-    */
-    public void CreateLocations()
-    {
-        var lcLocationMap = GameManager.instance.gameModel.worldMap;
-
-        foreach (var location in lcLocationMap)    //for every location in the location map
-        {
-            LocationDTO locationDTO = new LocationDTO
-            {
-                Id = location.Value.id,
-                Name = location.Value.name,
-                Description = location.Value.description,
-                Background = location.Value.background
-            };
-
-            SetLocation(locationDTO);       //set location is slightly unnessary because Locations are static in this implementation
-
-            foreach (var exit in location.Value.exits)      //for every exit in the location's exit dictionary
-            {
-                ExitDTO exitDTO = new ExitDTO
-                {
-                    FromLocation = location.Value.id,
-                    Direction = (int)exit.Key,          //the key value corresponds to the enum's int value for that direction
-                    ToLocation = (int)exit.Value
-                };
-                SetExit(exitDTO);
-            }
-        }
-    }   //SaveLocations
-
     public int CreateGameSession(string pUsername)
     {
         SessionDTO sessionDTO = new SessionDTO
@@ -131,29 +92,10 @@ public class DataService
         return q.Id;
     }
 
-    public void CreateSessionItems(int pSessionId)
-    {
-        var lcWorldItems = GameManager.instance.gameModel.worldItems;
-
-        foreach (var item in lcWorldItems)
-        {
-            ItemDTO itemDTO = new ItemDTO
-            {
-                Name = item.Key,
-                Description = item.Value.description,
-                Location = item.Value.location,
-                SecretLetter = item.Value.secretLetter,
-                SessionId = pSessionId,
-            };
-            SetItem(itemDTO);
-        }
-    }
-
-
-    private bool LocationExists(int pLocationId)
+    private bool LocationExists(string pLocationName)
     {
         var y = _connection.Table<LocationDTO>().Where(
-                x => x.Id == pLocationId).FirstOrDefault();
+                x => x.Name == pLocationName).FirstOrDefault();
 
         return y != null;
     }
@@ -174,19 +116,36 @@ public class DataService
         return y != null;
     }
 
-    private bool SessionItemExists(int pSessionItemId)
+    private bool SessionItemExists(int pId, int pSessionId, string pItemName)
     {
         var y = _connection.Table<ItemDTO>().Where(
-                x => x.Id == pSessionItemId).FirstOrDefault();
+                x => x.Id == pId && x.SessionId == pSessionId && x.Name == pItemName).FirstOrDefault();
 
         return y != null;
     }
+
+    private bool SessionItemExists(int pSessionId, string pItemName)
+    {
+        var y = _connection.Table<ItemDTO>().Where(
+                x => x.SessionId == pSessionId && x.Name == pItemName).FirstOrDefault();
+
+        return y != null;
+    }
+
+    private bool SessionItemExists(int pId)
+    {
+        var y = _connection.Table<ItemDTO>().Where(
+                x => x.Id == pId).FirstOrDefault();
+
+        return y != null;
+    }
+
 
     private void SetLocation(LocationDTO pLocationDTO)
     {
         CreateIfNotExists<LocationDTO>();
 
-        if (LocationExists(pLocationDTO.Id))
+        if (LocationExists(pLocationDTO.Name))
         {
             _connection.Update(pLocationDTO);
         }
@@ -224,31 +183,136 @@ public class DataService
         }
     }
 
-    //internal void SaveSessionItem(int pId)
-    //{
-    //    var lcWorldItems = GameManager.instance.gameModel.worldItems;
+    private void InsertSessionItem(ItemDTO pItemDTO)
+    {
+        if (!SessionItemExists(pItemDTO.SessionId, pItemDTO.Name))
+        {
+            _connection.Insert(pItemDTO);
+        }
+    }
 
-    //    foreach (var item in lcWorldItems)
-    //    {
-    //        ItemDTO itemDTO = new ItemDTO
-    //        {
-    //            Id = item.Value.id,
-    //            Name = item.Key,
-    //            Description = item.Value.description,
-    //            Location = item.Value.location,
-    //            SecretLetter = item.Value.secretLetter,
-    //            SessionId = item.Value.sessionId
-    //        };
-    //        SetItem(itemDTO);
-    //    }
+    private void UpdateSessionItem(ItemDTO pItemDTO)
+    {
+        if (SessionItemExists(pItemDTO.SessionId, pItemDTO.Name))
+        {
+            _connection.Insert(pItemDTO);
+        }
+    }
+
+    private void SetSessionItem(ItemDTO pItemDTO)
+    {
+        if (SessionItemExists(pItemDTO.Id, pItemDTO.SessionId, pItemDTO.Name))   //if every parameter of session item matches
+        {
+
+        }
+
+        if (SessionItemExists(pItemDTO.SessionId, pItemDTO.Name))   //if session item exists, perhaps without id
+        {
+
+        }
+
+        if (SessionItemExists(pItemDTO.Id))     //if inserted session item exists
+        {
+
+        }
+
+
+            
+        //CreateIfNotExists<ItemDTO>();
+
+        //if (SessionItemExists(pItemDTO.SessionId, pItemDTO.Name, pItemDTO.Id))
+        if (SessionItemExists(pItemDTO.SessionId, pItemDTO.Name))
+        {
+            Debug.Log("Update SessionItem: id = " + pItemDTO.Id + " name = " + pItemDTO.Name + " location = " + pItemDTO.Location);
+            _connection.Update(pItemDTO);
+        }
+        else
+        {
+            Debug.Log("Insert SessionItem: id = " + pItemDTO.Id + " name = " + pItemDTO.Name + " location = " + pItemDTO.Location + " sessionId = " + pItemDTO.SessionId);
+            _connection.Insert(pItemDTO);
+        }
+    }
+
+    //private void CreateSessionItem(ItemDTO pItemDTO)
+    //{
+    //    if (SessionItemExists(pItemDTO))
     //}
 
-    internal void SaveSessionItems()
+    /**
+    * Save / create locations from the GameModel location map, including their exits and items (deprecated)
+    */
+    public void SaveLocations()
+    {
+        var lcLocationMap = GameManager.instance.gameModel.worldMap;
+
+        foreach (var location in lcLocationMap)    //for every location in the location map
+        {
+            LocationDTO locationDTO = new LocationDTO
+            {
+                Name = location.Value.name,
+                Description = location.Value.description,
+                Background = location.Value.background
+            };
+
+            SetLocation(locationDTO);       //set location is slightly unnessary because Locations are static in this implementation
+
+            foreach (var exit in location.Value.exits)      //for every exit in the location's exit dictionary
+            {
+                ExitDTO exitDTO = new ExitDTO
+                {
+                    FromLocation = location.Value.name,
+                    Direction = (int)exit.Key,          //the key value corresponds to the enum's int value for that direction
+                    ToLocation = exit.Value
+                };
+                SetExit(exitDTO);
+            }
+        }
+    }   
+
+    public void LoadLocations()
+    {
+        //var locationDTOs = 
+
+    }
+
+    //create session items for new game session
+    public void CreateSessionItems(int pSessionId)
     {
         var lcWorldItems = GameManager.instance.gameModel.worldItems;
 
+        Debug.Log("CreateSessionItems() Before");
+
         foreach (var item in lcWorldItems)
         {
+            ItemDTO itemDTO = new ItemDTO
+            {
+                Name = item.Key,
+                Description = item.Value.description,
+                Location = item.Value.location,
+                SecretLetter = item.Value.secretLetter,
+                SessionId = pSessionId,
+            };
+            InsertSessionItem(itemDTO);
+
+
+            //SetSessionItem(itemDTO);
+            //need to get DTO id value back to local copy
+        }
+    }
+
+    //save state of session items
+    public void SaveSessionItems()
+    {
+        var lcWorldItems = GameManager.instance.gameModel.worldItems;
+
+        //Debug.Log("SaveSessionItems() Before");
+
+        ////DataServiceUtilities.DisplayAllSessionItems();
+
+
+        foreach (var item in lcWorldItems)
+        {
+            //Debug.Log(item.Value.location);
             ItemDTO itemDTO = new ItemDTO
             {
                 Id = item.Value.id,
@@ -258,46 +322,39 @@ public class DataService
                 SecretLetter = item.Value.secretLetter,
                 SessionId = item.Value.sessionId
             };
-            SetItem(itemDTO);
+            SetSessionItem(itemDTO);
         }
+        Debug.Log("SaveSessionItems() After");
+
+        //DataServiceUtilities.DisplayAllSessionItems();
     }
 
-    //internal void SaveSessionItems(int pSessionId)
-    //{
-    //    var lcWorldItems = GameManager.instance.gameModel.worldItems;
+    public void UpdateLocalItems()
+    {
+        foreach (var item in GetSessionItems(GameManager.instance.sessionId))
+        {
+            GameManager.instance.gameModel.LoadWorldItem(item);
 
-    //    foreach (var item in lcWorldItems)
-    //    {
-    //        ItemDTO itemDTO = new ItemDTO
-    //        {
-    //            Id = item.Value.id,
-    //            Name = item.Key,
-    //            Description = item.Value.description,
-    //            Location = item.Value.location,
-    //            SecretLetter = item.Value.secretLetter,
-    //            SessionId = item.Value.sessionId
-    //        };
-    //        SetItem(itemDTO);
-    //    }
-    //}
+        }
+        //foreach(var item in GameManager.instance.gameModel.worldItems)
+        //{
+        //    GameManager.instance.gameModel.LoadWorldItem()
+        //}
+    }
 
+    //load state of session items
     public void LoadSessionItems()
     {
-        //GameManager.instance.gameModel.worldItems.Clear();
-        //Debug.Log(GameManager.instance.gameModel.worldItems.Count());
+        var itemDTOs = GetSessionItems(GameManager.instance.sessionId);     //get session items from current instance of session id
+        Debug.Log("LoadSessionItems()");
+        DataServiceUtilities.DisplayAllSessionItems();
 
-        var itemDTOs = GetSessionItems(GameManager.instance.sessionId);
 
         foreach (ItemDTO itemDTO in itemDTOs)
         {
             GameManager.instance.gameModel.LoadWorldItem(itemDTO.Name, itemDTO.Location, itemDTO.SecretLetter);
         }
-
-
-
     }
-
-
 
     /**
      * GET methods to retrieve data
@@ -316,6 +373,11 @@ public class DataService
     public IEnumerable<LocationDTO> GetLocations()
     {
         return _connection.Table<LocationDTO>();
+    }
+
+    public IEnumerable<ExitDTO> GetExits()
+    {
+        return _connection.Table<ExitDTO>();
     }
 
     public IEnumerable<ItemDTO> GetItems()

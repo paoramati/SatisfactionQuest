@@ -11,24 +11,17 @@ using System.IO;
 public class GameState
 {
     public GameModel gameModel;
-
     public bool gameRunning;
 
     public int sessionId;
 
-    public Session session;
-
     public Player player1;
-
     public Player player2;
-
-
 
     public Dictionary<string, Item> inventory;
 
     public GameState()
     {
- 
         gameRunning = false;
     }
 
@@ -49,21 +42,20 @@ public class GameState
 
         sessionId = dataService.CreateGameSession(player1.username);    //create session
         GameManager.instance.gameModel = new GameModel();               //create gameModel
-        GameManager.instance.gameModel.GenerateWorldItems();            //generate world items
+        //GameManager.instance.gameModel.GenerateWorldItems();            //generate world items
+        //dataService.SaveSessionItems();
         dataService.CreateSessionItems(sessionId);                      //save session items to database
+        dataService.UpdateLocalItems();
+        //dataService.SaveSessionItems();
+        //dataService
 
-        
-        //DataService.DisplayAllItems();
-        //DataService.DisplayAllLocations();
-        //DataService.DisplayAllSessions();
-        //DataService.DisplayAllSessionItems();
     }
 
     internal void LoadExistingGameSession()
     {
         DataService dataService = new DataService();
 
-        Debug.Log("LoadExistingGameSession() ");
+        //Debug.Log("LoadExistingGameSession() ");
 
         if (dataService.PreviousSessionExists(player1.username))
         {
@@ -71,24 +63,20 @@ public class GameState
             var previousSession = dataService.GetPreviousSession(player1.username);
             sessionId = previousSession.Id;
 
-            Debug.Log("Previous Game Exists - Session Id =  " + sessionId);
+            //Debug.Log("Previous Game Exists - Session Id =  " + sessionId);
 
             player1.esteem = previousSession.Esteem_Player1;
             GameManager.instance.gameModel = new GameModel();
-            //GameManager.instance.gameModel.GenerateWorldItems();        //items need to be created first, then cleared. Should change this
+            dataService.UpdateLocalItems();
 
-
-            //load previous location somehow here, after creating the game model, reset current / first location
+            //GameManager.instance.gameModel.worldItems.Clear();
 
             //dataService.LoadSessionItems();
-
-            GameManager.instance.gameModel.LoadWorldItems();
-
         }
         else
         {
             Debug.Log("No Previous Game Exists");
-            CreateNewGameSession();
+            //CreateNewGameSession();
         }
     }
 
@@ -102,12 +90,8 @@ public class GameState
     public void LoadGameState()
     {
         DataService dataService = new DataService();
-
-
     }
-
 }
-
 
 
 public class GameManager : MonoBehaviour {
@@ -122,20 +106,10 @@ public class GameManager : MonoBehaviour {
 
 		if (instance == null) {
 
-			//instance = new GameState();
-   //         instance.gameModel = new GameModel();
-
-            //instance.gameRunning = true;
 			Debug.Log("I am the one");
 
-
-
-
-            //instance.SaveGameState();
-            //instance.inventory = new Dictionary<string, Item>();
         }
         else {
-            //Persist.control.Load();
             Destroy(gameObject);
 		}	
 	}

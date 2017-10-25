@@ -5,51 +5,45 @@ using UnityEngine;
 
 public class GameModel
 {
-    //public Dictionary<string, Location> locationMap;
     public Dictionary<string, Location> worldMap;
     public Dictionary<string, Item> worldItems;
-    //public Dictionary<Location.NAME, Location> worldMap;
-    //public Dictionary<Item.NAME, Item> worldItems;
-
-    //public List<Item> worldItems;
     public Location firstLocation;
     public Location currentLocation;
-
-
 
     private DataService dataService;
 
     public GameModel()
     {
+        worldMap = new Dictionary<string, Location>();
+        worldItems = new Dictionary<string, Item>();
+
         GenerateWorldMap();
+        GenerateWorldItems();
     }
 
     public void GenerateWorldMap()
     {
-        //worldMap = new Dictionary<Location.NAME, Location>();
-        worldMap = new Dictionary<string, Location>();
-
         //add locations
-        AddWorldLocation(Location.NAME.TOMB, "A smelly tomb with a smelly corpse", "sign3");
-        AddWorldLocation(Location.NAME.BEACH, "A pretty beach with beautiful nothing to see.", "beach1");
-        AddWorldLocation(Location.NAME.VILLAGE, "A stupid village with stupid people.", "village1");
-        AddWorldLocation(Location.NAME.STALL, "An uncomfortable kissing booth.", "booth1");
-        AddWorldLocation(Location.NAME.HOUSE, "A stupid interior of a stupid house.", "house1");
-        AddWorldLocation(Location.NAME.FOREST, "A dark, dark, musty forest.", "forest1");
-        AddWorldLocation(Location.NAME.PLAIN, "A perfectly unremarkable plain", "grass1");
+        AddWorldLocation("tomb", "A smelly tomb with a smelly corpse", "sign3");
+        AddWorldLocation("beach", "A pretty beach with beautiful nothing to see.", "beach1");
+        AddWorldLocation("village", "A stupid village with stupid people.", "village1");
+        AddWorldLocation("stall", "An uncomfortable kissing booth.", "booth1");
+        AddWorldLocation("house", "A stupid interior of a stupid house.", "house1");
+        AddWorldLocation("forest", "A dark, dark, musty forest.", "forest1");
+        AddWorldLocation("plain", "A perfectly unremarkable plain", "grass1");
 
         //add location exits - also adds opposite exit from other location
-        AddWorldLocationExits(Location.NAME.TOMB, Location.DIRECTION.NORTH, Location.NAME.VILLAGE);
-        AddWorldLocationExits(Location.NAME.TOMB, Location.DIRECTION.WEST, Location.NAME.FOREST);
-        AddWorldLocationExits(Location.NAME.TOMB, Location.DIRECTION.SOUTH, Location.NAME.STALL);
-        AddWorldLocationExits(Location.NAME.TOMB, Location.DIRECTION.EAST, Location.NAME.PLAIN);
+        AddWorldLocationExits("tomb", Location.DIRECTION.NORTH, "village");
+        AddWorldLocationExits("tomb", Location.DIRECTION.WEST, "forest");
+        AddWorldLocationExits("tomb", Location.DIRECTION.SOUTH, "stall");
+        AddWorldLocationExits("tomb", Location.DIRECTION.EAST, "plain");
 
-        AddWorldLocationExits(Location.NAME.VILLAGE, Location.DIRECTION.EAST, Location.NAME.BEACH);
-        AddWorldLocationExits(Location.NAME.VILLAGE, Location.DIRECTION.NORTH, Location.NAME.HOUSE);
+        AddWorldLocationExits("village", Location.DIRECTION.EAST, "beach");
+        AddWorldLocationExits("village", Location.DIRECTION.NORTH, "house");
 
-        AddWorldLocationExits(Location.NAME.PLAIN, Location.DIRECTION.NORTH, Location.NAME.BEACH);
+        AddWorldLocationExits("plain", Location.DIRECTION.NORTH, "beach");
 
-        currentLocation = worldMap[Location.NAME.TOMB.ToString().ToLower()];
+        currentLocation = worldMap["tomb"];
 
         firstLocation = currentLocation;        
     }
@@ -57,78 +51,74 @@ public class GameModel
 
     public void GenerateWorldItems()
     {
-        worldItems = new Dictionary<string, Item>();
-
-        AddWorldItem(Item.NAME.JAR, Location.NAME.TOMB, "i");
-        AddWorldItem(Item.NAME.MOP, Location.NAME.TOMB, "j");
-        AddWorldItem(Item.NAME.COMPUTER, Location.NAME.HOUSE, "c");
-        AddWorldItem(Item.NAME.CUP, Location.NAME.STALL, "a");
-        AddWorldItem(Item.NAME.FIREPLACE, Location.NAME.HOUSE, "g");
-        AddWorldItem(Item.NAME.HELMET, Location.NAME.PLAIN, "o");
-        AddWorldItem(Item.NAME.SHELL, Location.NAME.BEACH, "p");
-        AddWorldItem(Item.NAME.TOE, Location.NAME.VILLAGE, "r");
+        AddWorldItem("jar", "tomb", "i");
+        AddWorldItem("mop", "tomb", "j");
+        AddWorldItem("computer", "house", "c");
+        AddWorldItem("cup", "stall", "a");
+        AddWorldItem("fireplace", "house", "g");
+        AddWorldItem("helmut", "plain", "o");
+        AddWorldItem("shell", "beach", "p");
+        AddWorldItem("toe", "village", "r");
 
     }
 
     //add a location to the game model
-    public void AddWorldLocation(Location.NAME pLocation, string pDescription, string pBackground)
+    public void AddWorldLocation(string pLocation, string pDescription, string pBackground)
     {
-
-        worldMap.Add(pLocation.ToString().ToLower(), new Location(pLocation, pLocation.ToString().ToLower(), pDescription, pBackground));
+        worldMap.Add(pLocation, new Location(pLocation, pDescription, pBackground));
     }
 
     //add an exit to the game model
-    public void AddWorldLocationExits(Location.NAME pFromLocation, Location.DIRECTION pDirection, Location.NAME pDestinationLocation)
+    public void AddWorldLocationExits(string pFromLocation, Location.DIRECTION pDirection, string pDestinationLocation)
     {
-        worldMap[pFromLocation.ToString().ToLower()].exits.Add(pDirection, pDestinationLocation);                                    //assign exit to from location
-        worldMap[pDestinationLocation.ToString().ToLower()].exits.Add(Location.GetOppositeDirection(pDirection), pFromLocation);     //assign reverse exit to destination location
+        //assign exit to from location
+        worldMap[pFromLocation].exits.Add(pDirection, pDestinationLocation);
+        
+        //assign reverse exit to destination location
+        worldMap[pDestinationLocation].exits.Add(Location.GetOppositeDirection(pDirection), pFromLocation);    
     }
 
     //add an item to the game model
-    public void AddWorldItem(Item.NAME pName, Location.NAME pLocation, string pSecretLetter)
+    public void AddWorldItem(string pName, string pLocation, string pSecretLetter)
     {
-        worldItems.Add(pName.ToString().ToLower(), new Item(pName, pName.ToString().ToLower(), pLocation.ToString().ToLower(), pSecretLetter));
+        worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
     }
 
-    //add an item to the game model
+    //load a location to the game model
+    public void LoadWorldLocation(string pLocation, string pDescription, string pBackground)
+    {
+        worldMap.Add(pLocation, new Location(pLocation, pDescription, pBackground));
+    }
+
+    //load a location to the game model
+    public void LoadWorldLocation(int pId, string pLocation, string pDescription, string pBackground)
+    {
+        worldMap.Add(pLocation, new Location(pId, pLocation, pDescription, pBackground));
+    }
+
+    //load an exit to the game model
+    public void LoadWorldLocationExits(string pFromLocation, int pDirection, string pDestinationLocation)
+    {
+        Location.DIRECTION lcDirection = (Location.DIRECTION)pDirection;
+
+        worldMap[pFromLocation].exits.Add(lcDirection, pDestinationLocation);                                    //assign exit to from location
+        worldMap[pDestinationLocation].exits.Add(Location.GetOppositeDirection(lcDirection), pFromLocation);     //assign reverse exit to destination location
+    }
+
+    //load an item to the game model
     public void LoadWorldItem(string pName, string pLocation, string pSecretLetter)
     {
-        //worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
-    }
+        //Debug.Log("pName = " + pName + " worldItems[pName] = " + worldItems.Keys);
+        worldItems.Add(pName, new Item(pName, pLocation, pSecretLetter));
 
-    ////add an item to the game model
-    //private void AddWorldItem(Item.NAME pName, Location.NAME pLocation, string pSecretLetter)
-    //{
-    //    //worldItems.Add(pName.ToString().ToLower(), new Item(pName, pName.ToString().ToLower(), pLocation.ToString().ToLower(), pSecretLetter));
-    //    worldItems.Add(pName.ToString().ToLower(), new Item(pName, pName.ToString().ToLower(),
-    //        pLocation.ToString().ToLower(), pSecretLetter, GameManager.instance.sessionId));
-    //}
 
-    public void LoadWorldMap()
-    {
 
     }
 
-    public void LoadWorldItems()
+    public void LoadWorldItem(ItemDTO pItemDTO)
     {
-        worldItems = new Dictionary<string, Item>();
-
-        DataService dataService = new DataService();
-
-        dataService.LoadSessionItems();
-
-        //int lcSessionId = GameManager.instance.sessionId;
-
-        //Debug.Log("sessionId = " + GameManager.instance.sessionId);
-        //DataServiceUtilities.DisplayAllItems();
-
-        //ItemDTO item = new ItemDTO
-
-        //foreach (ItemDTO item in dataService.GetSessionItems(lcSessionId))
-        //{
-        //    //LoadWorldItem(item.Name, item.Location, item.SecretLetter);
-        //}
-
+        worldItems[pItemDTO.Name].id = pItemDTO.Id;
+        worldItems[pItemDTO.Name].location = pItemDTO.Location;
 
     }
 }

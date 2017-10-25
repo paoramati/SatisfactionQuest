@@ -11,8 +11,8 @@ using SQLite4Unity3d;
 public class LocationDTO
 {
     [PrimaryKey]
-    public int Id { get; set; }
     public string Name { get; set; }
+    //public int Id { get; set; }
     public string Description { get; set; }
     public string Background { get; set; }
 }
@@ -27,8 +27,8 @@ public class ExitDTO
     [PrimaryKey]
     public int Id { get; set; }
     public int Direction { get; set; }
-    public int FromLocation { get; set; }
-    public int ToLocation { get; set; }
+    public string FromLocation { get; set; }
+    public string ToLocation { get; set; }
 }
 
 /*
