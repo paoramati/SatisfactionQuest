@@ -231,8 +231,6 @@ public class SaveCommand : Command
             Application.Quit();
 
         }
-
-
     }
 }
 

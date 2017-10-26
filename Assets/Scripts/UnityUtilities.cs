@@ -12,6 +12,13 @@ public class UnityUtilities {
         return lcInputField = lcGameObject.GetComponent<InputField>();
     }
 
+    public static UnityEngine.UI.Text AssignText(string pObjectName)
+    {
+        Text lcText;
+        GameObject lcGameObject = GameObject.Find(pObjectName);
+        return lcText = lcGameObject.GetComponent<Text>();
+    }
+
     public static UnityEngine.UI.Button AssignButton(string pObjectName)
     {
         Button lcButton;

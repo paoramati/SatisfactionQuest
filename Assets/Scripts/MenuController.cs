@@ -25,8 +25,6 @@ public class MenuController : MonoBehaviour
 
     private void NewGame()
     {
-        Debug.Log("MenuController.NewGame()");
-
         GameManager.instance.CreateNewGameSession();
 
         GameManager.ChangeScene("GameScene");
@@ -34,8 +32,6 @@ public class MenuController : MonoBehaviour
 
     private void LoadGame()
     {
-        Debug.Log("MenuController.LoadGame()");
-
         GameManager.instance.LoadExistingGameSession();
 
         GameManager.ChangeScene("GameScene");

@@ -12,6 +12,7 @@ public class TextInput : MonoBehaviour
     public Text output;
     public Image backgroundImage;
     public Text previousInput;
+    public Text lblEsteemOutput;
 
     // Use this for initialization
     void Start()
@@ -25,6 +26,7 @@ public class TextInput : MonoBehaviour
             cmdProcessor = new CommandProcessor();
             output.text = cmdProcessor.GetSceneOutput();        //get output text for first game scene
             ChangeBackgroundImage();                            //get background image for first game scene
+            ChangeEsteemOutput();
         }
     }
 
@@ -36,11 +38,19 @@ public class TextInput : MonoBehaviour
         input.ActivateInputField();
     }
 
+    //display background image
     private void ChangeBackgroundImage()
     {
-
         if (GameManager.GetCurrentScene() == "GameScene")
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.background);
+    }
+
+    private void ChangeEsteemOutput()
+    {
+        if (GameManager.GetCurrentScene() == "GameScene")
+            lblEsteemOutput.text = GameManager.instance.Player1.esteem.ToString();
+        //lblEsteemOutput.text = "500";
+
     }
 
     private void ChangeInput(string arg0)

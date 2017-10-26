@@ -95,25 +95,19 @@ public class GameState
 
         if (dataService.PreviousSessionExists(Player1.username))
         {
-            var previousSession = dataService.GetPreviousSession(Player1.username);
-            Id = previousSession.Id;
-            Player1.esteem = previousSession.Esteem_Player1;
+            var previousSession = dataService.GetPreviousSession(Player1.username);     //previous sessionDTO   
+            Id = previousSession.Id;                                                    
+            Player1.esteem = previousSession.Esteem_Player1;                            
             GameManager.instance.gameModel = new GameModel();
             GameManager.instance.gameModel.GenerateWorldMap();
             GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[previousSession.Location_Player1];
-            GameManager.instance.gameModel.firstLocation = GameManager.instance.gameModel.currentLocation;
-
-
-            //dataService.LoadLocations();
+            GameManager.instance.gameModel.firstLocation = GameManager.instance.gameModel.currentLocation;                                  //set first location
             dataService.LoadSessionItems();
-
-
-            //dataService.UpdateLocalSessionItems();
         }
         else
         {
-            Debug.Log("No Previous Game Exists");
-            CreateNewGameSession();
+            Debug.Log("No Previous Game Exists");       //no attractive option for no previous games
+            CreateNewGameSession();         
         }
     }
 
@@ -141,6 +135,8 @@ public class GameManager : MonoBehaviour
     public static GameState instance;
 
     public GameModel gameModel;
+
+    public Text lblEsteem;
 
 
     // What is Awake?

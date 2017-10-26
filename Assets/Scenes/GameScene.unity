@@ -1011,6 +1011,7 @@ MonoBehaviour:
   output: {fileID: 820776802}
   backgroundImage: {fileID: 1687032232}
   previousInput: {fileID: 0}
+  lblEsteemOutput: {fileID: 1670185727}
 --- !u!114 &1721106856
 MonoBehaviour:
   m_ObjectHideFlags: 0

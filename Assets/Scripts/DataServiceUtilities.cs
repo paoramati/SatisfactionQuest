@@ -4,34 +4,6 @@ using UnityEngine;
 
 public static class DataServiceUtilities
 {
-
-    // Use this for initialization
-    public static void CreateGameWorld()
-    {
-        DataService _connection = new DataService();
-        //if (_connection.DbExists("GameNameDb"))
-        //{
-        //_connection.Connect();
-        _connection.SaveLocations();
-        //_connection.CreateItems();
-    }
-
-    public static void DeleteDatabase()
-    {
-        DataService _connection = new DataService();
-        _connection.DeleteDatabaseFile();
-    }
-
-    public static void CreateNewGame()
-    {
-        DataService _connection = new DataService();
-
-        //DataService.instance.
-        _connection.Connect();
-
-
-    }
-
     public static void SaveGame()
     {
         DataService dataService = new DataService();
@@ -47,17 +19,13 @@ public static class DataServiceUtilities
         DataService dataService = new DataService();
 
         SaveGame();
-
         dataService.UpdateLocalSessionItems();
         dataService.UpdateLocalSessionState();
-
     }
 
-
     /**
-       * Test methods for debugging purposes
-       */
-
+     * Test methods for debugging purposes
+     */
     public static void DisplayPlayers()
     {
         DataService dataService = new DataService();    //could be replaced by a static object
@@ -66,14 +34,6 @@ public static class DataServiceUtilities
         {
             Debug.Log(player.Id + " - " + player.Username + " - " + player.Password);
         }
-    }
-
-    public static void DisplayItem()
-    {
-        DataService dataService = new DataService();    //could be replaced by a static object
-
-
-
     }
 
     public static void DisplayAllItems()
@@ -98,7 +58,6 @@ public static class DataServiceUtilities
         }
     }
 
-
     public static void DisplayAllSessions()
     {
         DataService dataService = new DataService();    //could be replaced by a static object
@@ -119,6 +78,4 @@ public static class DataServiceUtilities
                 + " - sessionId = " + sessionItem.SessionId + " - location = " + sessionItem.Location + "\n");
         }
     }
-
-
 }

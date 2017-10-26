@@ -28,7 +28,7 @@ public class Player {
 
         foreach (var item in GameManager.instance.gameModel.worldItems)
         {
-            if (item.Value.location == username)
+            if (item.Value.location == username)    //if item location is the username
             {
                 lcResult += "- " + item.Value.name + "\n";
             }
@@ -36,19 +36,4 @@ public class Player {
 
         return lcResult;
     }
-
-    //internal string GetInventoryItems()
-    //{
-    //    string lcResult = "You have: \n";
-
-    //    DataService dataService = new DataService();
-
-    //    foreach (ItemDTO item in dataService.GetPlayerItems(GameManager.instance.sessionId, username))
-    //    {
-    //        lcResult += "- " + item.Name + "\n";
-    //    }
-
-    //    return lcResult;
-
-    //}
 }

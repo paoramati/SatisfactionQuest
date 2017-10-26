@@ -229,8 +229,7 @@ public class DataService
     {
         foreach (var item in GetSessionItems(GameManager.instance.Id))
         {
-            Debug.Log("Item: Id = " + item.Id + ", Name = " + item.Name + ", Location = " + item.Location + ", Desc. = " + item.Description
-                            + ", SessionId = " + item.SessionId + ", secret = " + item.SecretLetter + "\n");
+
             GameManager.instance.gameModel.LoadWorldItem(item);
         }
     }
@@ -246,12 +245,14 @@ public class DataService
 
     public void UpdateLocalSessionState()
     {
+        //GameManager.instance.gameModel
 
     }
 
     /**
      * Set methods to perform inserts or updates of records
      */
+
     private void SetSession(SessionDTO pSessionDTO)
     {
         CreateIfNotExists<SessionDTO>();
@@ -311,20 +312,6 @@ public class DataService
         }
     }
 
-    //private void SetItem(ItemDTO pItemDTO)
-    //{
-    //    CreateIfNotExists<ItemDTO>();
-
-    //    if (ItemExists(pItemDTO.Id))
-    //    {
-    //        _connection.Update(pItemDTO);
-    //    }
-    //    else
-    //    {
-    //        _connection.Insert(pItemDTO);
-    //    }
-    //}
-
     /**
      * Get methods to retrieve data
      */
@@ -365,12 +352,6 @@ public class DataService
         return _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
     }
 
-    public bool PreviousSessionExists(string pUsername)
-    {
-        var y = _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
-        return y != null;
-    }
-
     public IEnumerable<ItemDTO> GetSessionItems(int pSessionId)
     {
         return _connection.Table<ItemDTO>().Where(x => x.SessionId == pSessionId);
@@ -400,6 +381,13 @@ public class DataService
         return y != null;
     }
 
+    //detects a previous game session by player username
+    public bool PreviousSessionExists(string pUsername)
+    {
+        var y = _connection.Table<SessionDTO>().Where(x => x.Name_Player1 == pUsername).LastOrDefault();
+        return y != null;
+    }
+
     private bool LocationExists(string pLocationName)
     {
         var y = _connection.Table<LocationDTO>().Where(
@@ -424,14 +412,6 @@ public class DataService
         return y != null;
     }
 
-    private bool SessionItemExists(int pId, int pSessionId, string pItemName)
-    {
-        var y = _connection.Table<ItemDTO>().Where(
-                x => x.Id == pId && x.SessionId == pSessionId && x.Name == pItemName).FirstOrDefault();
-
-        return y != null;
-    }
-
     private bool SessionItemExists(int pSessionId, string pItemName)
     {
         var y = _connection.Table<ItemDTO>().Where(
@@ -439,16 +419,6 @@ public class DataService
 
         return y != null;
     }
-
-    private bool SessionItemExists(int pId)
-    {
-        var y = _connection.Table<ItemDTO>().Where(
-                x => x.Id == pId).FirstOrDefault();
-
-        return y != null;
-    }
-
-
 }
 
 //public bool DbExists(string DatabaseName)
