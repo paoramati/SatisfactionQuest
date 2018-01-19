@@ -14,6 +14,7 @@ public class LoginController : MonoBehaviour
     InputField inputPassword;
     Button btnLogin;
     public Text output;
+    public Image background;
 
     void Start()
     {
@@ -29,6 +30,11 @@ public class LoginController : MonoBehaviour
         inputUsername.ActivateInputField();
 
         btnLogin.onClick.AddListener(() => CheckLogin());
+
+        WebCamDevice[] devices = WebCamTexture.devices;                 //capture all connected cameras
+        WebCamTexture texture = new WebCamTexture(devices[0].name);     //set texture to front camera    
+        background.material.mainTexture = texture;
+        texture.Play();                                                 //play recording
     }
 
     private void CheckLogin()

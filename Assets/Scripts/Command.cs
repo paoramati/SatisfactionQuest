@@ -121,12 +121,6 @@ public class PickCommand : Command
         Player lcPlayer = session.Player1;
         var lcWorldItems = session.gameModel.worldItems;
 
-        //Debug.Log("Got a Pick " + pInputStrings[1]);
-        //DataService dataService = new DataService();
-        //int lcSessionId = GameManager.instance.sessionId;
-        //Location lcLocation = GameManager.instance.gameModel.currentLocation;
-
-
         if (GameManager.GetCurrentScene() == "ItemScene")
         {
             Item lcItem;
@@ -220,11 +214,6 @@ public class SaveCommand : Command
         {
 
             DataServiceUtilities.SaveGame();
-
-            //save current location
-            //save player state
-            //save session items
-            //inform player game is saved
 
             Result = "Game Saved.";
 

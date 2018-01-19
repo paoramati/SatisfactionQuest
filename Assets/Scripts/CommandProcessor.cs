@@ -35,19 +35,14 @@ public class CommandProcessor
         switch (GameManager.GetCurrentScene())       
         {
             case "GameScene":
-                lcOutputText = lcLocation.GetLocationDetails();
+                lcOutputText = lcLocation.GetLocationDetails();     //output name and description location
                 break;
             case "ItemScene":
-                //DataServiceUtilities.RefreshGameSession();
-                lcOutputText = lcLocation.GetLocationItems();
+                lcOutputText = lcLocation.GetLocationItems();       //output list of items at this location
                 break;
-            case "InventoryScene":
-                //DataServiceUtilities.RefreshGameSession();
-                lcOutputText = lcPlayer.GetInventoryItems();
+            case "InventoryScene":  
+                lcOutputText = lcPlayer.GetInventoryItems();        //output list of items in player inventory
                 break;
-            //case "MapScene":
-            //    lcOutputText = "MAP OF BELTORA.\nCurrent location: " + lcLocation.name;
-            //    break;
             case "HelpScene":
                 lcOutputText = "HOW TO PLAY: Enter commands to perform various actions \n\nCOMMANDS:\n";
                 lcOutputText += "'Go [direction]' - Move player location \n\t[direction] = north | south | east | west | up | down | left | right\n";
@@ -71,7 +66,7 @@ public class CommandProcessor
         if (pCommandStrings.Length >= 1)                                
         {
             if (CommandMap.ContainsKey(pCommandStrings[0]))            
-                lcResult = RunCommand(pCommandStrings);                
+                lcResult = RunCommand(pCommandStrings);             //run command by first token    
             else                                                       
                 lcResult = GetSceneOutput() + "\n" + lcResult;    
         }

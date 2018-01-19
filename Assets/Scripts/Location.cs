@@ -91,20 +91,6 @@ public class Location
         return lcResult;
     }
 
-    //public string GetLocationItems()
-    //{
-    //    string lcResult = "You can see: \n";
-
-    //    DataService dataService = new DataService();
-
-    //    foreach (ItemDTO item in dataService.GetSessionLocationItems(GameManager.instance.sessionId, name))
-    //    {
-    //        lcResult += "- " + item.Name + "\n";
-    //    }
-
-    //    return lcResult;
-    //}
-
     public static DIRECTION GetOppositeDirection(DIRECTION pDirection)
     {
         DIRECTION oppositeDirection = DIRECTION.NORTH;  //initialize with north

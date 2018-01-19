@@ -25,7 +25,16 @@ public class TextInput : MonoBehaviour
             input.onEndEdit = se;
             cmdProcessor = new CommandProcessor();
             output.text = cmdProcessor.GetSceneOutput();        //get output text for first game scene
-            ChangeBackgroundImage();                            //get background image for first game scene
+
+
+            if (GameManager.GetCurrentScene() == "GameScene")   //initialise background camera if game scene
+            {
+                WebCamDevice[] devices = WebCamTexture.devices;                 //capture all connected cameras
+                WebCamTexture texture = new WebCamTexture(devices[1].name);     //set texture to front camera    
+                backgroundImage.material.mainTexture = texture;
+                texture.Play();                                                 //play recording
+            }
+
             ChangeEsteemOutput();
         }
     }
@@ -33,9 +42,8 @@ public class TextInput : MonoBehaviour
     private void SubmitInput(string arg0)
     {
         output.text = cmdProcessor.ProcessInput(cmdProcessor.ParseInput(arg0));
-        ChangeBackgroundImage();
+        ChangeBackgroundCameraImage();
         input.text = "";
-        input.ActivateInputField();
     }
 
     //display background image
@@ -45,12 +53,21 @@ public class TextInput : MonoBehaviour
             backgroundImage.sprite = Resources.Load<Sprite>(GameManager.instance.gameModel.currentLocation.background);
     }
 
+    private void ChangeBackgroundCameraImage()
+    {
+        if (GameManager.GetCurrentScene() == "GameScene")
+        {
+            WebCamDevice[] devices = WebCamTexture.devices;                 //capture all connected cameras
+            WebCamTexture texture = new WebCamTexture(devices[1].name);     //set texture to back camera    
+            backgroundImage.material.mainTexture = texture;
+            texture.Play();                                                 //play background recording
+        }
+    }
+
     private void ChangeEsteemOutput()
     {
         if (GameManager.GetCurrentScene() == "GameScene")
-            lblEsteemOutput.text = GameManager.instance.Player1.esteem.ToString();
-        //lblEsteemOutput.text = "500";
-
+            lblEsteemOutput.text = GameManager.instance.Player1.esteem.ToString();  //display player esteem
     }
 
     private void ChangeInput(string arg0)

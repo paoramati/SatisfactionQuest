@@ -721,13 +721,14 @@ MonoBehaviour:
   output: {fileID: 820776802}
   backgroundImage: {fileID: 0}
   previousInput: {fileID: 0}
+  lblEsteemOutput: {fileID: 0}
 --- !u!114 &1721106856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1721106850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d033d17c22c25f84e8f50a3286bec220, type: 3}
   m_Name: 

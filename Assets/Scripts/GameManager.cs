@@ -100,7 +100,8 @@ public class GameState
             Player1.esteem = previousSession.Esteem_Player1;                            
             GameManager.instance.gameModel = new GameModel();
             GameManager.instance.gameModel.GenerateWorldMap();
-            GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[previousSession.Location_Player1];
+            Debug.Log(previousSession.Location_Player1);
+            GameManager.instance.gameModel.currentLocation = GameManager.instance.gameModel.worldMap[previousSession.Location_Player1.ToLower()];   //get last current location
             GameManager.instance.gameModel.firstLocation = GameManager.instance.gameModel.currentLocation;                                  //set first location
             dataService.LoadSessionItems();
         }
@@ -162,7 +163,7 @@ public class GameManager : MonoBehaviour
 
     public static string GetCurrentScene()
     {
-        return SceneManager.GetActiveScene().name;
+        return SceneManager.GetActiveScene().name;      //return current scene (different to location)
     }
 
     public static void ChangeScene(string pSceneName)

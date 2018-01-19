@@ -16,7 +16,7 @@ public class Item
         name = pName;
         location = pLocation;
         secretLetter = pSecretLetter;
-        sessionId = GameManager.instance.Id;
+        sessionId = GameManager.instance.Id;        //get item's session from game manager
     }
 
     public string GetLocationItems()
@@ -27,7 +27,7 @@ public class Item
         {
             if (item.Value.location == name)
             {
-                lcResult += "- " + item.Value.name + "\n";
+                lcResult += "- " + item.Value.name + "\n";      //output name of item
             }
         }
 
